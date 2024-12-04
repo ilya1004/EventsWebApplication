@@ -1,8 +1,12 @@
 
+using EventsWebApplication.Persistence.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
+var services = builder.Services;
 
-app.MapGet("/", () => "Hello World!");
+services.AddPersistence(builder.Configuration);
+
+var app = builder.Build();
 
 app.Run();

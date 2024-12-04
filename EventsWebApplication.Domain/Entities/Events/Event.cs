@@ -6,24 +6,28 @@ namespace EventsWebApplication.Domain.Entities.Events;
 public class Event : Entity
 {
     private List<Participant> _participants = [];
+
+    // Публичный конструктор для EF Core
+    public Event() : base(0) // Задайте дефолтный ID, если необходимо
+    {
+    }
     private Event(
-        int id,
-        string title,
-        string description,
-        DateTime eventDateTime,
-        Place place,
-        int participantsMaxCount,
-        string? image,
-        Category? category) : base(id)
+       int id,
+       string title,
+       string description,
+       DateTime eventDateTime,
+       int participantsMaxCount,
+       string? image,
+       Place place,
+       Category? category) : base(id)
     {
         Title = title;
         Description = description;
         EventDateTime = eventDateTime;
-        Place = place;
         ParticipantsMaxCount = participantsMaxCount;
         Image = image;
+        Place = place;
         Category = category;
-        _participants = [];
     }
 
     public string Title { get; private set; } = string.Empty;
@@ -40,10 +44,10 @@ public class Event : Entity
         string title,
         string description,
         DateTime eventDateTime,
-        Place place,
         int participantsMaxCount,
         string? image,
-        Category? category)
+        string placeName,
+        string? categoryName)
     {
         if (string.IsNullOrEmpty(title))
         {
@@ -56,9 +60,9 @@ public class Event : Entity
             throw new Exception("DateTime of event can't be in the past");
         }
 
-        if (place == null)
+        if (string.IsNullOrEmpty(placeName))
         {
-            throw new ArgumentNullException(nameof(place));
+            throw new Exception("Place name can't be empty");
         }
 
         if (participantsMaxCount <= 0)
@@ -66,7 +70,14 @@ public class Event : Entity
             throw new Exception("Count of participants can't be equal or lower than 0");
         }
 
-        return new Event(id, title, description, eventDateTime, place, participantsMaxCount, image, category);
+        var place = new Place(placeName, placeName.ToUpper());
+
+        Category? category = null;
+        if (categoryName != null) {
+            category = new Category(categoryName, categoryName.ToUpper());
+        }
+
+        return new Event(id, title, description, eventDateTime, participantsMaxCount, image, place, category);
     }
 
     public void AddParticipant(Participant participant)

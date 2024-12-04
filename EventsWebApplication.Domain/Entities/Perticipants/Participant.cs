@@ -1,27 +1,35 @@
-﻿using EventsWebApplication.Domain.Primitives;
+﻿using EventsWebApplication.Domain.Entities.Events;
+using EventsWebApplication.Domain.Primitives;
 
 namespace EventsWebApplication.Domain.Entities.Perticipants;
 
 public class Participant : Entity
 {
+    public Participant() : base(0) { }
     private Participant(
         int id,
         string email,
         Person person,
+        Event @event,
         DateTime eventRegistrationDate) : base(id)
     {
         Email = email;
         Person = person;
+        Event = @event;
+        EventId = @event.Id;
         EventRegistrationDate = eventRegistrationDate;
     }
 
     public string Email { get; private set; }
     public Person Person { get; private set; }
+    public int EventId { get; private set; }
+    public Event? Event { get; private set; }
     public DateTime EventRegistrationDate { get; private set; }
 
     public static Participant Create(
         int id,
         string email,
+        Event @event,
         Person person)
     {
         if (string.IsNullOrWhiteSpace(email))
@@ -34,7 +42,12 @@ public class Participant : Entity
             throw new ArgumentNullException(nameof(person)); 
         }
 
-        return new Participant(id, email, person, DateTime.UtcNow);
+        if (@event == null)
+        {
+            throw new ArgumentNullException(nameof(@event));
+        }
+
+        return new Participant(id, email, person, @event, DateTime.UtcNow);
 
     }
 

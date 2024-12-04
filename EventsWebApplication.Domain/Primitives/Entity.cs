@@ -12,5 +12,5 @@ public abstract class Entity
     {
         Id = id;
     }
-    public int Id { get; set; }
+    public int Id { get; private set; }
 }
