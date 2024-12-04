@@ -1,9 +1,9 @@
 ﻿using EventsWebApplication.Domain.Primitives;
-using EventsWebApplication.Persistence.Data;
+using EventsWebApplication.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace EventsWebApplication.Persistence.Repository;
+namespace EventsWebApplication.Infrastructure.Repository;
 
 internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {

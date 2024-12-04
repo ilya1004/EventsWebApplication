@@ -1,6 +1,6 @@
-﻿using EventsWebApplication.Persistence.Data;
+﻿using EventsWebApplication.Infrastructure.Data;
 
-namespace EventsWebApplication.Persistence.Repository;
+namespace EventsWebApplication.Infrastructure.Repository;
 
 internal class AppUnitOfWork : IUnitOfWork
 {

@@ -1,4 +1,4 @@
-using EventsWebApplication.Persistence.Extensions;
+using EventsWebApplication.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

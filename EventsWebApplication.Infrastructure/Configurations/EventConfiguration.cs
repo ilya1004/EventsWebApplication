@@ -1,8 +1,7 @@
-﻿using EventsWebApplication.Domain.Entities.Events;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EventsWebApplication.Persistence.Configurations;
+namespace EventsWebApplication.Infrastructure.Configurations;
 
 internal class EventConfiguration : IEntityTypeConfiguration<Event>
 {

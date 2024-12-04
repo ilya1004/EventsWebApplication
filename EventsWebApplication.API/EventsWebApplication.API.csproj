@@ -15,8 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventsWebApplication.Domain\EventsWebApplication.Domain.csproj" />
-    <ProjectReference Include="..\EventsWebApplication.Persistence\EventsWebApplication.Persistence.csproj" />
+    <ProjectReference Include="..\EventsWebApplication.Infrastructure\EventsWebApplication.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

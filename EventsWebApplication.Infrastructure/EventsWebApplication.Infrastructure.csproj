@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventsWebApplication.Domain\EventsWebApplication.Domain.csproj" />
+    <ProjectReference Include="..\EventsWebApplication.Application\EventsWebApplication.Application.csproj" />
   </ItemGroup>
 
 </Project>
