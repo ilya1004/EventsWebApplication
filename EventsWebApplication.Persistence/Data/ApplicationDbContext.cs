@@ -2,7 +2,7 @@
 using EventsWebApplication.Domain.Entities.Perticipants;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventsWebApplication.Persistence;
+namespace EventsWebApplication.Persistence.Data;
 
 public class ApplicationDbContext : DbContext
 {

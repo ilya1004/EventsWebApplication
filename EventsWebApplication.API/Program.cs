@@ -1,4 +1,3 @@
-
 using EventsWebApplication.Persistence.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

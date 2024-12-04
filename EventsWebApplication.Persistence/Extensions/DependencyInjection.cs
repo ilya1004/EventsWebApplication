@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EventsWebApplication.Persistence.Data;
+using EventsWebApplication.Persistence.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EventsWebApplication.Persistence.Extensions;
 
-public static class RepositoryExtension
+public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
@@ -14,6 +16,8 @@ public static class RepositoryExtension
         {
             options.UseNpgsql(connectionString);
         });
+
+        services.AddSingleton<IUnitOfWork, AppUnitOfWork>();
 
         return services;
     }
