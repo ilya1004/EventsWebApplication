@@ -8,8 +8,6 @@ obj/
 *.db
 *.mdf
 *.ldf
-appsettings*.json
-secrets.json
 
 *.log
 
@@ -32,5 +30,3 @@ TestResults/**
 *.tfstate
 *.tfstate.*
 *.tfplan
-
-packages/
