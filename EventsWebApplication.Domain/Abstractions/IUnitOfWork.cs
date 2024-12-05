@@ -5,7 +5,7 @@ namespace EventsWebApplication.Domain.Abstractions;
 
 public interface IUnitOfWork
 {
-    IRepository<Event> EventsRepository { get; }
+    IEventsRepository EventsRepository { get; }
     IRepository<Participant> ParticipantsRepository { get; }
 
     public Task SaveAllAsync();

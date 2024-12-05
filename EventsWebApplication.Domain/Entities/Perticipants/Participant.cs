@@ -6,12 +6,11 @@ namespace EventsWebApplication.Domain.Entities.Perticipants;
 public class Participant : Entity
 {
     public Participant() : base(0) { }
-    private Participant(
-        int id,
+    public Participant(
         string email,
         Person person,
         Event @event,
-        DateTime eventRegistrationDate) : base(id)
+        DateTime eventRegistrationDate) : base(0)
     {
         Email = email;
         Person = person;
@@ -47,7 +46,7 @@ public class Participant : Entity
             throw new ArgumentNullException(nameof(@event));
         }
 
-        return new Participant(id, email, person, @event, DateTime.UtcNow);
+        return new Participant(email, person, @event, DateTime.UtcNow);
 
     }
 

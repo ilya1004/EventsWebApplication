@@ -7,19 +7,15 @@ public class Event : Entity
 {
     private List<Participant> _participants = [];
 
-    // Публичный конструктор для EF Core
-    public Event() : base(0) // Задайте дефолтный ID, если необходимо
-    {
-    }
-    private Event(
-       int id,
+    public Event() : base(0) { }
+    public Event(
        string title,
        string description,
        DateTime eventDateTime,
        int participantsMaxCount,
        string? image,
        Place place,
-       Category? category) : base(id)
+       Category? category) : base(0)
     {
         Title = title;
         Description = description;
@@ -40,7 +36,6 @@ public class Event : Entity
     public IReadOnlyList<Participant> Participants { get => _participants.AsReadOnly(); }
 
     public static Event Create(
-        int id,
         string title,
         string description,
         DateTime eventDateTime,
@@ -77,7 +72,7 @@ public class Event : Entity
             category = new Category(categoryName, categoryName.ToUpper());
         }
 
-        return new Event(id, title, description, eventDateTime, participantsMaxCount, image, place, category);
+        return new Event(title, description, eventDateTime, participantsMaxCount, image, place, category);
     }
 
     public void AddParticipant(Participant participant)
