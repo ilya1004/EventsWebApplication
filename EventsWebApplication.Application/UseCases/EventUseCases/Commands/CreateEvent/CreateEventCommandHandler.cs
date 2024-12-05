@@ -1,12 +1,16 @@
 ﻿
+using AutoMapper;
+
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
 
 internal class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public CreateEventCommandHandler(IUnitOfWork unitOfWork)
+    private readonly IMapper _mapper;
+    public CreateEventCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task Handle(CreateEventCommand request, CancellationToken cancellationToken)
@@ -16,10 +20,8 @@ internal class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
             throw new Exception("Event with this Title, DateTime and Place already exists");
         }
 
-        //var eventobj = Event.Create(request.Title, request.Description, request.EventDateTime, request.ParticipantsMaxCount, request.Image, request.PlaceName, request.CategoryName);
-        
+        var eventEntity = _mapper.Map<Event>(request);
 
-
-        await _unitOfWork.EventsRepository.AddAsync(eventobj, cancellationToken);
+        await _unitOfWork.EventsRepository.AddAsync(eventEntity, cancellationToken);
     }
 }

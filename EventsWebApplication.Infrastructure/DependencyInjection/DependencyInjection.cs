@@ -13,11 +13,10 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("PostgresConnection") ?? "Host=localhost; Port=5433; Database=eventsappdb; Username=postgres; Password=passpass";
 
         services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            options.UseNpgsql(connectionString);
-        });
+            options.UseNpgsql(connectionString), 
+            ServiceLifetime.Scoped);
 
-        services.AddSingleton<IUnitOfWork, AppUnitOfWork>();
+        services.AddScoped<IUnitOfWork, AppUnitOfWork>();
 
         return services;
     }

@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="UseCases\ParticipantUseCases\Commands\" />
     <Folder Include="UseCases\ParticipantUseCases\Queries\" />
-    <Folder Include="Mapping\" />
   </ItemGroup>
 
 </Project>

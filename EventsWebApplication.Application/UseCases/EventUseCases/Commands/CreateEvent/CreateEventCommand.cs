@@ -2,7 +2,7 @@
 
 public sealed record CreateEventCommand(
     string Title,
-    string Description,
+    string? Description,
     DateTime EventDateTime,
     int ParticipantsMaxCount,
     string? Image,

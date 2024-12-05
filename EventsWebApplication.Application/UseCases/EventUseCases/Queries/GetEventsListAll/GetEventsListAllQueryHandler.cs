@@ -10,6 +10,8 @@ internal class GetEventsListAllQueryHandler : IRequestHandler<GetEventsListAllQu
 
     public async Task<IEnumerable<Event>> Handle(GetEventsListAllQuery request, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.EventsRepository.PaginatedListAllAsync(request.Limit, request.Offset, cancellationToken);
+        int offset = (request.PageNo - 1) * request.PageSize;
+
+        return await _unitOfWork.EventsRepository.PaginatedListAllAsync(offset, request.PageSize, cancellationToken);
     }
 }

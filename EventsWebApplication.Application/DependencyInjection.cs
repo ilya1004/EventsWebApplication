@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
-namespace EventsWebApplication.Application.Extensions;
+namespace EventsWebApplication.Application;
 
 public static class DependencyInjection
 {
@@ -8,10 +9,11 @@ public static class DependencyInjection
     {
         services.AddMediatR(configuration =>
         {
-            configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+            configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
 
-        
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 
         return services;
     }
