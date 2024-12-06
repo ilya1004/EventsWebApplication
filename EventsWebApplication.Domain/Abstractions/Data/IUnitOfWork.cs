@@ -8,6 +8,6 @@ public interface IUnitOfWork
     IEventsRepository EventsRepository { get; }
     IRepository<Participant> ParticipantsRepository { get; }
 
-    public Task SaveAllAsync();
+    public Task SaveAllAsync(CancellationToken cancellationToken);
     public Task CreateDatabaseAsync();
 }

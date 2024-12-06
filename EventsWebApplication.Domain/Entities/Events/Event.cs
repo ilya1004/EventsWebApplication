@@ -30,7 +30,7 @@ public class Event : Entity
     public string? Description { get; private set; } = string.Empty;
     public DateTime EventDateTime { get; private set; }
     public int ParticipantsMaxCount { get; private set; }
-    public string? Image { get; private set; }
+    public string? Image { get; set; }
     public Place Place { get; private set; }
     public Category? Category { get; private set; }
     public IReadOnlyList<Participant> Participants { get => _participants.AsReadOnly(); }

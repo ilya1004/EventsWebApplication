@@ -18,7 +18,7 @@ internal class BlobService : IBlobService
     {
         BlobContainerClient blobContainerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
 
-        var fileId = new Guid();
+        var fileId = Guid.NewGuid();
 
         BlobClient blobClient = blobContainerClient.GetBlobClient(fileId.ToString());
 

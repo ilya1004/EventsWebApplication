@@ -23,8 +23,8 @@ internal class AppUnitOfWork : IUnitOfWork
         await _context.Database.EnsureCreatedAsync();
     }
 
-    public async Task SaveAllAsync()
+    public async Task SaveAllAsync(CancellationToken cancellationToken)
     {
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

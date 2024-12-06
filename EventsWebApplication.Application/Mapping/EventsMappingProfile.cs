@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
+using EventsWebApplication.Domain.Abstractions.BlobStorage;
 
 namespace EventsWebApplication.Application.Mapping;
 
@@ -25,6 +26,8 @@ public class EventsMappingProfile : Profile
                                  null))
             .ForMember(e => e.Image, opt =>
                 opt.MapFrom(dto => dto.ImageFile!.FileName));
+
+        CreateMap<FileResponse, FileResponseDTO>();
 
     }
 }

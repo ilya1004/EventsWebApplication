@@ -1,8 +1,9 @@
-﻿using EventsWebApplication.Domain.Abstractions.Data;
+﻿using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
 
-internal class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Event?>
+internal class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Event>
 {
     private readonly IUnitOfWork _unitOfWork;
     public GetEventByIdQueryHandler(IUnitOfWork unitOfWork)

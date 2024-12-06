@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Domain.Primitives;
+﻿using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Domain.Primitives;
 using System.Linq.Expressions;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
