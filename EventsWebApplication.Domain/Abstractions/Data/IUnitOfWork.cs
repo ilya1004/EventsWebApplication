@@ -1,7 +1,7 @@
 ﻿using EventsWebApplication.Domain.Entities.Events;
 using EventsWebApplication.Domain.Entities.Perticipants;
 
-namespace EventsWebApplication.Domain.Abstractions;
+namespace EventsWebApplication.Domain.Abstractions.Data;
 
 public interface IUnitOfWork
 {

@@ -1,6 +1,6 @@
 ﻿using EventsWebApplication.Domain.Entities.Events;
 
-namespace EventsWebApplication.Domain.Abstractions;
+namespace EventsWebApplication.Domain.Abstractions.Data;
 
 public interface IEventsRepository : IRepository<Event>
 {

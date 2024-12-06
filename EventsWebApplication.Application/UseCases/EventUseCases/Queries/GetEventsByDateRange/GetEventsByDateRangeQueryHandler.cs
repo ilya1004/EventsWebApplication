@@ -1,4 +1,6 @@
-﻿namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
+
+namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
 
 internal class GetEventsByDateRangeQueryHandler : IRequestHandler<GetEventsByDateRangeQuery, IEnumerable<Event>>
 {

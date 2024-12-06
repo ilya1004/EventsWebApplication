@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using EventsWebApplication.API.Contracts.Events;
+using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
+using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace EventsWebApplication.API.Controllers;
 
@@ -23,6 +27,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost]
+    // disable antiforgery
     public async Task<IActionResult> CreateEvent([FromQuery] CreateEventRequest request, CancellationToken cancellationToken)
     {
         await _mediator.Send(_mapper.Map<CreateEventCommand>(request), cancellationToken);
@@ -56,4 +61,30 @@ public class EventsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet]
+    [Route("{id:int}")]
+    public async Task<IActionResult> GetEventById(int id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetEventByIdQuery(id), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("{id:int}/with-participants")]
+    public async Task<IActionResult> GetEventByIdWithParticipants(int id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetEventByIdQuery(id, e => e.Participants), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpPut]
+    [Route("{id:int}")]
+    public async Task<IActionResult> UpdateEvent(int id, EventDTO eventDTO, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new UpdateEventCommand(id, eventDTO), cancellationToken);
+
+        return Ok();
+    }
 }

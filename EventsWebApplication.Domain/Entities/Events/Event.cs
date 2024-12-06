@@ -10,7 +10,7 @@ public class Event : Entity
     public Event() : base(0) { }
     public Event(
        string title,
-       string description,
+       string? description,
        DateTime eventDateTime,
        int participantsMaxCount,
        string? image,
@@ -37,7 +37,7 @@ public class Event : Entity
 
     public static Event Create(
         string title,
-        string description,
+        string? description,
         DateTime eventDateTime,
         int participantsMaxCount,
         string? image,

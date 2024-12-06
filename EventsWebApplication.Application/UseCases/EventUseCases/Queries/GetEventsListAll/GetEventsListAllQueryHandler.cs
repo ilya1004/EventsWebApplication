@@ -1,4 +1,6 @@
-﻿namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
+
+namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 
 internal class GetEventsListAllQueryHandler : IRequestHandler<GetEventsListAllQuery, IEnumerable<Event>>
 {

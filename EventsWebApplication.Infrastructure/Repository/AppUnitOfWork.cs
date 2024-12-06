@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Infrastructure.Data;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
+using EventsWebApplication.Infrastructure.Data;
 
 namespace EventsWebApplication.Infrastructure.Repository;
 

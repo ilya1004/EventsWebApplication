@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Domain.Primitives;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
+using EventsWebApplication.Domain.Primitives;
 using EventsWebApplication.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;

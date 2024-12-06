@@ -1,4 +1,6 @@
 ﻿
+using EventsWebApplication.Domain.Abstractions.Data;
+
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
 
 internal class GetEventsByDateQueryHandler : IRequestHandler<GetEventsByDateQuery, IEnumerable<Event>>

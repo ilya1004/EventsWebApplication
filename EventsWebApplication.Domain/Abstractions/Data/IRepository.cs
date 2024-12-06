@@ -6,9 +6,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventsWebApplication.Domain.Abstractions;
+namespace EventsWebApplication.Domain.Abstractions.Data;
 
-public interface IRepository<TEntity> where TEntity: Entity
+public interface IRepository<TEntity> where TEntity : Entity
 {
     public Task<IReadOnlyList<TEntity>> ListAllAsync(CancellationToken cancellationToken = default);
     public Task<IReadOnlyList<TEntity>> PaginatedListAllAsync(int offset, int limit, CancellationToken cancellationToken = default);

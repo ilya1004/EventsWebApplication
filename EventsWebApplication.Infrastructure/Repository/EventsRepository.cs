@@ -1,4 +1,5 @@
 ﻿using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Domain.Abstractions.Data;
 using EventsWebApplication.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

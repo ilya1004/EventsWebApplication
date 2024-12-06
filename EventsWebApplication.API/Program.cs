@@ -1,6 +1,6 @@
 using EventsWebApplication.API;
 using EventsWebApplication.Application;
-using EventsWebApplication.Infrastructure.DependencyInjection;
+using EventsWebApplication.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
