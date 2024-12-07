@@ -18,28 +18,29 @@ internal class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
         _blobService = blobService;
     }
 
-    public async Task Handle(CreateEventCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateEventCommand command, CancellationToken cancellationToken)
     {
-        if (await _unitOfWork.EventsRepository.IsSameEventExists(request.EventDTO.Title, 
-                                                                 request.EventDTO.EventDateTime, 
-                                                                 request.EventDTO.PlaceName))
+        if (await _unitOfWork.EventsRepository.IsSameEventExists(command.EventDTO.Title, 
+                                                                 command.EventDTO.EventDateTime, 
+                                                                 command.EventDTO.PlaceName,
+                                                                 cancellationToken))
         {
             throw new Exception("Event with this Title, DateTime and Place already exists");
         }
 
         Guid? imageFileId = null;
 
-        if (request.EventDTO.ImageFile != null)
+        if (command.EventDTO.ImageFile != null)
         {
-            using var stream = request.EventDTO.ImageFile.OpenReadStream();
+            using var stream = command.EventDTO.ImageFile.OpenReadStream();
 
             imageFileId = await _blobService.UploadAsync(
                 stream,
-                request.EventDTO.ImageFile.ContentType,
+                command.EventDTO.ImageFile.ContentType,
                 cancellationToken);
         }
 
-        var eventEntity = _mapper.Map<Event>(request.EventDTO);
+        var eventEntity = _mapper.Map<Event>(command.EventDTO);
 
         eventEntity.Image = imageFileId.ToString();
 

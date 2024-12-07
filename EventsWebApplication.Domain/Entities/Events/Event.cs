@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.Domain.Entities.Perticipants;
+﻿using EventsWebApplication.Domain.Entities.Participants;
 using EventsWebApplication.Domain.Primitives;
 
 namespace EventsWebApplication.Domain.Entities.Events;

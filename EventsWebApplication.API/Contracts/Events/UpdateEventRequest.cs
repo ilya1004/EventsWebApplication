@@ -1,10 +1,5 @@
-﻿namespace EventsWebApplication.API.Contracts.Events;
+﻿using EventsWebApplication.Application.DTOs;
 
-internal sealed record UpdateEventRequest(
-    string Title,
-    string? Description,
-    DateTime EventDateTime,
-    int ParticipantsMaxCount,
-    string? Image,
-    string PlaceName,
-    string? CategoryName);
+namespace EventsWebApplication.API.Contracts.Events;
+
+public sealed record UpdateEventRequest(int Id, EventDTO EventDTO);

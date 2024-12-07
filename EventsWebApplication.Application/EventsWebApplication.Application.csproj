@@ -19,9 +19,4 @@
     <ProjectReference Include="..\EventsWebApplication.Domain\EventsWebApplication.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCases\ParticipantUseCases\Commands\" />
-    <Folder Include="UseCases\ParticipantUseCases\Queries\" />
-  </ItemGroup>
-
 </Project>

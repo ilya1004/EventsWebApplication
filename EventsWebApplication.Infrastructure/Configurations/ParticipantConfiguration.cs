@@ -1,5 +1,5 @@
 ﻿using EventsWebApplication.Domain.Entities.Events;
-using EventsWebApplication.Domain.Entities.Perticipants;
+using EventsWebApplication.Domain.Entities.Participants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

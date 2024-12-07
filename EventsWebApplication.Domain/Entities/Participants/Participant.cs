@@ -1,7 +1,7 @@
 ﻿using EventsWebApplication.Domain.Entities.Events;
 using EventsWebApplication.Domain.Primitives;
 
-namespace EventsWebApplication.Domain.Entities.Perticipants;
+namespace EventsWebApplication.Domain.Entities.Participants;
 
 public class Participant : Entity
 {
@@ -21,7 +21,7 @@ public class Participant : Entity
 
     public string Email { get; private set; }
     public Person Person { get; private set; }
-    public int EventId { get; private set; }
+    public int EventId { get; set; }
     public Event? Event { get; private set; }
     public DateTime EventRegistrationDate { get; private set; }
 
@@ -36,9 +36,9 @@ public class Participant : Entity
             throw new ArgumentNullException(nameof(email));
         }
 
-        if (person == null) 
-        { 
-            throw new ArgumentNullException(nameof(person)); 
+        if (person == null)
+        {
+            throw new ArgumentNullException(nameof(person));
         }
 
         if (@event == null)

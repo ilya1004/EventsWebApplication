@@ -29,14 +29,20 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    //public async Task DeleteByIdAsync(int id, CancellationToken cancellationToken = default)
+    //{
+    //    await _entities.FirstOrDefaultAsync().ExecuteDeleteAsync();
+    //    await _context.SaveChangesAsync(cancellationToken);
+    //}
+
     public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
-        return await _entities.FirstOrDefaultAsync(filter, cancellationToken);
+        return await _entities.AsNoTracking().FirstOrDefaultAsync(filter, cancellationToken);
     }
 
     public async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[]? includesProperties)
     {
-        IQueryable<TEntity> query = _entities;
+        IQueryable<TEntity> query = _entities.AsQueryable().AsNoTracking();
 
         if (includesProperties != null)
         {
@@ -51,12 +57,13 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
 
     public async Task<IReadOnlyList<TEntity>> ListAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _entities.ToListAsync(cancellationToken);
+        return await _entities.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyList<TEntity>> PaginatedListAllAsync(int offset, int limit, CancellationToken cancellationToken = default)
     {
         return await _entities
+            .AsNoTracking()
             .Skip(offset)
             .Take(limit)
             .ToListAsync(cancellationToken);
@@ -64,7 +71,7 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
 
     public async Task<IReadOnlyList<TEntity>> ListAsync(Expression<Func<TEntity, bool>>? filter, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[]? includesProperties)
     {
-        IQueryable<TEntity> query = _entities.AsQueryable();
+        IQueryable<TEntity> query = _entities.AsQueryable().AsNoTracking();
 
         if (filter != null)
         {
@@ -84,7 +91,7 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
 
     public async Task<IReadOnlyList<TEntity>> PaginatedListAsync(Expression<Func<TEntity, bool>>? filter, int offset, int limit, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[]? includesProperties)
     {
-        IQueryable<TEntity> query = _entities.AsQueryable();
+        IQueryable<TEntity> query = _entities.AsQueryable().AsNoTracking();
 
         if (filter != null)
         {

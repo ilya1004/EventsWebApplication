@@ -2,6 +2,7 @@
 using EventsWebApplication.API.Contracts.Events;
 using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
+using EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
@@ -28,7 +29,7 @@ public class EventsController : ControllerBase
 
     [HttpPost]
     // disable antiforgery
-    public async Task<IActionResult> CreateEvent([FromQuery] CreateEventRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateEvent([FromForm] CreateEventRequest request, CancellationToken cancellationToken)
     {
         await _mediator.Send(_mapper.Map<CreateEventCommand>(request), cancellationToken);
 
@@ -80,10 +81,17 @@ public class EventsController : ControllerBase
     }
 
     [HttpPut]
-    [Route("{id:int}")]
-    public async Task<IActionResult> UpdateEvent(int id, EventDTO eventDTO, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateEvent([FromForm] UpdateEventRequest request, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new UpdateEventCommand(id, eventDTO), cancellationToken);
+        await _mediator.Send(_mapper.Map<UpdateEventCommand>(request), cancellationToken);
+
+        return Ok();
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteEvent([FromQuery] int id, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeleteEventCommand(id), cancellationToken);
 
         return Ok();
     }
