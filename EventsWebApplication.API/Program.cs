@@ -1,6 +1,8 @@
 using EventsWebApplication.API;
+using EventsWebApplication.API.Middlewares;
 using EventsWebApplication.Application;
 using EventsWebApplication.Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +14,12 @@ services.AddEndpointsApiExplorer()
         .AddSwaggerGen();
 
 services.AddApplication();
-
 services.AddPersistence(builder.Configuration);
+services.AddAPI(builder.Configuration);
 
-services.AddAPI();
+services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -28,6 +31,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
 app.MapControllers();
 
 app.Run();
+
+Log.CloseAndFlush();

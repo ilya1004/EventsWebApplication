@@ -18,9 +18,6 @@ public static class DependencyInjection
         var connectionStringPostgres = configuration.GetConnectionString("PostgresConnection") ?? "Host=localhost; Port=5433; Database=eventsappdb; Username=postgres; Password=passpass";
         var connectionStringAzurite = configuration.GetConnectionString("AzuriteConnection") ?? "UseDevelopmentStorage=true";
 
-        Console.WriteLine(connectionStringAzurite);
-
-
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionStringPostgres),
             ServiceLifetime.Scoped);
