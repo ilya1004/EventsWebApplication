@@ -1,6 +1,7 @@
 import { message } from "antd";
+import { AxiosResponse } from "axios";
 
-export const handleResponseError = (response : Response) => {
+export const handleResponseError = (response : AxiosResponse) => {
   if (response.status === 401) {
     console.error(response);
     showMessageStc("Произошла ошибка аутентификации", "error");

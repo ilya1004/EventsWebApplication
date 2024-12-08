@@ -42,6 +42,10 @@ public static class UtilsProvider
                 AccessTokenLifetime = 3600, // 1 час
                 RefreshTokenUsage = TokenUsage.ReUse,
                 AllowedScopes = { "openid", "profile", "offline_access", "events_scope" },
+
+
+                 // Важная настройка для использования куков
+                //AllowAccessTokensViaBrowser = false,
             }
 
         };

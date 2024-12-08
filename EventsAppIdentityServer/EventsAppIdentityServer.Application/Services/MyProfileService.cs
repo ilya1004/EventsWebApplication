@@ -4,22 +4,17 @@ using EventsAppIdentityServer.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventsAppIdentityServer.Application.Services;
 
-public class ProfileService : IProfileService
+public class MyProfileService : IProfileService
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public ProfileService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+    public MyProfileService(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
     }
 
     public async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -44,7 +39,7 @@ public class ProfileService : IProfileService
 
     public Task IsActiveAsync(IsActiveContext context)
     {
-        context.IsActive = true; // Убедитесь, что пользователь активен
+        context.IsActive = true;
         return Task.CompletedTask;
     }
 }

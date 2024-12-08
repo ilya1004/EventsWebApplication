@@ -1,7 +1,7 @@
 ﻿using EventsAppIdentityServer.Domain.Abstractions;
 using EventsAppIdentityServer.Domain.Entities;
+using EventsAppIdentityServer.Domain.Models;
 using EventsAppIdentityServer.Infrastructure.Data;
-using EventsAppIdentityServer.Infrastructure.Utils;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -51,10 +51,7 @@ public class DbInitializer : IDbInitializer
         await _userManager.AddClaimsAsync(admin,
             [
                 new Claim(JwtClaimTypes.Id, admin.Id),
-                //new Claim(JwtClaimTypes.Name, admin.Name),
-                //new Claim("surname", admin.Surname),
                 new Claim(JwtClaimTypes.Email, admin.Email),
-                //new Claim(JwtClaimTypes.BirthDate, admin.Birthday.ToString()),
                 new Claim(JwtClaimTypes.Role, AppRoles.AdminRole)
             ]);
 
@@ -72,15 +69,15 @@ public class DbInitializer : IDbInitializer
         await _userManager.CreateAsync(user, "Ilya_123");
         await _userManager.AddToRoleAsync(user, AppRoles.UserRole);
 
-        await _userManager.AddClaimsAsync(user,
-            [
-                new Claim(JwtClaimTypes.Id, user.Id),
-                new Claim(JwtClaimTypes.Name, user.Name),
-                new Claim("surname", user.Surname),
-                new Claim(JwtClaimTypes.Email, user.Email),
-                new Claim(JwtClaimTypes.BirthDate, user.Birthday.ToString()),
-                new Claim(JwtClaimTypes.Role, AppRoles.UserRole)
-            ]);
+        //await _userManager.AddClaimsAsync(user,
+        //    [
+        //        new Claim(JwtClaimTypes.Id, user.Id),
+        //        new Claim(JwtClaimTypes.Name, user.Name),
+        //        new Claim("surname", user.Surname),
+        //        new Claim(JwtClaimTypes.Email, user.Email),
+        //        new Claim(JwtClaimTypes.BirthDate, user.Birthday.ToString()),
+        //        new Claim(JwtClaimTypes.Role, AppRoles.UserRole)
+        //    ]);
 
     }
 }

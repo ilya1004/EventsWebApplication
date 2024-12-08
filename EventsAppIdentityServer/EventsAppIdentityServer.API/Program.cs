@@ -1,11 +1,14 @@
-
 using Duende.IdentityServer.Services;
+using EventsAppIdentityServer.API;
+using EventsAppIdentityServer.API.Middlewares;
 using EventsAppIdentityServer.API.Utils;
+using EventsAppIdentityServer.Application;
 using EventsAppIdentityServer.Application.Services;
 using EventsAppIdentityServer.Domain.Abstractions;
 using EventsAppIdentityServer.Domain.Entities;
 using EventsAppIdentityServer.Infrastructure.Data;
 using EventsAppIdentityServer.Infrastructure.DbInitializer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +18,14 @@ var services = builder.Services;
 services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresIdentityConnection")));
 
+services.AddControllers();
+
 services.AddAuthorization();
 services.AddAuthentication();
 
-builder.Services.AddTransient<IProfileService, ProfileService>();
+services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
+services.AddTransient<IProfileService, MyProfileService>();
 
 services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -38,9 +45,10 @@ services.AddIdentityServer(option =>
     .AddInMemoryClients(UtilsProvider.Clients)
     .AddAspNetIdentity<AppUser>()
     .AddDeveloperSigningCredential()
-    .AddProfileService<ProfileService>();
- 
-    //.AddDeveloperSigningCredential();
+    .AddProfileService<MyProfileService>();
+
+services.AddApplication();
+services.AddAPI();
 
 services.AddEndpointsApiExplorer()
         .AddSwaggerGen();
@@ -60,7 +68,7 @@ services.AddCors(options =>
 
 var app = builder.Build();
 
-//await SeedDatabase();
+await SeedDatabase();
 
 if (app.Environment.IsDevelopment())
 {
@@ -68,11 +76,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//app.UseCookiePolicy(new CookiePolicyOptions
+//{
+//    Secure = CookieSecurePolicy.Always,
+//    HttpOnly = HttpOnlyPolicy.Always
+//});
+
 
 app.UseCors("ClientCorsPolicy");
 app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
+app.MapControllers();
 
 app.MapIdentityApi<AppUser>();
 

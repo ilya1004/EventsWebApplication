@@ -1,9 +1,9 @@
 import { Form, Button, Input, Card, Flex, Typography } from "antd";
 import React, { useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import axios from "axios";
+import { redirect, useNavigate } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
 // import { useSelector } from "react-redux";
-import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
+import { handleResponseError, showMessageStc } from "../../services/ResponseErrorHandler.ts";
 import { BASE_IDENTITY_URL } from "../../store/constants.ts";
 // import { RootState } from "../../store/store";
 
@@ -13,8 +13,8 @@ export const LoginPage: React.FC = () => {
 
   // const authState = useSelector((state: RootState) => state.auth);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
 
@@ -26,8 +26,8 @@ export const LoginPage: React.FC = () => {
     setPassword(e.target.value);
   };
 
-  const loginUser = async () => {
-    console.log(`${email}, ${password}`);
+  const loginUser = async (): Promise<any> => {
+    // console.log(`${email}, ${password}`);
     try {
       const response = await axios.post(`${BASE_IDENTITY_URL}/connect/token`, new URLSearchParams({
         grant_type: "password",
@@ -48,10 +48,16 @@ export const LoginPage: React.FC = () => {
 
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
-
-      alert("Login successful!");
+      
+      navigate("/");
     } catch (err: any) {
       console.log(err);
+      if (err.response.data.error_description == "invalid_username_or_password") {
+        showMessageStc("Invalid email or password", "error");
+        setEmail("");
+        setPassword("");
+      }
+      // showMessageStc(err.response.data.error_description);
     }
   };
 
@@ -129,7 +135,7 @@ export const LoginPage: React.FC = () => {
                   type="primary"
                   htmlType="submit"
                   style={{
-                    margin: "0px",
+                    margin: "5px 0px 0px 0px",
                     width: "75px",
                   }}
                 >

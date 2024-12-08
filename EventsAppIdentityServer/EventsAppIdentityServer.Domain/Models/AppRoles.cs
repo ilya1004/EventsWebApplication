@@ -1,4 +1,4 @@
-﻿namespace EventsAppIdentityServer.Infrastructure.Utils;
+﻿namespace EventsAppIdentityServer.Domain.Models;
 
 public static class AppRoles
 {
