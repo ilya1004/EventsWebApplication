@@ -46,8 +46,6 @@ services.AddAuthentication("Bearer")
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,
-            //NameClaimType = "name",
-            //RoleClaimType = "role"
         };
     });
 

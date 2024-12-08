@@ -1,26 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MediatR;
-using EventsAppIdentityServer.Application.UseCases.UsersUseCases;
-using EventsAppIdentityServer.Application.DTOs;
+﻿using EventsAppIdentityServer.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EventsAppIdentityServer.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class AccountController : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public AccountController(IMediator mediator)
+    private readonly UserManager<AppUser> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
     {
-        _mediator = mediator;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserDTO userDTO)
+    [HttpGet]
+    [Route("Login")]
+    public IActionResult Login(string returnUrl)
     {
-        await _mediator.Send(new RegisterUserCommand(userDTO));
+        //_signInManager.
 
-        return Ok();
+
+        return RedirectPermanent(returnUrl);
     }
 }

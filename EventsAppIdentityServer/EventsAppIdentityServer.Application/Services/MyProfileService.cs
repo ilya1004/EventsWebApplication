@@ -26,9 +26,9 @@ public class MyProfileService : IProfileService
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
             var claims = new List<Claim>
             {
-                new Claim("name", user.Name!),
-                new Claim("surname", user.Surname!),
-                new Claim("birthday", user.Birthday.ToString()),
+                //new Claim("name", user.Name!),
+                //new Claim("surname", user.Surname!),
+                //new Claim("birthday", user.Birthday.ToString()),
                 new Claim("email", user.Email!),
                 new Claim("role", role!)
             };

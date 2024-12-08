@@ -8,9 +8,9 @@ using EventsAppIdentityServer.Domain.Abstractions;
 using EventsAppIdentityServer.Domain.Entities;
 using EventsAppIdentityServer.Infrastructure.Data;
 using EventsAppIdentityServer.Infrastructure.DbInitializer;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -20,8 +20,26 @@ services.AddDbContext<ApplicationDbContext>(options =>
 
 services.AddControllers();
 
-services.AddAuthorization();
-services.AddAuthentication();
+//services.AddAuthentication("Bearer")
+//    .AddJwtBearer("Bearer", options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateAudience = false,
+//        };
+//    });
+
+//services.AddAuthentication();
+
+//services.AddAuthorizationBuilder()
+//    .AddPolicy("User", policy =>
+//    {
+//        policy.RequireRole("User");
+//    })
+//    .AddPolicy("Admin", policy =>
+//    {
+//        policy.RequireRole("Admin");
+//    });
 
 services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
@@ -57,9 +75,9 @@ services.AddScoped<IDbInitializer, DbInitializer>();
 
 services.AddCors(options =>
 {
-    options.AddPolicy("ClientCorsPolicy", policy =>
+    options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.WithOrigins(builder.Configuration.GetSection("ReactClientUrl").Value!)
+        policy.WithOrigins(builder.Configuration.GetSection("ReactClientUrl").Value!, builder.Configuration.GetSection("MainServerUrl").Value!)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -76,15 +94,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseCookiePolicy(new CookiePolicyOptions
-//{
-//    Secure = CookieSecurePolicy.Always,
-//    HttpOnly = HttpOnlyPolicy.Always
-//});
 
+app.UseCors("CorsPolicy");
 
-app.UseCors("ClientCorsPolicy");
 app.UseIdentityServer();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
