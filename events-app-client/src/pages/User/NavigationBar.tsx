@@ -26,7 +26,7 @@ const NavigationBar: React.FC = () => {
             height: "70px",
           }}
         />
-        <Menu
+        {/* <Menu
           mode="horizontal"
           theme="light"
           style={{
@@ -51,11 +51,6 @@ const NavigationBar: React.FC = () => {
               Artists
             </Link>
           </Menu.Item>
-          <Menu.Item key={4}>
-            <Link to="/user/favourite-songs" style={{ fontSize: "20px" }}>
-              My songs
-            </Link>
-          </Menu.Item>
           <Menu.Item key={5}>
             <Link to="/user/playlists" style={{ fontSize: "20px" }}>
               My playlists
@@ -66,7 +61,7 @@ const NavigationBar: React.FC = () => {
               My profile
             </Link>
           </Menu.Item>
-        </Menu>
+        </Menu> */}
         <Flex style={{
 
         }}>
