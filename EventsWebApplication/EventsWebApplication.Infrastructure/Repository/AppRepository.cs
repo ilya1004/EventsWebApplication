@@ -66,6 +66,7 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
             .AsNoTracking()
             .Skip(offset)
             .Take(limit)
+            .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
     }
 
@@ -109,6 +110,7 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
         return await query
             .Skip(offset)
             .Take(limit)
+            .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
     }
 

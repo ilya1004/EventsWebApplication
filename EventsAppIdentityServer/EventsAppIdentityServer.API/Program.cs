@@ -1,5 +1,7 @@
 
+using Duende.IdentityServer.Services;
 using EventsAppIdentityServer.API.Utils;
+using EventsAppIdentityServer.Application.Services;
 using EventsAppIdentityServer.Domain.Abstractions;
 using EventsAppIdentityServer.Domain.Entities;
 using EventsAppIdentityServer.Infrastructure.Data;
@@ -15,6 +17,8 @@ services.AddDbContext<ApplicationDbContext>(options =>
 
 services.AddAuthorization();
 services.AddAuthentication();
+
+builder.Services.AddTransient<IProfileService, ProfileService>();
 
 services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -33,18 +37,30 @@ services.AddIdentityServer(option =>
     .AddInMemoryApiScopes(UtilsProvider.ApiScopes)
     .AddInMemoryClients(UtilsProvider.Clients)
     .AddAspNetIdentity<AppUser>()
-    .AddDeveloperSigningCredential();
+    .AddDeveloperSigningCredential()
+    .AddProfileService<ProfileService>();
  
     //.AddDeveloperSigningCredential();
 
 services.AddEndpointsApiExplorer()
-    .AddSwaggerGen();
+        .AddSwaggerGen();
 
 services.AddScoped<IDbInitializer, DbInitializer>();
 
+services.AddCors(options =>
+{
+    options.AddPolicy("ClientCorsPolicy", policy =>
+    {
+        policy.WithOrigins(builder.Configuration.GetSection("ReactClientUrl").Value!)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
-await SeedDatabase();
+//await SeedDatabase();
 
 if (app.Environment.IsDevelopment())
 {
@@ -52,6 +68,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+app.UseCors("ClientCorsPolicy");
+app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 

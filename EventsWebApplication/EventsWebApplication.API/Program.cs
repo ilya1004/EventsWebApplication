@@ -46,18 +46,31 @@ services.AddAuthentication("Bearer")
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,
-            NameClaimType = "name",
-            RoleClaimType = "role"
+            //NameClaimType = "name",
+            //RoleClaimType = "role"
         };
     });
 
 services.AddAuthorizationBuilder()
+    .AddPolicy("User", policy =>
+    {
+        policy.RequireRole("User");
+    })
     .AddPolicy("Admin", policy =>
     {
-        //policy.RequireAuthenticatedUser();
-        policy.RequireRole("Admin");
+         policy.RequireRole("Admin");
     });
 
+services.AddCors(options =>
+{
+    options.AddPolicy("ReactClientCors", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 
 
 builder.Host.UseSerilog();
@@ -71,6 +84,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
+app.UseCors("ReactClientCors");
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 

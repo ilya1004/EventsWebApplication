@@ -10,6 +10,7 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsB
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 
@@ -17,6 +18,7 @@ namespace EventsWebApplication.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableCors("ReactClientCors")]
 public class EventsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -27,6 +29,7 @@ public class EventsController : ControllerBase
         _mapper = mapper;
         
     }
+
 
     [HttpPost]
     // disable antiforgery
@@ -45,6 +48,18 @@ public class EventsController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("user")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> GetAllEvents2([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(_mapper.Map<GetEventsListAllQuery>(request), cancellationToken);
+
+        return Ok(result);
+    }
+
+
+
 
     [HttpGet]
     public async Task<IActionResult> GetAllEvents([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)

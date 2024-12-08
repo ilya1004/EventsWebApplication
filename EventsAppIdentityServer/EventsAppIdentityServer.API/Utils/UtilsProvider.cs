@@ -16,32 +16,33 @@ public static class UtilsProvider
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope(name: "events_scope", "Events Server"),
+            new ApiScope("events_scope", "Events Server"),
         };
 
 
     public static IEnumerable<Client> Clients =>
         new List<Client>
         {
+            //    AllowedScopes = {
+            //        "events",
+            //        IdentityServerConstants.StandardScopes.OpenId,
+            //        IdentityServerConstants.StandardScopes.Profile,
+            //        IdentityServerConstants.StandardScopes.Email,
+            //    },
+            //    RedirectUris = { "https://localhost:7096/signin-oidc" },
+            //    PostLogoutRedirectUris = { "https://localhost:7096/signout-callback-oidc" }
+            //}
+
             new Client
             {
-                ClientId = "events",
-                ClientSecrets = { new Secret("secret".Sha256()) },
-                //AllowedGrantTypes = GrantTypes.Code,
-                //AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                ClientId = "react_client",
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword, // ROPC
+                ClientSecrets = { new Secret("react_secret".Sha256()) },
                 AllowOfflineAccess = true,
                 AccessTokenLifetime = 3600, // 1 час
-                AbsoluteRefreshTokenLifetime = 2592000, // 30 дней
-
-                AllowedScopes = {
-                    "events",
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile,
-                    IdentityServerConstants.StandardScopes.Email,
-                },
-                RedirectUris = { "https://localhost:7096/signin-oidc" },
-                PostLogoutRedirectUris = { "https://localhost:7096/signout-callback-oidc" }
+                RefreshTokenUsage = TokenUsage.ReUse,
+                AllowedScopes = { "openid", "profile", "offline_access", "events_scope" },
             }
+
         };
 }
