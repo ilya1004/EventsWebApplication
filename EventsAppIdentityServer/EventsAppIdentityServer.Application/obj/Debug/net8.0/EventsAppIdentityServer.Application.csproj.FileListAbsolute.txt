@@ -1,0 +1,15 @@
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\bin\Debug\net8.0\EventsAppIdentityServer.Application.deps.json
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\bin\Debug\net8.0\EventsAppIdentityServer.Application.dll
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\bin\Debug\net8.0\EventsAppIdentityServer.Application.pdb
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\bin\Debug\net8.0\EventsAppIdentityServer.Domain.dll
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\bin\Debug\net8.0\EventsAppIdentityServer.Domain.pdb
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAppIdentityServer.Application.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAppIdentityServer.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAppIdentityServer.Application.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAppIdentityServer.Application.AssemblyInfo.cs
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAppIdentityServer.Application.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAp.08DD66B2.Up2Date
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAppIdentityServer.Application.dll
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\refint\EventsAppIdentityServer.Application.dll
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\EventsAppIdentityServer.Application.pdb
+C:\Users\user\source\repos\EventsWebApplication-folder\EventsAppIdentityServer\EventsAppIdentityServer.Application\obj\Debug\net8.0\ref\EventsAppIdentityServer.Application.dll

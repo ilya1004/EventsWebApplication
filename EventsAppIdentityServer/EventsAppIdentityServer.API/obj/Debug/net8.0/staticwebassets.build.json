@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "/InaBiZ+Bm7D3h5U5ZfOx3pdmzcB/m/rR/cZZ+iRflM=",
+  "Source": "EventsAppIdentityServer.API",
+  "BasePath": "_content/EventsAppIdentityServer.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
