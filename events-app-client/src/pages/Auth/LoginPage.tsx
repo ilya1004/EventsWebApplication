@@ -57,7 +57,9 @@ export const LoginPage: React.FC = () => {
         setEmail("");
         setPassword("");
       }
-      // showMessageStc(err.response.data.error_description);
+      else {
+        showMessageStc(err, "error");
+      }
     }
   };
 

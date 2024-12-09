@@ -15,8 +15,6 @@ internal class ParticipantConfiguration : IEntityTypeConfiguration<Participant>
 
         builder.Property(p => p.Email).HasMaxLength(255).IsRequired();
 
-        builder.HasIndex(p => p.Email).IsUnique();
-
         builder.HasIndex(p => p.Id).IsUnique();
 
         builder.OwnsOne(p => p.Person, personBuilder =>

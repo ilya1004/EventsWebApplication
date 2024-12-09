@@ -119,4 +119,9 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
         _entities.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
+    {
+        return await _entities.AnyAsync(filter, cancellationToken);
+    }
 }

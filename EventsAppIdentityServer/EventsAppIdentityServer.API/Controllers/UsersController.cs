@@ -79,7 +79,7 @@ public class UsersController : ControllerBase
             return NoContent();
         }
 
-        return Ok(new 
+        var userData = new
         {
             user.Id,
             user.UserName,
@@ -87,7 +87,9 @@ public class UsersController : ControllerBase
             user.Name,
             user.Surname,
             user.Birthday
-        });
+        };
+
+        return Ok(userData);
     }
 
 }

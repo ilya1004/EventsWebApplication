@@ -1,7 +1,11 @@
-﻿using EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.GetParticipantById;
+﻿using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
+using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.RemoveParticipantFromEvent;
+using EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.GetParticipantById;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.GetParticipantsByEventId;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EventsWebApplication.API.Controllers;
 
@@ -34,10 +38,31 @@ public class ParticipantsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost]
+    [Route("{eventId}")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> AddMyParticipationInEvent(int eventId, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new AddParticipantToEventCommand(
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value,
+            eventId,
+            Request.Headers.Authorization.FirstOrDefault()!.Split(' ')[1]), 
+            cancellationToken);
+
+        return Ok();
+    }
+
     [HttpDelete]
     [Route("{eventId}")]
+    [Authorize(Policy = "User")]
     public async Task<IActionResult> CancelParticipationInEvent(int eventId, CancellationToken cancellationToken)
     {
+        await _mediator.Send(new RemoveParticipantFromEventCommand(
+            User.FindFirst(ClaimTypes.Email)!.Value,
+            eventId,
+            Request.Headers.Authorization.FirstOrDefault()!.Split(' ')[1]),
+            cancellationToken);
+
         return Ok();
     }
 }

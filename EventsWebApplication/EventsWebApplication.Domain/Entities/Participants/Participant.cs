@@ -9,24 +9,22 @@ public class Participant : Entity
     public Participant(
         string email,
         Person person,
-        Event @event,
-        DateTime eventRegistrationDate) : base(0)
+        Event @event) : base(0)
     {
         Email = email;
         Person = person;
-        Event = @event;
+        //Event = @event;
         EventId = @event.Id;
-        EventRegistrationDate = eventRegistrationDate;
+        EventRegistrationDate = DateTime.UtcNow;
     }
 
     public string Email { get; private set; }
     public Person Person { get; private set; }
     public int EventId { get; set; }
     public Event? Event { get; private set; }
-    public DateTime EventRegistrationDate { get; private set; }
+    public DateTime EventRegistrationDate { get; set; }
 
     public static Participant Create(
-        int id,
         string email,
         Event @event,
         Person person)
@@ -46,7 +44,7 @@ public class Participant : Entity
             throw new ArgumentNullException(nameof(@event));
         }
 
-        return new Participant(email, person, @event, DateTime.UtcNow);
+        return new Participant(email, person, @event);
 
     }
 

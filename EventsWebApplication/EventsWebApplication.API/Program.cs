@@ -4,6 +4,7 @@ using EventsWebApplication.Application;
 using EventsWebApplication.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ services.AddControllers();
 services.AddEndpointsApiExplorer()
         .AddSwaggerGen();
 
-services.AddApplication();
+services.AddApplication(builder.Configuration);
 services.AddPersistence(builder.Configuration);
 services.AddAPI(builder.Configuration);
 
@@ -53,6 +54,7 @@ services.AddAuthorizationBuilder()
     .AddPolicy("User", policy =>
     {
         policy.RequireRole("User");
+        policy.RequireClaim(ClaimTypes.NameIdentifier);
     })
     .AddPolicy("Admin", policy =>
     {
