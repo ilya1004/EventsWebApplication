@@ -20,6 +20,9 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(configuration.GetRequiredSection("ServiceUrls:IdentityAPI").Value ?? "https://localhost:7003/");
         });
 
+        services.AddFluentEmail(configuration["EmailSenderPapercut:EmailSender"], configuration["EmailSenderPapercut:SenderName"])
+                .AddSmtpSender(configuration["EmailSenderPapercut:Host"], configuration.GetValue<int>("EmailSenderPapercut:Port"));
+
         return services;
     }
 }

@@ -1,0 +1,7 @@
+services:
+  eventwebapp.papercut:
+    image: changemakerstudiosus/papercut-smtp:latest
+    container_name: EventWebApp.Papercut
+    ports:
+      - 8080:80
+      - 25:25
