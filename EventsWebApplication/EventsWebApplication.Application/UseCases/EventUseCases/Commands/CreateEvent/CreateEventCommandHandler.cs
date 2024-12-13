@@ -42,7 +42,7 @@ internal class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
 
         var eventEntity = _mapper.Map<Event>(command.EventDTO);
 
-        eventEntity.Image = imageFileId.ToString();
+        eventEntity.Image = imageFileId?.ToString();
 
         await _unitOfWork.EventsRepository.AddAsync(eventEntity, cancellationToken);
 

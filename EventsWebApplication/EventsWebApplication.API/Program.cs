@@ -1,5 +1,6 @@
 using EventsWebApplication.API;
 using EventsWebApplication.API.Middlewares;
+using EventsWebApplication.API.Utils;
 using EventsWebApplication.Application;
 using EventsWebApplication.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
@@ -51,12 +52,12 @@ services.AddAuthentication("Bearer")
     });
 
 services.AddAuthorizationBuilder()
-    .AddPolicy("User", policy =>
+    .AddPolicy(AuthPolicies.UserPolicy, policy =>
     {
         policy.RequireRole("User");
         policy.RequireClaim(ClaimTypes.NameIdentifier);
     })
-    .AddPolicy("Admin", policy =>
+    .AddPolicy(AuthPolicies.AdminPolicy, policy =>
     {
          policy.RequireRole("Admin");
     });

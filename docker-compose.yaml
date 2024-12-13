@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   eventwebapp.papercut:
     image: changemakerstudiosus/papercut-smtp:latest
@@ -5,3 +7,23 @@ services:
     ports:
       - 8080:80
       - 25:25
+
+  eventwebapp.azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.33.0
+    container_name: EventWebApp.Azurite
+    volumes:
+      - ./azurite/azurite_data:/data
+    ports:
+      - "10000:10000"
+    command: "azurite-blob --loose --blobHost 0.0.0.0 -l /data"
+
+
+# services:
+#   azurite:
+#     image: mcr.microsoft.com/azure-storage/azurite:3.33.0
+#     container_name: azurite-storage
+#     volumes:
+#       - ./azurite_data:/data
+#     ports:
+#       - "10000:10000"
+#     command: "azurite-blob --loose --blobHost 0.0.0.0 -l /data"

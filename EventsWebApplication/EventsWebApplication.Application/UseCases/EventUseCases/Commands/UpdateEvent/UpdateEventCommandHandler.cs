@@ -36,9 +36,9 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
         Guid? imageFileId = null;
         if (command.EventDTO.ImageFile != null)
         {
-            if (eventObj.Image != null)
+            if (!string.IsNullOrEmpty(eventObj.Image) && Guid.TryParse(eventObj.Image, out Guid imageId))
             {
-                await _blobService.DeleteAsync(new Guid(eventObj.Image), cancellationToken);
+                await _blobService.DeleteAsync(imageId, cancellationToken);
             }
             
             using var stream = command.EventDTO.ImageFile.OpenReadStream();
@@ -51,7 +51,7 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
 
         var eventEntity = _mapper.Map<Event>(command.EventDTO);
 
-        eventEntity.Image = imageFileId.ToString();
+        eventEntity.Image = imageFileId?.ToString();
         
         eventEntity.Id = command.Id;
 

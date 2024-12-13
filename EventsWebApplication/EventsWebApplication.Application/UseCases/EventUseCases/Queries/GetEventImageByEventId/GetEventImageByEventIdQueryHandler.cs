@@ -17,6 +17,7 @@ internal class GetEventImageByEventIdQueryHandler : IRequestHandler<GetEventImag
         _blobService = blobService;
         _mapper = mapper;
     }
+
     public async Task<FileResponseDTO> Handle(GetEventImageByEventIdQuery request, CancellationToken cancellationToken)
     {
         var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(request.EventId);
@@ -31,7 +32,12 @@ internal class GetEventImageByEventIdQueryHandler : IRequestHandler<GetEventImag
             throw new Exception($"Event with ID {request.EventId} don't have an image");
         }
 
-        var result = await _blobService.DownloadAsync(new Guid(eventObj.Image), cancellationToken);
+        if (!Guid.TryParse(eventObj.Image, out var imageId))
+        {
+            throw new Exception($"Event with ID {request.EventId} have an incorrect format of the image name");
+        }
+
+        var result = await _blobService.DownloadAsync(imageId, cancellationToken);
 
         return _mapper.Map<FileResponseDTO>(result);
     }

@@ -9,6 +9,7 @@ import { showMessageStc } from "../../services/ResponseErrorHandler";
 import { useEffect } from "react";
 import React from "react";
 import NavigationBar from "./NavigationBar.tsx";
+import { AppleFilled, GithubOutlined } from "@ant-design/icons";
 // import { useDispatch } from "react-redux";
 // import { setAuthState } from "../store/auth/authSlice";
 
@@ -41,13 +42,16 @@ const backColor = "#F1F0EA";
 //   }
 // };
 
-export const UserApp: React.FC = () => {
-  // const dispatch = useDispatch();
-  // const loaderData = useLoaderData() as AuthState; // Данные, возвращённые лоадером.
+export const userAppLoader = () => {
+  if (localStorage.getItem("refresh_token")) {
+    return true;
+  }
+  return false;
+}
 
-  // useEffect(() => {
-  //   dispatch(setAuthState(loaderData));
-  // }, [loaderData, dispatch]);
+export const UserApp: React.FC = () => {
+  
+  const appLoginState = useLoaderData() as boolean;
 
   return (
     <>
@@ -59,7 +63,7 @@ export const UserApp: React.FC = () => {
             backgroundColor: backColor,
           }}
         >
-          <NavigationBar />
+          <NavigationBar appLoginState={appLoginState} />
         </Header>
         <Content
           style={{
@@ -67,7 +71,9 @@ export const UserApp: React.FC = () => {
             backgroundColor: backColor,
           }}
         >
-          <Outlet />
+          <Flex justify="center">
+            <Outlet />
+          </Flex>
         </Content>
         <Footer
           style={{
@@ -75,7 +81,17 @@ export const UserApp: React.FC = () => {
           }}
         >
           <Flex justify="center">
-            <Text>Music player. 2024</Text>
+            <Flex align="center" vertical>
+              <div>
+                <Text>Events Web Application. 2024</Text>
+              </div>
+              <div>
+                <Text>
+                  <a href="https://github.com/ilya1004/EventsWebApplication" target="_blank">Link to project code on github</a>
+                  <GithubOutlined style={{ margin: "0px 0px 0px 5px", fontSize: "16px" }} />
+                </Text>
+              </div>
+            </Flex>
           </Flex>
         </Footer>
       </Layout>

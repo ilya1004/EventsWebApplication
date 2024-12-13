@@ -1,17 +1,22 @@
 ﻿using AutoMapper;
 using EventsWebApplication.API.Contracts.Events;
+using EventsWebApplication.API.Utils;
 using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByCurrentUser;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsWithRemainingPlaces;
+using EventsWebApplication.Application.UseCases.UserUseCases.Queries.GetCurrentUserInfo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading;
 
 namespace EventsWebApplication.API.Controllers;
@@ -58,13 +63,19 @@ public class EventsController : ControllerBase
         return Ok(result);
     }
 
-
-
-
     [HttpGet]
     public async Task<IActionResult> GetAllEvents([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(_mapper.Map<GetEventsListAllQuery>(request), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("with-remaining-places")]
+    public async Task<IActionResult> GetAllEventsWithRemainingPlaces([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(_mapper.Map<GetEventsWithRemainingPlacesQuery>(request), cancellationToken);
 
         return Ok(result);
     }
@@ -101,6 +112,17 @@ public class EventsController : ControllerBase
     public async Task<IActionResult> GetEventByIdWithParticipants(int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetEventByIdQuery(id, e => e.Participants), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("by-current-user")]
+    [Authorize(Policy = AuthPolicies.UserPolicy)]
+    public async Task<IActionResult> GetEventByCurrentUser(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetEventsByCurrentUserQuery(
+            User.FindFirst(ClaimTypes.Email)!.Value), cancellationToken);
 
         return Ok(result);
     }
