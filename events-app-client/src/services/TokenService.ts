@@ -1,16 +1,15 @@
 import axios from "axios";
 import { BASE_IDENTITY_URL } from "../store/constants.ts";
-import { redirect } from "react-router-dom";
+import { NavigateFunction, redirect } from "react-router-dom";
 
 
 export const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refresh_token");
 
   if (!refreshToken) {
-    console.log("No refresh token found");  
-    return redirect("/login");
-    
-    // return;
+    console.log("No refresh token found");
+    window.location.href = "/login";
+    return;
   }
 
   try {
@@ -26,13 +25,17 @@ export const refreshAccessToken = async () => {
       }
     });
 
+    if (response.status === 400) {
+      window.location.href = "/login";
+      return;
+    }
+
     const { access_token } = response.data;
     localStorage.setItem("access_token", access_token);
     return null;
   } catch (error) {
     console.error("Failed to refresh token:", error);
-    redirect("/login")
-    return null;
+    window.location.href = "/login";
+    // return redirect("/login");
   }
 };
-

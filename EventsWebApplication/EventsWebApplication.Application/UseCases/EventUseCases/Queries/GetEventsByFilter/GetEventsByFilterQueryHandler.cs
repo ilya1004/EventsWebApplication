@@ -16,7 +16,17 @@ public class GetEventsByFilterQueryHandler : IRequestHandler<GetEventsByFilterQu
     {
         int offset = (query.PageNo - 1) * query.PageSize;
 
-        var result = await _unitOfWork.EventsRepository.GetByFilterAsync(query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, offset, query.PageSize, cancellationToken);
+        DateTime? dateStart = query.DateStart != null ? new DateTime(query.DateStart.Value.Ticks, DateTimeKind.Utc) : null;
+        DateTime? dateEnd = query.DateEnd != null ? new DateTime(query.DateEnd.Value.Ticks, DateTimeKind.Utc) : null;
+
+        var result = await _unitOfWork.EventsRepository.GetByFilterAsync(
+            dateStart,
+            dateEnd,
+            query.PlaceName, 
+            query.CategoryName, 
+            offset, 
+            query.PageSize, 
+            cancellationToken);
 
         return result;
     }

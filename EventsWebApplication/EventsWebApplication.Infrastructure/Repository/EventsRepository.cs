@@ -20,12 +20,12 @@ internal class EventsRepository : AppRepository<Event>, IEventsRepository
 
         if (!string.IsNullOrEmpty(placeName))
         {
-            query = query.Where(e => e.Place.Name.Contains(placeName, StringComparison.CurrentCultureIgnoreCase));
+            query = query.Where(e => e.Place.Name.ToLower().Contains(placeName.ToLower()));
         }
 
         if (!string.IsNullOrEmpty(categoryName))
         {
-            query = query.Where(e => e.Category != null && e.Category.Name.Contains(categoryName, StringComparison.CurrentCultureIgnoreCase));
+            query = query.Where(e => e.Category != null && e.Category.Name.ToLower().Contains(categoryName.ToLower()));
         }
 
         return await query.Skip(offset).Take(limit).ToListAsync(cancellationToken);

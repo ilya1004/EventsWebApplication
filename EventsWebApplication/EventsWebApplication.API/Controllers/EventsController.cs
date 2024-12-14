@@ -9,6 +9,7 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventBy
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByCurrentUser;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByFilter;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsWithRemainingPlaces;
 using EventsWebApplication.Application.UseCases.UserUseCases.Queries.GetCurrentUserInfo;
@@ -45,24 +46,6 @@ public class EventsController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("admin")]
-    [Authorize(Policy = "Admin")]
-    public async Task<IActionResult> GetAllEvents1([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(_mapper.Map<GetEventsListAllQuery>(request), cancellationToken);
-
-        return Ok(result);
-    }
-
-    [HttpGet("user")]
-    [Authorize(Policy = "User")]
-    public async Task<IActionResult> GetAllEvents2([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(_mapper.Map<GetEventsListAllQuery>(request), cancellationToken);
-
-        return Ok(result);
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAllEvents([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
     {
@@ -91,9 +74,18 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     [Route("by-date-range")]
-    public async Task<IActionResult> GetEventsByDateRage([FromQuery] GetEventsByDateRangeRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetEventsByDateRange([FromQuery] GetEventsByDateRangeRequest request, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(_mapper.Map<GetEventsByDateRangeQuery>(request), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("by-filter")]
+    public async Task<IActionResult> GetEventsByFilter([FromQuery] GetEventsByFilterRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(_mapper.Map<GetEventsByFilterQuery>(request), cancellationToken);
 
         return Ok(result);
     }

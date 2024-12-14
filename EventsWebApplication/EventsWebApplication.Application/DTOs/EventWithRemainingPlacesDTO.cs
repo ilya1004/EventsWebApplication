@@ -3,6 +3,7 @@
 namespace EventsWebApplication.Application.DTOs;
 
 public record EventWithRemainingPlacesDTO(
+    int Id,
     string Title,
     string? Description,
     DateTime EventDateTime,

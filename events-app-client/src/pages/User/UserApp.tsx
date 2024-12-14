@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Layout, Flex, Typography } from "antd";
 // import NavigationBar from './User/NavigationBar';
 // import { BASE_URL } from "../store/constants";
@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import React from "react";
 import NavigationBar from "./NavigationBar.tsx";
 import { AppleFilled, GithubOutlined } from "@ant-design/icons";
+import { apiClient } from "../../services/RequestRervice.ts";
+import { refreshAccessToken } from "../../services/TokenService.ts";
 // import { useDispatch } from "react-redux";
 // import { setAuthState } from "../store/auth/authSlice";
 
@@ -52,6 +54,32 @@ export const userAppLoader = () => {
 export const UserApp: React.FC = () => {
   
   const appLoginState = useLoaderData() as boolean;
+
+  // const navigate = useNavigate();
+
+  // Сохраните функцию navigate для использования в перехватчике
+  // apiClient.interceptors.response.use(
+  //   (response) => response,
+  //   async (error) => {
+  //     const originalRequest = error.config;
+
+  //     if (error.response?.status === 401 && !originalRequest._retry) {
+  //       originalRequest._retry = true;
+  //       try {
+  //         const response = await refreshAccessToken(navigate);
+
+  //         if (response) {
+  //           return apiClient(originalRequest);
+  //         }
+  //       } catch (refreshError) {
+  //         console.error("Failed to refresh access token:", refreshError);
+  //         window.location.pathname = "/login";
+  //       }
+  //     }
+
+  //     return Promise.reject(error);
+  //   }
+  // );
 
   return (
     <>

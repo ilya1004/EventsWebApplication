@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, replace, useLoaderData, useNavigate } from "react-router-dom";
 import { Flex, Image, Menu, Typography, Button, MenuProps } from "antd";
 import { HomeOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
@@ -66,7 +66,7 @@ const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    return navigate("login");
+    return navigate("/login", { replace: true });
   }
 
   return (

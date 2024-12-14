@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { BASE_IDENTITY_URL, BASE_SERVER_API_URL, PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { refreshAccessToken } from "../../services/TokenService.ts";
-import { redirect, useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData, useRevalidator } from "react-router-dom";
 import { deleteRequestData, getRequestData } from "../../services/RequestRervice.ts";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";
@@ -19,10 +19,13 @@ export const userEventsLoader = async () => {
 export const UserEventsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const revalidator = useRevalidator();
+
   const events = useLoaderData() as EventEntity[];
 
   const handleRefuseParticipation = async (item: EventEntity) => {
     await deleteRequestData(`/Participants/${item.id}`);
+    revalidator.revalidate();
   }
 
   const renderListItem = (item: EventEntity, index: number) => {

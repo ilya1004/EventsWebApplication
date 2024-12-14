@@ -1,10 +1,11 @@
 import { Form, Button, Input, Card, Flex, Typography } from "antd";
 import React, { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 // import { useSelector } from "react-redux";
 import { handleResponseError, showMessageStc } from "../../services/ResponseErrorHandler.ts";
 import { BASE_IDENTITY_URL } from "../../store/constants.ts";
+import { GithubOutlined } from "@ant-design/icons";
 // import { RootState } from "../../store/store";
 
 const { Title, Text } = Typography;
@@ -27,7 +28,6 @@ export const LoginPage: React.FC = () => {
   };
 
   const loginUser = async (): Promise<any> => {
-    // console.log(`${email}, ${password}`);
     try {
       const response = await axios.post(`${BASE_IDENTITY_URL}/connect/token`, new URLSearchParams({
         grant_type: "password",
@@ -42,13 +42,11 @@ export const LoginPage: React.FC = () => {
         }
       });
 
-      console.log(response);
-
       const { access_token, refresh_token } = response.data;
 
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
-      
+
       navigate("/");
     } catch (err: any) {
       console.log(err);
@@ -86,7 +84,7 @@ export const LoginPage: React.FC = () => {
           }}
           title={
             <Title style={{ margin: "0px" }} level={4}>
-              Введите свои данные
+              Enter your credentials
             </Title>
           }
         >
@@ -146,12 +144,32 @@ export const LoginPage: React.FC = () => {
               </Flex>
             </Form.Item>
           </Form>
-          {/* <Flex align="center" justify="center">
-            <Text style={{ marginRight: "5px" }}>Еще нет аккаунта?</Text>
-            <Link to="/register">Зарегистрироваться</Link>
-          </Flex> */}
+          <Flex align="center" justify="center">
+            <Text style={{ marginRight: "5px" }}>Don't have an account yet?</Text>
+            <Link to="/register">Register</Link>
+          </Flex>
         </Card>
       </Flex>
+      <div
+        style={{
+          backgroundColor: "#F5DEBE",
+          padding: "15px 0px"
+        }}
+      >
+        <Flex justify="center">
+          <Flex align="center" vertical>
+            <div>
+              <Text>Events Web Application. 2024</Text>
+            </div>
+            <div>
+              <Text>
+                <a href="https://github.com/ilya1004/EventsWebApplication" target="_blank">Link to project code on github</a>
+                <GithubOutlined style={{ margin: "0px 0px 0px 5px", fontSize: "16px" }} />
+              </Text>
+            </div>
+          </Flex>
+        </Flex>
+      </div>
     </>
   );
 }

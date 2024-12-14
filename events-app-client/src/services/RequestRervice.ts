@@ -4,7 +4,7 @@ import { BASE_SERVER_API_URL } from "../store/constants.ts";
 import { redirect } from "react-router-dom";
 
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: BASE_SERVER_API_URL,
 });
 
@@ -31,10 +31,7 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const newAccessToken = await refreshAccessToken();
-
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
+        await refreshAccessToken();
         return apiClient(originalRequest);
       } catch (refreshError) {
         console.error("Failed to refresh access token:", refreshError);
@@ -67,3 +64,13 @@ export const deleteRequestData = async (url: string) => {
     return;
   }
 };
+
+export const postRequestData = async (url: string, data: any) => {
+  try {
+    const response = await apiClient.post(url, data)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}

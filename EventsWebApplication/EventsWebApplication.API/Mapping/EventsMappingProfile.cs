@@ -4,6 +4,7 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEve
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByFilter;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsWithRemainingPlaces;
 
@@ -18,6 +19,7 @@ public class EventsMappingProfile : Profile
         CreateMap<GetEventsListAllRequest, GetEventsListAllQuery>();
         CreateMap<GetEventsByDateRequest, GetEventsByDateQuery>();
         CreateMap<GetEventsByDateRangeRequest, GetEventsByDateRangeQuery>();
-        CreateMap<GetEventsWithRemainingPlacesQuery, GetEventsListAllRequest>();
+        CreateMap<GetEventsListAllRequest, GetEventsWithRemainingPlacesQuery>();
+        CreateMap<GetEventsByFilterRequest, GetEventsByFilterQuery>();
     }
 }

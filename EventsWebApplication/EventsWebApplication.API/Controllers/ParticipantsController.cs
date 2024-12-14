@@ -1,5 +1,7 @@
-﻿using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
+﻿using EventsWebApplication.API.Utils;
+using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.RemoveParticipantFromEvent;
+using EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.CheckParticipationInEvent;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.GetParticipantById;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.GetParticipantsByEventId;
 using MediatR;
@@ -31,9 +33,21 @@ public class ParticipantsController : ControllerBase
 
     [HttpGet]
     [Route("by-event/{id}")]
-    public async Task<IActionResult> GetParticipantByEventId(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetParticipantsByEventId(int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetParticipantsByEventIdQuery(id), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("check-participation-by-event/{id}")]
+    [Authorize(Policy = AuthPolicies.UserPolicy)]
+    public async Task<IActionResult> CheckMyParticipationByEventId(int id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new CheckParticipationInEventQuery(
+            User.FindFirst(ClaimTypes.Email)!.Value, id), 
+            cancellationToken);
 
         return Ok(result);
     }

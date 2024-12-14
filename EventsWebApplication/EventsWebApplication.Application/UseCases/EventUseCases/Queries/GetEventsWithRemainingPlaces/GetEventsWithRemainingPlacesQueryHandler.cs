@@ -21,6 +21,7 @@ public class GetEventsWithRemainingPlacesQueryHandler : IRequestHandler<GetEvent
 
         var result = events.Zip(values)
                 .Select(item => new EventWithRemainingPlacesDTO(
+                    item.First.Id,
                     item.First.Title, 
                     item.First.Description, 
                     item.First.EventDateTime,

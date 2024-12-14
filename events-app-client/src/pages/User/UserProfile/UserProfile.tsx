@@ -15,9 +15,7 @@ const colTextWidth = "100px";
 const colInputWidth = "200px";
 
 export const userProfileLoader = async () => {
-
   const data = await getRequestData("/Users");
-  console.log(data);
   return data;
 }
 
@@ -31,15 +29,6 @@ export const UserProfilePage: React.FC = () => {
   const [birthdayEdit, setBirthdayEdit] = useState<Dayjs>();
 
   const navigate = useNavigate();
-
-  // const [isLoading, setIsLoading] = useState(false);
-
-  // const handleEditProfile = () => {
-  //   setNameEdit(userData.name);
-  //   setSurnameEdit(userData.surname);
-  //   setBirthdayEdit(dayjs(userData.birthday))
-  //   setIsEditing(!isEditing);
-  // }
 
   const handleNameEdit = (e: any) => {
     setNameEdit(e.target.value);
@@ -88,10 +77,10 @@ export const UserProfilePage: React.FC = () => {
               </Descriptions.Item>
             </Descriptions>
 
-            <Flex justify="start" style={{ marginTop: "20px" }} gap={20}>
+            {/* <Flex justify="start" style={{ marginTop: "20px" }} gap={20}> */}
               {/* <Button type="primary" style={{ fontSize: "14px" }} onClick={handleEditProfile}>Edit Profile</Button> */}
-              <Button type="default" style={{ fontSize: "14px" }} danger>Delete Profile</Button>
-            </Flex>
+              {/* <Button type="default" style={{ fontSize: "14px" }} danger>Delete Profile</Button>
+            </Flex> */}
           </Card>
           {isEditing ?
             <Card style={{ width: "400px", marginBottom: "10px" }}>
