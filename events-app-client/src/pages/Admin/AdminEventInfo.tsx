@@ -1,10 +1,8 @@
-import { Button, Card, Descriptions, Flex, Image, List, Typography } from "antd";
-import axios from "axios";
-import React, { useState } from "react";
+import { Button, Card, Descriptions, Flex, Image, Typography } from "antd";
+import React from "react";
 import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { getRequestData } from "../../services/RequestRervice.ts";
-import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";
 import EventPlaceholder from "../../assets/event_placeholder.png";
 
@@ -77,6 +75,10 @@ export const AdminEventInfoPage: React.FC = () => {
               </Flex>
             </Flex>
           </Card>
+          <Title>Event's participants:</Title>
+          <Table>
+
+          </Table>
         </Flex>
       </Flex>
     </>

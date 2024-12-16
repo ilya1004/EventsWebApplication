@@ -1,13 +1,14 @@
-import { Button, Flex, Typography, TableProps, Table } from "antd";
-import React from "react";
+import { Button, Flex, Typography, TableProps, Table, Input, DatePicker } from "antd";
+import React, { useState } from "react";
 import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { getRequestData } from "../../services/RequestRervice.ts";
 
 const { Title, Text } = Typography;
 
+const { RangePicker } = DatePicker;
 
 // interface EventWithRemainingPlacesDTO {
 //   id: number,
@@ -27,11 +28,21 @@ export const userHomeLoader = async () => {
 }
 
 export const UserHomePage: React.FC = () => {
-  // const [isLoading, setIsLoading] = useState(false);
+
+  const [dateStart, setDateStart] = useState<Dayjs | null>(null);
+  const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
+  const [placeName, setPlaceName] = useState<string>("");
+  const [categoryName, setCategoryName] = useState<string>("");
+
+  const [pageNo, setPageNo] = useState<number>(1)
+  const [pageSize, setPageSize] = useState<number>(10)
 
   const navigate = useNavigate();
+  const eventsLoader = useLoaderData() as EventEntity[];
 
-  const events = useLoaderData() as EventEntity[];
+  const [events, setEvents] = useState<EventEntity[]>(eventsLoader);
+
+  const dateFormat = 'YYYY.MM.DD';
 
   const renderDateTime = (value: string, record: EventEntity, index: number) => {
 
@@ -59,61 +70,73 @@ export const UserHomePage: React.FC = () => {
       title: "Date and time",
       dataIndex: "eventDateTime",
       key: "eventDateTime",
-      width: "220px",
+      width: "200px",
       render: (value, record, index) => renderDateTime(value, record, index),
     },
     {
       title: 'Place',
       dataIndex: "place",
       key: "place",
-      width: "220px",
+      width: "180px",
       render: (value, _, __) => <Text>{value.name}</Text>
+    },
+    {
+      title: 'Category',
+      dataIndex: "category",
+      key: "category",
+      width: "180px",
+      render: (value, _, __) => <Text>{value?.name}</Text>
     },
     {
       title: 'Actions',
       key: 'actions',
-      width: "150px",
+      width: "120px",
       render: (_, record) => (
         <Button onClick={() => handleMoreEventInfo(record)}>More</Button>
       ),
     },
   ];
 
+  const handleDateChange = (dates: any | null) => {
+    if (dates != null) {
+      setDateStart(dates[0])
+      setDateEnd(dates[1])
+    }
+    else {
+      setDateStart(null);
+      setDateEnd(null);
+    }
+    
+  }
 
+  const handleMakeFilter = async () => {
+    const params = new URLSearchParams();
 
-  // const renderListItem = (item: EventEntity, index: number) => {
-  //   let datetime = dayjs(item.eventDateTime);
-  //   let dateString = datetime.format('HH:mm DD.MM.YYYY');
+    if (dateStart) {
+      params.append("DateStart", dateStart.toISOString());
+    }
+    if (dateEnd) {
+      params.append("DateEnd", dateEnd.toISOString());
+    }
+    if (placeName) {
+      params.append("PlaceName", placeName);
+    }
+    if (categoryName) {
+      params.append("CategoryName", categoryName);
+    }
 
-  //   return (
-  //     <Card title={<Title level={3}>{item.title}</Title>} style={{ margin: "20px 0px" }}>
-  //       <Flex gap={20}>
-  //         <Flex vertical gap={20}>
-  //           <Descriptions column={1} bordered>
-  //             <Descriptions.Item label="Description" style={{ fontSize: "16px" }}>
-  //               {item.description}
-  //             </Descriptions.Item>
-  //             <Descriptions.Item label="Event date and time" style={{ fontSize: "16px" }}>
-  //               {dateString}
-  //             </Descriptions.Item>
-  //             <Descriptions.Item label="Maximum number of participants" style={{ fontSize: "16px" }}>
-  //               {item.participantsMaxCount}
-  //             </Descriptions.Item>
-  //             <Descriptions.Item label="Place" style={{ fontSize: "16px" }}>
-  //               {item.place?.name}
-  //             </Descriptions.Item>
-  //             <Descriptions.Item label="Category" style={{ fontSize: "16px" }}>
-  //               {item.category?.name}
-  //             </Descriptions.Item>
-  //           </Descriptions>
-  //           {/* <Flex> */}
-  //           {/* <Button onClick={() => handleRefuseParticipation(item)} danger>Refuse participation</Button> */}
-  //           {/* </Flex> */}
-  //         </Flex>
-  //       </Flex>
-  //     </Card>
-  //   )
-  // }
+    let result = await getRequestData(`/Events/by-filter?${params.toString()}`);
+    setEvents(result);
+  }
+
+  const handleClearFilter = async () => {
+    setCategoryName("");
+    setPlaceName("");
+    setDateStart(null);
+    setDateEnd(null);
+    let result = await getRequestData(`/Events?PageNo=${1}&PageSize=${10}`);
+    setEvents(result);
+  }
 
   return (
     <>
@@ -128,16 +151,26 @@ export const UserHomePage: React.FC = () => {
       >
         <Flex align="center" vertical>
           <Title level={2} style={{ marginTop: "0px" }}>All Events</Title>
-          <Table columns={columns} dataSource={events} />
+          <Flex align="start" gap={15} vertical>
+            <Text style={{ fontSize: "18px", marginLeft: "10px" }}>Filtering options:</Text>
+            <Flex gap={20}>
+              <RangePicker
+                style={{ width: "300px" }}
+                defaultValue={[dayjs('2024.09.01', dateFormat), dayjs('2025.01.01', dateFormat)]}
+                value={[dateStart, dateEnd]}
+                onChange={(dates, _) => handleDateChange(dates)}
+                format={dateFormat} />
+              <Input style={{ width: "200px" }} placeholder="Enter place name" value={placeName} onChange={(e) => setPlaceName(e.target.value)} />
+              <Input style={{ width: "200px" }} placeholder="Enter category name" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
+            </Flex>
+            <Flex gap={20} style={{marginLeft: "10px"}}>
+              <Button type="primary" onClick={handleMakeFilter}>Filter</Button>
+              <Button type="default" onClick={handleClearFilter}>Clear filter</Button>
+            </Flex>
+            <Table columns={columns} dataSource={events} />
+          </Flex>
         </Flex>
       </Flex>
     </>
   );
 };
-
-{/* <Button onClick={handleClick}>
-          Click to Get Data
-        </Button>
-        <Button onClick={handleClick1}>
-          Click to Get User Info
-        </Button> */}

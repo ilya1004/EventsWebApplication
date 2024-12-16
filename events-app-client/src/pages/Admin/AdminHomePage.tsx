@@ -1,9 +1,7 @@
-import { Button, Card, Flex, List, Typography, Image, Descriptions, TableProps, Table, Space, Tag } from "antd";
-import axios from "axios";
-import React, { useState } from "react";
-import { BASE_IDENTITY_URL, BASE_SERVER_API_URL, PAGE_MIN_HEIGHT } from "../../store/constants.ts";
-import { getUserRole, refreshAccessToken } from "../../services/TokenService.ts"; // Импортируем наш сервис
-import { redirect, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
+import { Button, Flex, Typography, TableProps, Table } from "antd";
+import React from "react";
+import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
+import {  useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";
 import { deleteRequestData, getRequestData } from "../../services/RequestRervice.ts";
@@ -13,19 +11,11 @@ const { Title, Text } = Typography;
 
 export const adminHomeLoader = async () => {
   let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${10}`);
-
-  // let role = getUserRole();
-
-  // if (role != "Admin") {
-  //   return redirect("/login");
-  // }
-
+  console.log("loader");
   return res;
 }
 
 export const AdminHomePage: React.FC = () => {
-  // const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const revalidator = useRevalidator();
@@ -50,8 +40,9 @@ export const AdminHomePage: React.FC = () => {
     return navigate(`edit-event/${record.id}`)
   }
 
-  const handleDeleteEvent = (record: EventEntity) => {
-    let res = deleteRequestData(`/Events?id=${record.id}`);
+  const handleDeleteEvent = async (record: EventEntity) => {
+    await deleteRequestData(`/Events?id=${record.id}`);
+    console.log("deleted");
     revalidator.revalidate();
   }
 

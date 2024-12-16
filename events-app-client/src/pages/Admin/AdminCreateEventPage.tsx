@@ -2,8 +2,7 @@ import { Button, Card, DatePicker, Flex, Form, Image, Input, InputNumber, TimePi
 import axios from "axios";
 import React, { useState } from "react";
 import { BASE_SERVER_API_URL, PAGE_MIN_HEIGHT } from "../../store/constants.ts";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { Event as EventEntity } from "../../utils/types";
+import { useNavigate } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
 
@@ -31,7 +30,7 @@ export const AdminCreateEventPage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const dateFormat = 'YYYY-MM-DD';
+  const dateFormat = 'YYYY.MM.DD';
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -46,37 +45,35 @@ export const AdminCreateEventPage: React.FC = () => {
 
   const createEvent = async (eventData: any) => {
     const formData = new FormData();
-  
-    // Добавляем поля, как в curl-запросе
-    formData.append("EventDTO.Title", eventData.Title ?? ""); // default: ""
+
+    formData.append("EventDTO.Title", eventData.Title ?? "");
     formData.append("EventDTO.Description", eventData.Description ?? "");
     formData.append("EventDTO.EventDateTime", eventData.EventDateTime);
     formData.append(
       "EventDTO.ParticipantsMaxCount",
-      eventData.ParticipantsMaxCount?.toString() ?? "0" // default: 0
+      eventData.ParticipantsMaxCount?.toString() ?? "0"
     );
-  
+
     if (eventData.ImageFile) {
-      formData.append("EventDTO.ImageFile", eventData.ImageFile); // Файл, если передан
+      formData.append("EventDTO.ImageFile", eventData.ImageFile);
     } else {
-      formData.append("EventDTO.ImageFile", ""); // Пустое поле, как в curl
+      formData.append("EventDTO.ImageFile", "");
     }
-  
+
     formData.append("EventDTO.PlaceName", eventData.PlaceName ?? "");
     formData.append("EventDTO.CategoryName", eventData.CategoryName ?? "");
-  
-    // Получение access token
+
     const accessToken = localStorage.getItem("access_token");
-  
+
     return axios.post(`${BASE_SERVER_API_URL}/Events`, formData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`, // Token
-        "Content-Type": "multipart/form-data", // multipart/form-data для файлов
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
         Accept: "*/*",
       },
     });
   };
-  
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     // e.preventDefault();
@@ -183,7 +180,8 @@ export const AdminCreateEventPage: React.FC = () => {
                 </Flex>
               </Form.Item>
 
-              <Form.Item label="Max Participants:">
+              <Form.Item label="Max Participants:"
+                rules={[{ required: true, message: "Enter max participants of the event!", }]} >
                 <InputNumber value={participantsMaxCount} onChange={(value) => setParticipantsMaxCount(value)} min={0} />
               </Form.Item>
 

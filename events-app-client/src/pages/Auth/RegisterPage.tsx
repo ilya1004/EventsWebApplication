@@ -1,6 +1,6 @@
 import { Form, Button, Input, Card, Flex, Typography, DatePicker } from "antd";
 import React, { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_IDENTITY_URL } from "../../store/constants.ts";
 import { GithubOutlined } from "@ant-design/icons";
@@ -11,17 +11,15 @@ const { Title, Text } = Typography;
 
 export const RegisterPage: React.FC = () => {
 
-  // const authState = useSelector((state: RootState) => state.auth);
+  const dateFormat = 'YYYY-MM-DD';
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
-  const [birthday, setBirthday] = useState<Dayjs | null>();
+  const [birthday, setBirthday] = useState<Dayjs | null>(dayjs('2000-01-01', dateFormat));
 
   const navigate = useNavigate();
-
-  const dateFormat = 'YYYY-MM-DD';
 
   const handleChangeEmail = (e: any) => {
     setEmail(e.target.value);
@@ -43,6 +41,8 @@ export const RegisterPage: React.FC = () => {
     setBirthday(val);
   };
 
+  const handleBack = () => navigate(-1);
+
   // {
   //   "email": "string",
   //   "password": "string",
@@ -59,7 +59,7 @@ export const RegisterPage: React.FC = () => {
         password: password,
         name: name,
         surname: surname,
-        birthday: birthday?.toJSON(),
+        birthday: birthday?.toISOString().substring(0, 10),
       };
 
       const response = await axios.post(`${BASE_IDENTITY_URL}/api/Users/register`, data);
@@ -93,11 +93,11 @@ export const RegisterPage: React.FC = () => {
           height: "fit-content",
         }}
       >
+        <Flex>
+          <Button onClick={() => handleBack()}>Back</Button>
+        </Flex>
         <Card
-          style={{
-            marginTop: "100px",
-            width: "500px",
-          }}
+          style={{ marginTop: "100px", width: "500px" }}
           title={
             <Title style={{ margin: "0px" }} level={4}>
               Enter your data

@@ -16,14 +16,19 @@ export const userAppLoader = () => {
 
     let role = getUserRole();
 
-    if (role == "Admin") {
-      // window.location.href = "/admin";
-      return redirect("/admin");
+    console.log(role);
+
+    if (!role || role !== "User") {
+      console.log("redirect");
+      // window.location.href = "/login";
+      // return false;
+      return redirect("/login");
     }
 
     return true;
   }
-  return false;
+  return redirect("/login");
+  // return false;
 }
 
 export const UserApp: React.FC = () => {

@@ -17,14 +17,20 @@ export const adminAppLoader = () => {
 
     let role = getUserRole();
 
-    if (role != "Admin") {
-      window.location.href = "/login";
-      // return redirect("/login");
+    console.log(role);
+
+    if (!role || role !== "Admin") {
+      console.log("redirect");
+      // window.location.href = "/login";
+      // return false;
+      // return false;
+      return redirect("/login");
     }
 
     return true;
   }
-  return false;
+  return redirect("/login");
+  // return false;
 }
 
 export const AdminApp: React.FC = () => {
