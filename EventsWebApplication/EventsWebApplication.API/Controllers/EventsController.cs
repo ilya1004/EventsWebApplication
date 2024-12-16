@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EventsWebApplication.API.Contracts.Events;
 using EventsWebApplication.API.Utils;
-using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
@@ -12,13 +11,13 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsB
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByFilter;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsWithRemainingPlaces;
-using EventsWebApplication.Application.UseCases.UserUseCases.Queries.GetCurrentUserInfo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
-using System.Threading;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EventsWebApplication.API.Controllers;
 
@@ -38,7 +37,7 @@ public class EventsController : ControllerBase
 
 
     [HttpPost]
-    // disable antiforgery
+    [Authorize(Policy = AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> CreateEvent([FromForm] CreateEventRequest request, CancellationToken cancellationToken)
     {
         await _mediator.Send(_mapper.Map<CreateEventCommand>(request), cancellationToken);
@@ -101,11 +100,14 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     [Route("{id:int}/with-participants")]
+    [Authorize(Policy = AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetEventByIdWithParticipants(int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetEventByIdQuery(id, e => e.Participants), cancellationToken);
 
-        return Ok(result);
+        return Ok(
+            JsonConvert.SerializeObject(result,
+            settings: new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
     }
 
     [HttpGet]
@@ -120,6 +122,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Policy = AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> UpdateEvent([FromForm] UpdateEventRequest request, CancellationToken cancellationToken)
     {
         await _mediator.Send(_mapper.Map<UpdateEventCommand>(request), cancellationToken);
@@ -128,6 +131,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize(Policy = AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> DeleteEvent([FromQuery] int id, CancellationToken cancellationToken)
     {
         await _mediator.Send(new DeleteEventCommand(id), cancellationToken);

@@ -1,5 +1,7 @@
-﻿using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventImageByEventId;
+﻿using EventsWebApplication.API.Utils;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventImageByEventId;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventsWebApplication.API.Controllers;
@@ -15,12 +17,13 @@ public class FilesController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
-    [Route("by-file-id/{fileId}")]
-    public async Task<IActionResult> GetFileById(string fileId)
-    {
-        return Ok();
-    }
+    //[HttpGet]
+    //[Route("by-file-id/{fileId}")]
+    //[Authorize(Policy = AuthPolicies.AdminPolicy)]
+    //public async Task<IActionResult> GetFileById(string fileId)
+    //{
+    //    return Ok();
+    //}
 
     [HttpGet]
     [Route("by-event-id/{eventId}")]

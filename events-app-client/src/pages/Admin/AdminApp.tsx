@@ -1,24 +1,25 @@
 import { Outlet, redirect } from "react-router-dom";
 import { Layout, Flex, Typography } from "antd";
+import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import React from "react";
-import NavigationBar from "./NavigationBar.tsx";
 import { GithubOutlined } from "@ant-design/icons";
 import { getUserRole } from "../../services/TokenService.ts";
+import { AdminNavigationBar } from "./AdminNavigationBar.tsx";
 
 const { Header, Footer, Content } = Layout;
 const { Text } = Typography;
 
 const backColor = "#F1F0EA";
 
-export const userAppLoader = () => {
+export const adminAppLoader = () => {
   if (localStorage.getItem("refresh_token")) {
 
     let role = getUserRole();
 
-    if (role == "Admin") {
-      // window.location.href = "/admin";
-      return redirect("/admin");
+    if (role == "User") {
+      // window.location.href = "/login";
+      return redirect("/login");
     }
 
     return true;
@@ -26,7 +27,7 @@ export const userAppLoader = () => {
   return false;
 }
 
-export const UserApp: React.FC = () => {
+export const AdminApp: React.FC = () => {
 
   const appLoginState = useLoaderData() as boolean;
 
@@ -40,7 +41,7 @@ export const UserApp: React.FC = () => {
             backgroundColor: backColor,
           }}
         >
-          <NavigationBar appLoginState={appLoginState} />
+          <AdminNavigationBar appLoginState={appLoginState} />
         </Header>
         <Content
           style={{
@@ -75,5 +76,3 @@ export const UserApp: React.FC = () => {
     </>
   );
 }
-
-// export default UserApp;

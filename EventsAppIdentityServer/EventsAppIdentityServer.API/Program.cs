@@ -1,5 +1,6 @@
 using Duende.IdentityServer.Services;
 using EventsAppIdentityServer.API;
+using EventsAppIdentityServer.API.Extensions;
 using EventsAppIdentityServer.API.Middlewares;
 using EventsAppIdentityServer.API.Utils;
 using EventsAppIdentityServer.Application;
@@ -19,17 +20,6 @@ services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresIdentityConnection")));
 
 services.AddControllers();
-
-//services.AddAuthentication("Bearer")
-//    .AddJwtBearer("Bearer", options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateAudience = false,
-//        };
-//    });
-
-//services.AddAuthentication();
 
 //services.AddAuthorizationBuilder()
 //    .AddPolicy("User", policy =>
@@ -57,6 +47,7 @@ services.AddIdentityServer(option =>
     option.Events.RaiseFailureEvents = true;
     option.Events.RaiseSuccessEvents = true;
     option.EmitStaticAudienceClaim = true;
+    option.IssuerUri = builder.Configuration["ISSUER_URI"] ?? "http://localhost:7013";
 })
     .AddInMemoryIdentityResources(UtilsProvider.IdentityResources)
     .AddInMemoryApiScopes(UtilsProvider.ApiScopes)
@@ -86,14 +77,16 @@ services.AddCors(options =>
 
 var app = builder.Build();
 
-await SeedDatabase();
+
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MakeMigrations();
 }
 
+await SeedDatabase();
 
 app.UseCors("CorsPolicy");
 
@@ -109,7 +102,7 @@ app.MapControllers();
 app.MapIdentityApi<AppUser>();
 
 app.Run();
-
+    
 async Task SeedDatabase()
 {
     using var scope = app.Services.CreateScope();

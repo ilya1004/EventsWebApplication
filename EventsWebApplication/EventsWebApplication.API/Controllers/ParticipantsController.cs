@@ -24,6 +24,7 @@ public class ParticipantsController : ControllerBase
 
     [HttpGet]
     [Route("{id}")]
+    [Authorize(Policy = AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetParticipantById(int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetParticipantByIdQuery(id), cancellationToken);
@@ -33,6 +34,7 @@ public class ParticipantsController : ControllerBase
 
     [HttpGet]
     [Route("by-event/{id}")]
+    [Authorize(Policy = AuthPolicies.AdminPolicy)]
     public async Task<IActionResult> GetParticipantsByEventId(int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetParticipantsByEventIdQuery(id), cancellationToken);
@@ -54,7 +56,7 @@ public class ParticipantsController : ControllerBase
 
     [HttpPost]
     [Route("{eventId}")]
-    [Authorize(Policy = "User")]
+    [Authorize(Policy = AuthPolicies.UserPolicy)]
     public async Task<IActionResult> AddMyParticipationInEvent(int eventId, CancellationToken cancellationToken)
     {
         await _mediator.Send(new AddParticipantToEventCommand(
@@ -68,7 +70,7 @@ public class ParticipantsController : ControllerBase
 
     [HttpDelete]
     [Route("{eventId}")]
-    [Authorize(Policy = "User")]
+    [Authorize(Policy = AuthPolicies.UserPolicy)]
     public async Task<IActionResult> CancelParticipationInEvent(int eventId, CancellationToken cancellationToken)
     {
         await _mediator.Send(new RemoveParticipantFromEventCommand(

@@ -1,25 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Flex, Image, Menu, Typography, Button, MenuProps } from "antd";
-import { HomeOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 import React from "react";
 import MenuItem from "antd/es/menu/MenuItem";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../store/store";
-// import siteIcon from "../../assets/music-player.png"
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 const { Text } = Typography;
 const { SubMenu, Item } = Menu;
 
-
-
 type NavProps = {
   appLoginState: boolean;
 }
 
-const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
+export const AdminNavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
   // const authState = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
@@ -29,13 +24,7 @@ const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
     // return navigate(`/${key}`)
     switch (key) {
       case "home":
-        return navigate("/");
-
-      case "my-events":
-        return navigate("/my-events");
-
-      case "my-profile":
-        return navigate("/my-profile");
+        return navigate("/admin");
 
       default:
         break;
@@ -49,18 +38,6 @@ const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
       icon: <HomeOutlined style={{ fontSize: "18px" }} />,
       onClick: handleClickNavItem,
     },
-    {
-      label: <Text style={{ fontSize: "20px" }}>My events</Text>,
-      key: "my-events",
-      icon: <UnorderedListOutlined style={{ fontSize: "18px" }} />,
-      onClick: handleClickNavItem
-    },
-    {
-      label: <Text style={{ fontSize: "20px" }}>My profile</Text>,
-      key: "my-profile",
-      icon: <UserOutlined style={{ fontSize: "18px" }} />,
-      onClick: handleClickNavItem
-    }
   ];
 
   const handleLogout = () => {
@@ -101,5 +78,3 @@ const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
     </>
   );
 }
-
-export default NavigationBar;

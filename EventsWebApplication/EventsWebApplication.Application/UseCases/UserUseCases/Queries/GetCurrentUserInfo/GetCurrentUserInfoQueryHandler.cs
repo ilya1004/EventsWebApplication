@@ -22,6 +22,10 @@ public class GetCurrentUserInfoQueryHandler : IRequestHandler<GetCurrentUserInfo
     public async Task<UserInfoDTO> Handle(GetCurrentUserInfoQuery query, CancellationToken cancellationToken)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"api/Users/{query.UserId}");
+        Console.WriteLine("REQUEST:");
+        Console.WriteLine(_httpClient.BaseAddress);
+        Console.WriteLine(request.RequestUri);
+        Console.WriteLine(query.Token);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", query.Token);
 
         var responseMessage = await _httpClient.SendAsync(request, cancellationToken);

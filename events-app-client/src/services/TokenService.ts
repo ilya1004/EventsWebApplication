@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_IDENTITY_URL } from "../store/constants.ts";
-import { NavigateFunction, redirect } from "react-router-dom";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 
 export const refreshAccessToken = async () => {
@@ -37,5 +37,27 @@ export const refreshAccessToken = async () => {
     console.error("Failed to refresh token:", error);
     window.location.href = "/login";
     // return redirect("/login");
+  }
+};
+
+
+interface CustomJwtPayload extends JwtPayload {
+  role?: string | string[]; // 'role' может быть строкой или массивом строк
+}
+
+export const getUserRole = (): string | string[] | null => {
+  const token = localStorage.getItem("access_token"); 
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const decodedToken = jwtDecode<CustomJwtPayload>(token);
+    // console.log("Decoded Token:", decodedToken);
+
+    return decodedToken.role || null;
+  } catch (error) {
+    console.error("Failed to decode token:", error);
+    return null;
   }
 };

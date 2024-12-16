@@ -7,6 +7,7 @@ namespace EventsWebApplication.Infrastructure.BlobStorage;
 
 internal class BlobService : IBlobService
 {
+    //private const string ContainerName = "images";
     private const string ContainerName = "images";
     private readonly BlobServiceClient _blobServiceClient;
     public BlobService(BlobServiceClient blobServiceClient)
@@ -17,6 +18,12 @@ internal class BlobService : IBlobService
     public async Task<Guid> UploadAsync(Stream stream, string contentType, CancellationToken cancellationToken = default)
     {
         BlobContainerClient blobContainerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
+
+        //await blobContainerClient.CreateIfNotExistsAsync(
+        //    PublicAccessType.BlobContainer, 
+        //    metadata: null, 
+        //    encryptionScopeOptions: null, 
+        //    cancellationToken: cancellationToken);
 
         var fileId = Guid.NewGuid();
 

@@ -1,11 +1,12 @@
 import { Form, Button, Input, Card, Flex, Typography } from "antd";
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 // import { useSelector } from "react-redux";
-import { handleResponseError, showMessageStc } from "../../services/ResponseErrorHandler.ts";
+import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
 import { BASE_IDENTITY_URL } from "../../store/constants.ts";
 import { GithubOutlined } from "@ant-design/icons";
+import { getUserRole } from "../../services/TokenService.ts";
 // import { RootState } from "../../store/store";
 
 const { Title, Text } = Typography;
@@ -47,7 +48,16 @@ export const LoginPage: React.FC = () => {
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
 
-      navigate("/");
+      let role = getUserRole()
+      console.log(role);
+
+      if (role == "User") {
+        navigate("/");
+      }
+      else if (role == "Admin") {
+        navigate("/admin");
+      }
+
     } catch (err: any) {
       console.log(err);
       if (err.response.data.error_description == "invalid_username_or_password") {

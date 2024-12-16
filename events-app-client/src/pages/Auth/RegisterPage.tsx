@@ -1,14 +1,11 @@
 import { Form, Button, Input, Card, Flex, Typography, DatePicker } from "antd";
 import React, { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
-// import { useSelector } from "react-redux";
-import { handleResponseError, showMessageStc } from "../../services/ResponseErrorHandler.ts";
+import {  useNavigate } from "react-router-dom";
+import axios from "axios";
 import { BASE_IDENTITY_URL } from "../../store/constants.ts";
-import { GithubOutlined, EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { GithubOutlined } from "@ant-design/icons";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-// import { RootState } from "../../store/store";
 
 const { Title, Text } = Typography;
 

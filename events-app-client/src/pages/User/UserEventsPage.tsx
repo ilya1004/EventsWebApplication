@@ -1,9 +1,7 @@
 import { Button, Card, Descriptions, Flex, Image, List, Typography } from "antd";
-import axios from "axios";
 import React, { useState } from "react";
-import { BASE_IDENTITY_URL, BASE_SERVER_API_URL, PAGE_MIN_HEIGHT } from "../../store/constants.ts";
-import { refreshAccessToken } from "../../services/TokenService.ts";
-import { redirect, useLoaderData, useRevalidator } from "react-router-dom";
+import {  PAGE_MIN_HEIGHT } from "../../store/constants.ts";
+import { useLoaderData, useRevalidator } from "react-router-dom";
 import { deleteRequestData, getRequestData } from "../../services/RequestRervice.ts";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";

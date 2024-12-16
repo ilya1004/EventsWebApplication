@@ -1,0 +1,9 @@
+# services:
+#   eventswebapplication.api:
+#     image: ${DOCKER_REGISTRY-}eventswebapplicationapi
+#     build:
+#       context: .
+#       dockerfile: EventsWebApplication.API/Dockerfile
+#     ports:
+#       - "7002:7002"
+#       - "7012:7012"

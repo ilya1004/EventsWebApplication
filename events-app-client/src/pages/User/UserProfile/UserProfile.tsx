@@ -1,11 +1,9 @@
 import { Avatar, Button, Card, Col, DatePicker, Descriptions, Flex, Input, Row, Typography } from "antd";
-import axios from "axios";
 import React, { useState } from "react";
-import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { UserInfoDTO } from "../../../utils/types";
 import { getRequestData } from "../../../services/RequestRervice.ts";
 import { UserOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
 import { Dayjs } from 'dayjs';
 import { PAGE_MIN_HEIGHT } from "../../../store/constants.ts";
 

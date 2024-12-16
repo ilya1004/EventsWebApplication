@@ -17,7 +17,8 @@ public static class DependencyInjection
 
         services.AddHttpClient("IdentityClient", client =>
         {
-            client.BaseAddress = new Uri(configuration.GetRequiredSection("ServiceUrls:IdentityAPI").Value ?? "https://localhost:7003/");
+            client.BaseAddress = new Uri("http://eventwebapp_identityserver:7013");
+            //client.BaseAddress = new Uri(configuration.GetRequiredSection("ServiceUrls:IdentityAPI").Value ?? "https://localhost:7003/");
         });
 
         services.AddFluentEmail(configuration["EmailSenderPapercut:EmailSender"], configuration["EmailSenderPapercut:SenderName"])

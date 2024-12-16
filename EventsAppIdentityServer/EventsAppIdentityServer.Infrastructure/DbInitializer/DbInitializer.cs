@@ -37,11 +37,11 @@ public class DbInitializer : IDbInitializer
 
         AppUser admin = new()
         {
-            UserName = "admin",
+            UserName = "admin@gmail.com",
             Email = "admin@gmail.com",
             EmailConfirmed = true,
-            Name = "admin",
-            Surname = "adminov",
+            Name = "Admin",
+            Surname = "Admin",
         };
 
         var res = await _userManager.CreateAsync(admin, "Admin_123");
@@ -58,7 +58,7 @@ public class DbInitializer : IDbInitializer
 
         AppUser user = new()
         {
-            UserName = "Moonlight",
+            UserName = "ilya@gmail.com",
             Email = "ilya@gmail.com",
             EmailConfirmed = true,
             Name = "Ilya",

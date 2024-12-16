@@ -16,7 +16,7 @@ public static class DependencyInjection
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionStringPostgres = configuration.GetConnectionString("PostgresConnection") ?? "Host=localhost; Port=5433; Database=eventsappdb; Username=postgres; Password=passpass";
-        var connectionStringAzurite = configuration.GetConnectionString("AzuriteConnection") ?? "UseDevelopmentStorage=true";
+        var connectionStringAzurite = configuration.GetConnectionString("AzuriteConnection") ?? "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://eventwebapp.azurite;";
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionStringPostgres),

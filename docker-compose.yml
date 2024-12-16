@@ -1,0 +1,110 @@
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  azurite_data:
+  client_node_modules:
+  client_source_code:
+  database_data:
+  identity_database_data:
+
+services:
+  eventwebapp_papercut:
+    image: changemakerstudiosus/papercut-smtp:latest
+    container_name: eventwebapp_papercut
+    ports:
+      - 8080:80
+      - 25:25
+    networks:
+      - app-network
+    
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.33.0
+    volumes:
+      - azurite_data:/data
+    ports:
+      - "10000:10000"
+    command: "azurite-blob --loose --blobHost 0.0.0.0 --blobPort 10000 -l /data"
+    networks:
+      - app-network
+
+  eventwebapp_server:
+    build:
+      context: ./EventsWebApplication
+      dockerfile: Dockerfile
+    container_name: eventwebapp_server
+    ports:
+      - "7002:7002"
+      - "7012:7012"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=7012
+      - AUTHORITY_URI=http://eventwebapp_identityserver:7013
+    networks:
+      - app-network
+    depends_on:
+      - azurite
+      - eventwebapp_papercut
+      - eventwebapp_database
+  
+  eventwebapp_database:
+    image: postgres:latest
+    container_name: eventwebapp_database
+    environment:
+      - POSTGRES_DB=eventsappdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+  
+  eventwebapp_client:
+    build:
+      context: ./events-app-client
+      dockerfile: Dockerfile
+    container_name: eventwebapp_client
+    ports:
+      - "3000:3000"
+    volumes:
+      - client_node_modules:/app/node_modules
+      - client_source_code:/app
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - eventwebapp_identityserver
+      - eventwebapp_server
+  
+  eventwebapp_identityserver:
+    build:
+      context: ./EventsAppIdentityServer
+      dockerfile: Dockerfile
+    container_name: eventwebapp_identityserver
+    ports:
+      - "7003:7003"
+      - "7013:7013"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=7013
+      - ISSUER_URI=http://eventwebapp_identityserver:7013
+    networks:
+      - app-network
+    depends_on:
+      - eventwebapp_identitydatabase
+    
+  eventwebapp_identitydatabase:
+    image: postgres:latest
+    container_name: eventwebapp_identitydatabase
+    environment:
+      - POSTGRES_DB=eventsappidentitydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - identity_database_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - app-network

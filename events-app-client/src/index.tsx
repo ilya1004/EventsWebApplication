@@ -9,6 +9,11 @@ import { userProfileLoader, UserProfilePage } from './pages/User/UserProfile/Use
 import { userEventsLoader, UserEventsPage } from './pages/User/UserEventsPage.tsx';
 import { userEventInfoLoader, UserEventInfoPage } from './pages/User/UserEventInfo.tsx';
 import { RegisterPage } from './pages/Auth/RegisterPage.tsx';
+import { adminHomeLoader, AdminHomePage } from './pages/Admin/AdminHomePage.tsx';
+import { AdminApp, adminAppLoader } from './pages/Admin/AdminApp.tsx';
+import { adminEventInfoLoader, AdminEventInfoPage } from './pages/Admin/AdminEventInfo.tsx';
+import { adminEditEventLoader, AdminEditEventPage } from './pages/Admin/AdminEditEventPage.tsx';
+import { AdminCreateEventPage } from './pages/Admin/AdminCreateEventPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -52,6 +57,32 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />
+  },
+  {
+    path: "/",
+    element: <AdminApp />,
+    loader: adminAppLoader,
+    children: [
+      {
+        path: "admin",
+        element: <AdminHomePage />,
+        loader: adminHomeLoader,
+      },
+      {
+        path: "admin/create-event",
+        element: <AdminCreateEventPage />
+      },
+      {
+        path: "admin/event/:eventId",
+        element: <AdminEventInfoPage />,
+        loader: adminEventInfoLoader,
+      },
+      {
+        path: "admin/edit-event/:eventId",
+        element: <AdminEditEventPage />,
+        loader: adminEditEventLoader,
+      },
+    ]
   }
 ]);
 
