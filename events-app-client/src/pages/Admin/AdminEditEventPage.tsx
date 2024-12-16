@@ -59,31 +59,54 @@ export const AdminEditEventPage: React.FC = () => {
 
   const updateEvent = async (eventData: EventDTO) => {
     const formData = new FormData();
-
-    formData.append("Title", eventData.Title);
-    formData.append("Description", eventData.Description ?? "");
-    formData.append("EventDateTime", eventData.EventDateTime);
-    formData.append("ParticipantsMaxCount", eventData.ParticipantsMaxCount.toString());
-
+  
+    formData.append("Id", item.id.toString()); // ID события
+    formData.append("EventDTO.Title", eventData.Title);
+    formData.append("EventDTO.Description", eventData.Description ?? "");
+    formData.append("EventDTO.EventDateTime", eventData.EventDateTime);
+    formData.append("EventDTO.ParticipantsMaxCount", eventData.ParticipantsMaxCount.toString());
+  
     if (eventData.ImageFile) {
-      formData.append("ImageFile", eventData.ImageFile);
+      formData.append("EventDTO.ImageFile", eventData.ImageFile); // Добавление файла изображения
+    } else {
+      formData.append("EventDTO.ImageFile", ""); // Пустое значение, если файл отсутствует
     }
-
-    formData.append("PlaceName", eventData.PlaceName);
-    formData.append("CategoryName", eventData.CategoryName ?? "");
-
+  
+    formData.append("EventDTO.PlaceName", eventData.PlaceName);
+    formData.append("EventDTO.CategoryName", eventData.CategoryName ?? "");
+  
+    const accessToken = localStorage.getItem("access_token");
+  
     return axios.put(`${BASE_SERVER_API_URL}/Events`, formData, {
       headers: {
+        "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
+        "accept": "*/*", // Обратите внимание на заголовок accept
       },
     });
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    // e.preventDefault();
+
+    if (title == "") {
+      showMessageStc("Please enter title of the event.", "warning");
+      return;
+    }
 
     if (!eventDate || !eventTime) {
-      alert("Please enter date and time of the event.");
+      showMessageStc("Please enter date and time of the event.", "warning");
+      return;
+    }
+
+    if (participantsMaxCount == null || participantsMaxCount === 0) {
+      showMessageStc("Please enther the maximum number of persons who can register to this event.", "warning");
+      return;
+    }
+
+    if (placeName == null || placeName == "") {
+      showMessageStc("Please enther the place of the event.", "warning");
       return;
     }
 
@@ -119,7 +142,7 @@ export const AdminEditEventPage: React.FC = () => {
       <Flex align="center" vertical>
         <Flex gap={20}>
           <Button onClick={() => handleBack()} style={{ margin: "5px 0px 0px 0px" }}>Back</Button>
-          <Title level={2} style={{ marginTop: "0px" }}>Create Event</Title>
+          <Title level={2} style={{ marginTop: "0px" }}>Edit Event</Title>
         </Flex>
         <Card style={{ width: "500px" }} title="Edit event data">
           <Form
@@ -138,8 +161,8 @@ export const AdminEditEventPage: React.FC = () => {
 
             <Form.Item label="Event Date and Time:">
               <Flex gap={10}>
-                <DatePicker value={eventDate} onChange={setEventDate} disabledDate={disabledDate} />
-                <TimePicker value={eventTime} onChange={setEventTime} />
+                <DatePicker value={eventDate} onChange={(value) => setEventDate(value)} disabledDate={disabledDate} />
+                <TimePicker value={eventTime} onChange={(value) => setEventTime(value)} />
               </Flex>
             </Form.Item>
 

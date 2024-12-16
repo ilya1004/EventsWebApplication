@@ -13,14 +13,14 @@ const { Title, Text } = Typography;
 export const adminEventInfoLoader = async ({ params }) => {
   var { eventId } = params;
   var res = await getRequestData(`/Events/${eventId}/with-participants`);
-  console.log(res);
+  // console.log(res);
   return res;
 }
 
 export const AdminEventInfoPage: React.FC = () => {
   const item = useLoaderData() as any;
 
-  console.log(item);
+  // console.log(item);
 
   const navigate = useNavigate();
 

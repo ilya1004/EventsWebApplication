@@ -2,7 +2,7 @@ import { Button, Card, Flex, List, Typography, Image, Descriptions, TableProps, 
 import axios from "axios";
 import React, { useState } from "react";
 import { BASE_IDENTITY_URL, BASE_SERVER_API_URL, PAGE_MIN_HEIGHT } from "../../store/constants.ts";
-import { refreshAccessToken } from "../../services/TokenService.ts"; // Импортируем наш сервис
+import { getUserRole, refreshAccessToken } from "../../services/TokenService.ts"; // Импортируем наш сервис
 import { redirect, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";
@@ -13,7 +13,13 @@ const { Title, Text } = Typography;
 
 export const adminHomeLoader = async () => {
   let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${10}`);
-  // console.log(res);
+
+  // let role = getUserRole();
+
+  // if (role != "Admin") {
+  //   return redirect("/login");
+  // }
+
   return res;
 }
 

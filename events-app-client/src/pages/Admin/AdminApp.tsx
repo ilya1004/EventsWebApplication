@@ -17,9 +17,9 @@ export const adminAppLoader = () => {
 
     let role = getUserRole();
 
-    if (role == "User") {
-      // window.location.href = "/login";
-      return redirect("/login");
+    if (role != "Admin") {
+      window.location.href = "/login";
+      // return redirect("/login");
     }
 
     return true;

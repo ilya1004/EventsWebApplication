@@ -46,39 +46,58 @@ export const AdminCreateEventPage: React.FC = () => {
 
   const createEvent = async (eventData: any) => {
     const formData = new FormData();
-
-    formData.append("EventDTO.Title", eventData.Title);
-    formData.append("EventDTO.Description", eventData.Description);
+  
+    // Добавляем поля, как в curl-запросе
+    formData.append("EventDTO.Title", eventData.Title ?? ""); // default: ""
+    formData.append("EventDTO.Description", eventData.Description ?? "");
     formData.append("EventDTO.EventDateTime", eventData.EventDateTime);
-    formData.append("EventDTO.ParticipantsMaxCount", eventData.ParticipantsMaxCount.toString());
-    formData.append("EventDTO.ImageFile", eventData.ImageFile); // Файл изображения
-    formData.append("EventDTO.PlaceName", eventData.PlaceName);
-    formData.append("EventDTO.CategoryName", eventData.CategoryName);
-
+    formData.append(
+      "EventDTO.ParticipantsMaxCount",
+      eventData.ParticipantsMaxCount?.toString() ?? "0" // default: 0
+    );
+  
+    if (eventData.ImageFile) {
+      formData.append("EventDTO.ImageFile", eventData.ImageFile); // Файл, если передан
+    } else {
+      formData.append("EventDTO.ImageFile", ""); // Пустое поле, как в curl
+    }
+  
+    formData.append("EventDTO.PlaceName", eventData.PlaceName ?? "");
+    formData.append("EventDTO.CategoryName", eventData.CategoryName ?? "");
+  
+    // Получение access token
+    const accessToken = localStorage.getItem("access_token");
+  
     return axios.post(`${BASE_SERVER_API_URL}/Events`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${accessToken}`, // Token
+        "Content-Type": "multipart/form-data", // multipart/form-data для файлов
         Accept: "*/*",
       },
     });
-
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    // e.preventDefault();
 
-    if (!imageFile) {
-      alert("Please upload an image.");
+    if (title == "") {
+      showMessageStc("Please enter title of the event.", "warning");
       return;
     }
 
     if (!eventDate || !eventTime) {
-      alert("Please enter date and time of the event.");
+      showMessageStc("Please enter date and time of the event.", "warning");
       return;
     }
 
-    if (participantsMaxCount == null) {
-      alert("Please enther the maximum number of persons who can register to this event.");
+    if (participantsMaxCount == null || participantsMaxCount <= 0) {
+      showMessageStc("Please enther a correct maximum number of persons who can register to this event.", "warning");
+      return;
+    }
+
+    if (placeName == null || placeName == "") {
+      showMessageStc("Please enther the place of the event.", "warning");
       return;
     }
 
@@ -157,18 +176,15 @@ export const AdminCreateEventPage: React.FC = () => {
 
               <Form.Item
                 label="Event date:"
-                name="eventDateTime"
-                rules={[{ required: true, message: "Enter date of the event!", },]}
-              >
+                name="eventDateTime">
                 <Flex gap={10}>
-                  <DatePicker name="eventDateTime" onChange={(value: any) => setEventDate(value)} value={eventDate} disabledDate={disabledDate}
-                    defaultValue={dayjs()} />
-                  <TimePicker name="eventDateTime" onChange={(value: any) => setEventTime(value)} defaultOpenValue={dayjs('00:00:00', 'HH:mm:ss')} />
+                  <DatePicker name="eventDateTime" onChange={(value: any) => setEventDate(value)} value={eventDate} disabledDate={disabledDate} defaultValue={dayjs()} />
+                  <TimePicker onChange={(value: any) => setEventTime(value)} value={eventTime} defaultOpenValue={dayjs('00:00:00', 'HH:mm:ss')} />
                 </Flex>
               </Form.Item>
 
-              <Form.Item label="Upload Image:" name="image">
-                <input type="file" accept="image/*" onChange={handleFileChange} />
+              <Form.Item label="Max Participants:">
+                <InputNumber value={participantsMaxCount} onChange={(value) => setParticipantsMaxCount(value)} min={0} />
               </Form.Item>
 
               <Form.Item
@@ -182,6 +198,10 @@ export const AdminCreateEventPage: React.FC = () => {
                 label="Category:"
                 name="category">
                 <Input name="category" onChange={(e) => setCategoryName(e.target.value)} value={description} />
+              </Form.Item>
+
+              <Form.Item label="Upload Image:" name="image">
+                <input type="file" accept="image/*" onChange={handleFileChange} />
               </Form.Item>
 
               <Form.Item>
