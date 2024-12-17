@@ -5,21 +5,17 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { getRequestData } from "../../services/RequestRervice.ts";
 import dayjs from "dayjs";
 import EventPlaceholder from "../../assets/event_placeholder.png";
-import { Participant } from "../../utils/types";
 
 const { Title, Text } = Typography;
 
 export const adminEventInfoLoader = async ({ params }) => {
   var { eventId } = params;
   var res = await getRequestData(`/Events/${eventId}/with-participants`);
-  // console.log(res);
   return res;
 }
 
 export const AdminEventInfoPage: React.FC = () => {
   const item = useLoaderData() as any;
-
-  // console.log(item);
 
   const navigate = useNavigate();
 

@@ -22,7 +22,7 @@ const { RangePicker } = DatePicker;
 // }
 
 export const userHomeLoader = async () => {
-  let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${100}`);
+  let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${50}`);
   // console.log(res);
   return res;
 }
@@ -104,8 +104,12 @@ export const UserHomePage: React.FC = () => {
 
   const handleDateChange = (dates: any | null) => {
     if (dates != null) {
-      setDateStart(dates[0])
-      setDateEnd(dates[1])
+      let date1: Dayjs = dates[0];
+      let date2: Dayjs = dates[1];
+      date1 = date1.add(4, "hour");
+      date2 = date2.add(4, "hour");
+      setDateStart(date1);
+      setDateEnd(date2);
     }
     else {
       setDateStart(null);

@@ -6,6 +6,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs, { Dayjs } from "dayjs";
 import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
+import { getRequestData } from "../../services/RequestRervice.ts";
 
 const { Title } = Typography;
 
@@ -21,8 +22,8 @@ interface EventDTO {
 
 export const adminEditEventLoader = async ({ params }) => {
   const { eventId } = params;
-  const response = await axios.get(`${BASE_SERVER_API_URL}/Events/${eventId}`);
-  return response.data;
+  const res = await getRequestData(`/Events/${eventId}`);
+  return res;
 };
 
 export const AdminEditEventPage: React.FC = () => {
@@ -60,16 +61,16 @@ export const AdminEditEventPage: React.FC = () => {
   const updateEvent = async (eventData: EventDTO) => {
     const formData = new FormData();
   
-    formData.append("Id", item.id.toString()); // ID события
+    formData.append("Id", item.id.toString());
     formData.append("EventDTO.Title", eventData.Title);
     formData.append("EventDTO.Description", eventData.Description ?? "");
     formData.append("EventDTO.EventDateTime", eventData.EventDateTime);
     formData.append("EventDTO.ParticipantsMaxCount", eventData.ParticipantsMaxCount.toString());
   
     if (eventData.ImageFile) {
-      formData.append("EventDTO.ImageFile", eventData.ImageFile); // Добавление файла изображения
+      formData.append("EventDTO.ImageFile", eventData.ImageFile);
     } else {
-      formData.append("EventDTO.ImageFile", ""); // Пустое значение, если файл отсутствует
+      formData.append("EventDTO.ImageFile", "");
     }
   
     formData.append("EventDTO.PlaceName", eventData.PlaceName);
@@ -81,7 +82,7 @@ export const AdminEditEventPage: React.FC = () => {
       headers: {
         "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data",
-        "accept": "*/*", // Обратите внимание на заголовок accept
+        "accept": "*/*",
       },
     });
   };

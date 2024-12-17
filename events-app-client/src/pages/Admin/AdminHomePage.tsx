@@ -10,7 +10,7 @@ const { Title, Text } = Typography;
 
 
 export const adminHomeLoader = async () => {
-  let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${10}`);
+  let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${50}`);
   return res;
 }
 

@@ -19,7 +19,6 @@ export const userAppLoader = () => {
     console.log(role);
 
     if (!role || role !== "User") {
-      console.log("redirect");
       // window.location.href = "/login";
       // return false;
       return redirect("/login");

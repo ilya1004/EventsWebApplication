@@ -19,7 +19,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = AuthPolicies.UserPolicy)]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> GetCurrentUserInfo(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetCurrentUserInfoQuery(

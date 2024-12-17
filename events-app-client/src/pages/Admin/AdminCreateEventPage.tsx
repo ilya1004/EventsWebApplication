@@ -8,15 +8,15 @@ import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
 
 const { Title, Text } = Typography;
 
-interface EventDTO {
-  Title: string;
-  Description: string;
-  EventDateTime: string;
-  ParticipantsMaxCount: number;
-  ImageFile: File;
-  PlaceName: string;
-  CategoryName: string;
-}
+// interface EventDTO {
+//   Title: string;
+//   Description: string;
+//   EventDateTime: string;
+//   ParticipantsMaxCount: number;
+//   ImageFile: File;
+//   PlaceName: string;
+//   CategoryName: string;
+// }
 
 export const AdminCreateEventPage: React.FC = () => {
   const [title, setTitle] = useState("");

@@ -1,11 +1,12 @@
-﻿using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
+﻿using EventsWebApplication.API.Contracts.Events;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
 using FluentValidation;
 
-namespace EventsWebApplication.Application.Validators.Events;
+namespace EventsWebApplication.API.Validators.Events;
 
-internal class GetEventsByDateQueryValidator : AbstractValidator<GetEventsByDateRangeQuery>
+public class GetEventsByDateRangeRequestValidator : AbstractValidator<GetEventsByDateRangeRequest>
 {
-    public GetEventsByDateQueryValidator()
+    public GetEventsByDateRangeRequestValidator()
     {
         RuleFor(x => x.DateStart)
             .Must(d => d > new DateTime(2000, 1, 1))

@@ -62,8 +62,6 @@ export const LoginPage: React.FC = () => {
       console.log(err);
       if (err.response.data.error_description == "invalid_username_or_password") {
         showMessageStc("Invalid email or password", "error");
-        setEmail("");
-        setPassword("");
       }
       else {
         showMessageStc(err, "error");
@@ -71,9 +69,12 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-
   const handleSubmit = (e: React.FormEvent) => {
     // e.preventDefault();
+    if (!email || !password) {
+      showMessageStc("Email and password are required", "error");
+      return;
+    }
     loginUser();
   };
 
@@ -157,6 +158,9 @@ export const LoginPage: React.FC = () => {
           <Flex align="center" justify="center">
             <Text style={{ marginRight: "5px" }}>Don't have an account yet?</Text>
             <Link to="/register">Register</Link>
+          </Flex>
+          <Flex align="center" justify="center" style={{ marginTop: "10px" }}>
+            <Text style={{ color: "gray", fontSize: "12px", textAlign: "center" }}>The first sign in to the system can take about 5 seconds, please wait...</Text>
           </Flex>
         </Card>
       </Flex>

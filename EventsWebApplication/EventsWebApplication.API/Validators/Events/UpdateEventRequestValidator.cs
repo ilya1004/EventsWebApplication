@@ -1,12 +1,16 @@
-﻿using FluentValidation;
-using EventsWebApplication.API.Contracts.Events;
+﻿using EventsWebApplication.API.Contracts.Events;
+using FluentValidation;
 
 namespace EventsWebApplication.API.Validators.Events;
 
-public class CreateEventRequestValidator : AbstractValidator<CreateEventRequest>
+public class UpdateEventRequestValidator : AbstractValidator<UpdateEventRequest>
 {
-    public CreateEventRequestValidator()
+    public UpdateEventRequestValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Id is required.")
+            .GreaterThanOrEqualTo(1).WithMessage("Id must be between greater than or equal to 1.");
+
         RuleFor(x => x.EventDTO.Title)
             .NotEmpty().WithMessage("Title is required.")
             .Length(3, 100).WithMessage("Title must be between 3 and 100 characters.");
@@ -29,5 +33,4 @@ public class CreateEventRequestValidator : AbstractValidator<CreateEventRequest>
             .Length(3, 100).WithMessage("CategoryName must be between 3 and 100 characters.")
             .When(x => !string.IsNullOrEmpty(x.EventDTO.CategoryName));
     }
-
 }
