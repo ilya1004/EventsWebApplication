@@ -5,10 +5,11 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEve
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventByIdWithRemainingPlaces;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByCurrentUser;
-using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByFilter;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByTitle;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsWithRemainingPlaces;
 using MediatR;
@@ -17,7 +18,6 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EventsWebApplication.API.Controllers;
 
@@ -46,6 +46,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> GetAllEvents([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(_mapper.Map<GetEventsListAllQuery>(request), cancellationToken);
@@ -55,6 +56,7 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     [Route("with-remaining-places")]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> GetAllEventsWithRemainingPlaces([FromQuery] GetEventsListAllRequest request, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(_mapper.Map<GetEventsWithRemainingPlacesQuery>(request), cancellationToken);
@@ -63,16 +65,8 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("by-date")]
-    public async Task<IActionResult> GetEventsByDate([FromQuery] GetEventsByDateRequest request, CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(_mapper.Map<GetEventsByDateQuery>(request), cancellationToken);
-
-        return Ok(result);
-    }
-
-    [HttpGet]
     [Route("by-date-range")]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> GetEventsByDateRange([FromQuery] GetEventsByDateRangeRequest request, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(_mapper.Map<GetEventsByDateRangeQuery>(request), cancellationToken);
@@ -81,7 +75,18 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet]
+    [Route("by-title")]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
+    public async Task<IActionResult> GetEventsByTitle([FromQuery] GetEventsByTitleRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(_mapper.Map<GetEventsByTitleQuery>(request), cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
     [Route("by-filter")]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> GetEventsByFilter([FromQuery] GetEventsByFilterRequest request, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(_mapper.Map<GetEventsByFilterQuery>(request), cancellationToken);
@@ -91,6 +96,7 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     [Route("{id:int}")]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> GetEventById(int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetEventByIdQuery(id), cancellationToken);
@@ -108,6 +114,16 @@ public class EventsController : ControllerBase
         return Ok(
             JsonConvert.SerializeObject(result,
             settings: new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
+    }
+
+    [HttpGet]
+    [Route("{id:int}/with-remaining-places")]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
+    public async Task<IActionResult> GetEventByIdWithRemainingPlaces(int id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetEventByIdWithRemainingPlacesQuery(id), cancellationToken);
+
+        return Ok(result);
     }
 
     [HttpGet]

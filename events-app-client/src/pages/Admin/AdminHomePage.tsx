@@ -1,7 +1,7 @@
-import { Button, Flex, Typography, TableProps, Table } from "antd";
+import { Button, Flex, Typography, TableProps, Table, Pagination } from "antd";
 import React from "react";
 import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
-import {  useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
+import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";
 import { deleteRequestData, getRequestData } from "../../services/RequestRervice.ts";
@@ -11,7 +11,6 @@ const { Title, Text } = Typography;
 
 export const adminHomeLoader = async () => {
   let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${10}`);
-  console.log("loader");
   return res;
 }
 
@@ -42,7 +41,6 @@ export const AdminHomePage: React.FC = () => {
 
   const handleDeleteEvent = async (record: EventEntity) => {
     await deleteRequestData(`/Events?id=${record.id}`);
-    console.log("deleted");
     revalidator.revalidate();
   }
 
@@ -100,10 +98,10 @@ export const AdminHomePage: React.FC = () => {
         <Flex vertical>
           <Flex align="center" vertical>
             <Title level={2} style={{ marginTop: "0px" }}>All Events</Title>
-            <Table columns={columns} dataSource={events} />
+            <Table columns={columns} dataSource={events} pagination={false}/>
           </Flex>
           <Flex align="start">
-            <Button style={{ margin: "0px 0px 0px 20px" }} onClick={handleCreateEvent}>Create Event</Button>
+            <Button style={{ margin: "20px 0px 0px 20px" }} onClick={handleCreateEvent}>Create Event</Button>
           </Flex>
         </Flex>
       </Flex>

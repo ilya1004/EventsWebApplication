@@ -1,12 +1,9 @@
 ﻿using EventsWebApplication.API.Utils;
-using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
 using EventsWebApplication.Application.UseCases.UserUseCases.Queries.GetCurrentUserInfo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Security.Claims;
-using System.Threading;
 
 namespace EventsWebApplication.API.Controllers;
 

@@ -70,7 +70,7 @@ public class ParticipantsController : ControllerBase
 
     [HttpDelete]
     [Route("{eventId}")]
-    [Authorize(Policy = AuthPolicies.UserPolicy)]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> CancelParticipationInEvent(int eventId, CancellationToken cancellationToken)
     {
         await _mediator.Send(new RemoveParticipantFromEventCommand(

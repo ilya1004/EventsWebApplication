@@ -17,16 +17,9 @@ public class FilesController : ControllerBase
         _mediator = mediator;
     }
 
-    //[HttpGet]
-    //[Route("by-file-id/{fileId}")]
-    //[Authorize(Policy = AuthPolicies.AdminPolicy)]
-    //public async Task<IActionResult> GetFileById(string fileId)
-    //{
-    //    return Ok();
-    //}
-
     [HttpGet]
     [Route("by-event-id/{eventId}")]
+    [Authorize(Policy = AuthPolicies.AdminOrUserPolicy)]
     public async Task<IActionResult> GetFileByEventId(int eventId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetEventImageByEventIdQuery(eventId), cancellationToken);

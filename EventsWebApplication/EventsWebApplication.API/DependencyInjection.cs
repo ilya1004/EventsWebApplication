@@ -24,14 +24,9 @@ public static class DependencyInjection
             cfg.EnableBodyBindingSourceAutomaticValidation = true;
         });
 
-        //Log.Logger = new LoggerConfiguration()
-        //    .Enrich.FromLogContext()
-        //    .WriteTo.Console()
-        //    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
-        //    .CreateLogger();
 
         Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(configuration) // Чтение из appsettings.json
+            .ReadFrom.Configuration(configuration)
             .CreateLogger();
 
         return services;

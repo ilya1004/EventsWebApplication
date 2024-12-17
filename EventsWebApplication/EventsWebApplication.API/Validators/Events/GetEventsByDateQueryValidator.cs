@@ -1,13 +1,17 @@
-﻿using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDate;
+﻿using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
 using FluentValidation;
 
 namespace EventsWebApplication.Application.Validators.Events;
 
-internal class GetEventsByDateQueryValidator : AbstractValidator<GetEventsByDateQuery>
+internal class GetEventsByDateQueryValidator : AbstractValidator<GetEventsByDateRangeQuery>
 {
     public GetEventsByDateQueryValidator()
     {
-        RuleFor(x => x.Date)
+        RuleFor(x => x.DateStart)
+            .Must(d => d > new DateTime(2000, 1, 1))
+            .WithMessage("Date must be after 01.01.2000");
+
+        RuleFor(x => x.DateEnd)
             .Must(d => d > new DateTime(2000, 1, 1))
             .WithMessage("Date must be after 01.01.2000");
 

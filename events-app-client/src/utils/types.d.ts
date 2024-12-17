@@ -20,6 +20,17 @@ export interface Event {
   participants: Participant[],
 }
 
+export interface EventWithRemainingPlacesDTO {
+  id: number,
+  title: string,
+  description: string | null,
+  eventDateTime: string,
+  participantsMaxCount: number,
+  placesRemain: number,
+  placeName: string,
+  categoryName: string | null,
+}
+
 export interface EventCategory {
   name: string,
   normalizedName: string,
@@ -43,3 +54,4 @@ export interface Person {
   surname: string,
   birthday: string,
 }
+

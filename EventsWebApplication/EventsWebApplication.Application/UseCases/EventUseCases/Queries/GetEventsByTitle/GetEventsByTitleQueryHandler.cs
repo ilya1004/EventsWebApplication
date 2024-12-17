@@ -15,9 +15,9 @@ internal class GetEventsByTitleQueryHandler : IRequestHandler<GetEventsByTitleQu
         int offset = (request.PageNo - 1) * request.PageSize;
 
         return await _unitOfWork.EventsRepository.PaginatedListAsync(
-            e => e.Title.Contains(request.TitleQuery, StringComparison.CurrentCultureIgnoreCase), 
-            offset, 
-            request.PageSize, 
+            e => e.Title.ToLower().Contains(request.TitleQuery.ToLower()), 
+            offset,
+            request.PageSize,
             cancellationToken);
     }
 }

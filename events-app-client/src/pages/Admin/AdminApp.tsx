@@ -20,10 +20,6 @@ export const adminAppLoader = () => {
     console.log(role);
 
     if (!role || role !== "Admin") {
-      console.log("redirect");
-      // window.location.href = "/login";
-      // return false;
-      // return false;
       return redirect("/login");
     }
 

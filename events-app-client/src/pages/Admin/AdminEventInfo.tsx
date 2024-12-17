@@ -1,10 +1,11 @@
-import { Button, Card, Descriptions, Flex, Image, Typography } from "antd";
+import { Button, Card, Descriptions, Flex, Image, Table, TableProps, Typography } from "antd";
 import React from "react";
 import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { getRequestData } from "../../services/RequestRervice.ts";
 import dayjs from "dayjs";
 import EventPlaceholder from "../../assets/event_placeholder.png";
+import { Participant } from "../../utils/types";
 
 const { Title, Text } = Typography;
 
@@ -31,6 +32,44 @@ export const AdminEventInfoPage: React.FC = () => {
   const handleBack = () => {
     return navigate(-1);
   }
+
+  const columns: TableProps['columns'] = [
+    {
+      title: 'Email',
+      dataIndex: "Email",
+      key: "email",
+      width: "200px",
+      render: (value, _, __) => <Text>{value}</Text>
+    },
+    {
+      title: 'Name',
+      dataIndex: "Name",
+      key: "name",
+      width: "160px",
+      render: (value, record, __) => <Text>{record.Person.Name}</Text>
+    },
+    {
+      title: 'Surname',
+      dataIndex: "Surname",
+      key: "surname",
+      width: "160px",
+      render: (value, record, __) => <Text>{record.Person.Surname}</Text>
+    },
+    {
+      title: 'Birthday',
+      dataIndex: "Birthday",
+      key: "birthday",
+      width: "160px",
+      render: (value, record, __) => <Text>{dayjs(record.Person.BirthdayDate).format("DD.MM.YYYY")}</Text>
+    },
+    {
+      title: 'Registration date',
+      dataIndex: "EventRegistrationDate",
+      key: "eventRegistrationDate",
+      width: "160px",
+      render: (value, record, __) => <Text>{dayjs(value).format("DD.MM.YYYY")}</Text>
+    }
+  ];
 
   return (
     <>
@@ -76,9 +115,7 @@ export const AdminEventInfoPage: React.FC = () => {
             </Flex>
           </Card>
           <Title>Event's participants:</Title>
-          <Table>
-
-          </Table>
+          <Table dataSource={item.Participants} columns={columns} pagination={false}/>
         </Flex>
       </Flex>
     </>

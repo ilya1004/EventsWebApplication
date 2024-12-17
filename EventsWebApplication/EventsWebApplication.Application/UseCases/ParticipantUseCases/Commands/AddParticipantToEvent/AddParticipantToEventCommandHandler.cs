@@ -22,11 +22,16 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
 
     public async Task Handle(AddParticipantToEventCommand command, CancellationToken cancellationToken)
     {
-        var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(command.EventId);
+        var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(command.EventId, cancellationToken, e => e.Participants);
 
         if (eventObj == null)
         {
             throw new Exception($"Event with given ID {command.EventId} not found.");
+        }
+
+        if (eventObj.Participants.Count == eventObj.ParticipantsMaxCount)
+        {
+            throw new Exception($"Event has reached the maximum number of participants.");
         }
 
         var request = new HttpRequestMessage(HttpMethod.Get, $"api/Users/{command.UserId}");

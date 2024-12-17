@@ -1,6 +1,6 @@
-import { Button, Flex, Typography, TableProps, Table, Input, DatePicker } from "antd";
+import { Button, Flex, Typography, TableProps, Table, Input, DatePicker, Pagination } from "antd";
 import React, { useState } from "react";
-import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
+import { PAGE_MIN_HEIGHT, TABLE_PAGE_SIZE } from "../../store/constants.ts";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs, { Dayjs } from "dayjs";
@@ -22,25 +22,30 @@ const { RangePicker } = DatePicker;
 // }
 
 export const userHomeLoader = async () => {
-  let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${10}`);
+  let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${100}`);
   // console.log(res);
   return res;
 }
 
 export const UserHomePage: React.FC = () => {
 
+  const eventsLoader = useLoaderData() as EventEntity[];
+
+  // console.log(Math.floor(eventsLoader.length / TABLE_PAGE_SIZE) + 1);
+
   const [dateStart, setDateStart] = useState<Dayjs | null>(null);
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
   const [placeName, setPlaceName] = useState<string>("");
   const [categoryName, setCategoryName] = useState<string>("");
 
+  // const [totalPages, setTotalPages] = useState<number>(Math.floor(eventsLoader.length / TABLE_PAGE_SIZE) + 1);
+
   const [pageNo, setPageNo] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<number>(10)
+  const [pageSize, setPageSize] = useState<number>(TABLE_PAGE_SIZE)
 
   const navigate = useNavigate();
-  const eventsLoader = useLoaderData() as EventEntity[];
 
-  const [events, setEvents] = useState<EventEntity[]>(eventsLoader);
+  const [events, setEvents] = useState<EventEntity[]>(eventsLoader.slice(0, TABLE_PAGE_SIZE));
 
   const dateFormat = 'YYYY.MM.DD';
 
@@ -106,10 +111,9 @@ export const UserHomePage: React.FC = () => {
       setDateStart(null);
       setDateEnd(null);
     }
-    
   }
 
-  const handleMakeFilter = async () => {
+  const handleGetFilteredData = async () => {
     const params = new URLSearchParams();
 
     if (dateStart) {
@@ -125,6 +129,9 @@ export const UserHomePage: React.FC = () => {
       params.append("CategoryName", categoryName);
     }
 
+    params.append("PageNo", pageNo.toString());
+    params.append("PageSize", pageSize.toString());
+
     let result = await getRequestData(`/Events/by-filter?${params.toString()}`);
     setEvents(result);
   }
@@ -134,8 +141,27 @@ export const UserHomePage: React.FC = () => {
     setPlaceName("");
     setDateStart(null);
     setDateEnd(null);
-    let result = await getRequestData(`/Events?PageNo=${1}&PageSize=${10}`);
+    let result = await getRequestData(`/Events?PageNo=${pageNo}&PageSize=${pageSize}`);
     setEvents(result);
+  }
+
+  // const handleChangePage = async (page: number, pageSize: number) => {
+  //   if (page === pageNo) {
+  //     return;
+  //   }
+  //   setPageNo(page);
+
+  //   if (!categoryName && !placeName && !dateStart && !dateEnd) {
+  //     let res = await getRequestData(`/Events?PageNo=${page}&PageSize=${pageSize}`);
+  //     setEvents(res);
+  //   }
+  //   else {
+  //     await handleGetFilteredData(page);
+  //   }
+  // }
+
+  const handleClickFilter = async () => {
+    await handleGetFilteredData();
   }
 
   return (
@@ -163,11 +189,17 @@ export const UserHomePage: React.FC = () => {
               <Input style={{ width: "200px" }} placeholder="Enter place name" value={placeName} onChange={(e) => setPlaceName(e.target.value)} />
               <Input style={{ width: "200px" }} placeholder="Enter category name" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
             </Flex>
-            <Flex gap={20} style={{marginLeft: "10px"}}>
-              <Button type="primary" onClick={handleMakeFilter}>Filter</Button>
+            <Flex gap={20} style={{ marginLeft: "10px" }}>
+              <Button type="primary" onClick={handleClickFilter}>Filter</Button>
               <Button type="default" onClick={handleClearFilter}>Clear filter</Button>
             </Flex>
-            <Table columns={columns} dataSource={events} />
+            <Table columns={columns} dataSource={events} pagination={{ pageSize: 10}} />
+            {/* <Pagination
+              defaultCurrent={1}
+              total={Math.floor(eventsLoader.length / TABLE_PAGE_SIZE) + 1}
+              // showTotal={(total) => `Total ${total} items`}
+              pageSize={TABLE_PAGE_SIZE}
+              onChange={(page, pageSize) => handleChangePage(page, pageSize)} /> */}
           </Flex>
         </Flex>
       </Flex>

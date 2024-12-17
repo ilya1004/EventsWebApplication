@@ -25,45 +25,6 @@ services.AddAPI(builder.Configuration);
 
 services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
-
-//services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        //options.Authority = "http://eventwebapp_identityserver";
-//        //options.Audience = "http://eventwebapp_identityserver/resources";
-
-//        options.Authority = "http://localhost:7013";
-//        options.Audience = "http://localhost:7013/resources";
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuer = true,
-//            ValidIssuer = "http://localhost:7013",
-//            //ValidIssuer = "http://eventwebapp_identityserver",
-//            ValidateLifetime = true,
-//        };
-//        options.RequireHttpsMetadata = false; // Уберите, если в dev-среде
-
-//        options.Events = new JwtBearerEvents
-//        {
-//            OnMessageReceived = context =>
-//            {
-//                Console.WriteLine("Token received: " + context.Token);
-//                return Task.CompletedTask;
-//            },
-//            OnAuthenticationFailed = context =>
-//            {
-//                Console.WriteLine("Authentication failed: " + context.Exception);
-//                return Task.CompletedTask;
-//            },
-//            OnTokenValidated = context =>
-//            {
-//                Console.WriteLine("Token successfully validated");
-//                return Task.CompletedTask;
-//            }
-//        };
-
-//    });
-
 var identityBase = builder.Configuration["AUTHORITY_URI"] ?? "http://localhost:7013";
 builder.Services.AddAuthentication(opt =>
 {
@@ -77,36 +38,6 @@ builder.Services.AddAuthentication(opt =>
             opt.Audience = $"{identityBase}/resources";
         });
 
-//services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.Authority = "http://localhost:7013";
-//        options.Audience = "http://localhost:7013/resources";
-//        options.RequireHttpsMetadata = false; // Уберите, если dev-среда
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuer = true,
-//            ValidIssuer = "http://localhost:7013",
-//            ValidateAudience = true,
-//            ValidAudience = "http://localhost:7013/resources",
-//            ValidateLifetime = true,
-//            ValidateIssuerSigningKey = true, // Проверка подписи
-//        };
-//    });
-
-//builder.Services.AddAuthentication(opt =>
-//    {
-//        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    })
-//        .AddJwtBearer(opt =>
-//        {
-//            opt.Authority = "http://localhost:7013";
-//            opt.RequireHttpsMetadata = false;
-//            opt.Audience = "http://localhost:7013/resources";
-//        });
-
-
 
 
 services.AddAuthorizationBuilder()
@@ -118,6 +49,10 @@ services.AddAuthorizationBuilder()
     .AddPolicy(AuthPolicies.AdminPolicy, policy =>
     {
          policy.RequireRole("Admin");
+    })
+    .AddPolicy(AuthPolicies.AdminOrUserPolicy, policy =>
+    {
+        policy.RequireRole("Admin", "User");
     });
 
 services.AddCors(options =>
