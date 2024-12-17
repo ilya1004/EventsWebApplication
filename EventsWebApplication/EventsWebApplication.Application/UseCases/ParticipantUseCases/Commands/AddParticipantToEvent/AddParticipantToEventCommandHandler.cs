@@ -60,10 +60,10 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
             throw new Exception("You are alredy participating in this event");
         }
 
-        var participant = Participant.Create(
+        var participant = new Participant(
             userModel.Email,
-            eventObj,
-            new Person(userModel.Name, userModel.Surname, userModel.Birthday));
+            new Person(userModel.Name, userModel.Surname, userModel.Birthday),
+            eventObj);
 
         await _unitOfWork.ParticipantsRepository.AddAsync(participant, cancellationToken);
 
