@@ -1,11 +1,7 @@
-﻿
-using AutoMapper;
-using EventsWebApplication.Application.DTOs;
+﻿using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 using FluentEmail.Core;
-using FluentEmail.Core.Models;
-using MediatR;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
 
@@ -58,9 +54,13 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
         await _unitOfWork.EventsRepository.UpdateAsync(eventEntity, cancellationToken);
         await _unitOfWork.SaveAllAsync(cancellationToken);
 
-
         var eventDateTimeChanged = eventObj.EventDateTime != command.EventDTO.EventDateTime;
         var eventPlaceChanged = eventObj.Place.Name != command.EventDTO.PlaceName;
+
+        if (!eventDateTimeChanged && !eventDateTimeChanged)
+        {
+            return;
+        }
 
         var eventParticipants = await _unitOfWork.ParticipantsRepository.ListAsync(p => p.EventId == eventEntity.Id);
 

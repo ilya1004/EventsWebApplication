@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace EventsWebApplication.Infrastructure.Repository;
 
-internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
+public class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {
     protected readonly ApplicationDbContext _context;
     protected readonly DbSet<TEntity> _entities;
@@ -20,21 +20,12 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await _entities.AddAsync(entity, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _entities.Remove(entity);
-        await _context.SaveChangesAsync(cancellationToken);
     }
-
-    //public async Task DeleteByIdAsync(int id, CancellationToken cancellationToken = default)
-    //{
-    //    await _entities.FirstOrDefaultAsync().ExecuteDeleteAsync();
-    //    await _context.SaveChangesAsync(cancellationToken);
-    //}
-
     public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
         return await _entities.AsNoTracking().FirstOrDefaultAsync(filter, cancellationToken);
@@ -117,7 +108,6 @@ internal class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Ent
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _entities.Update(entity);
-        //await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)

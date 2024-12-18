@@ -66,6 +66,7 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
             eventObj);
 
         await _unitOfWork.ParticipantsRepository.AddAsync(participant, cancellationToken);
+        await _unitOfWork.SaveAllAsync(cancellationToken);
 
     }
 }

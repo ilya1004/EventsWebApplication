@@ -1,11 +1,10 @@
-﻿using EventsWebApplication.Application.DTOs;
-using EventsWebApplication.Domain.Abstractions.Data;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
 using EventsWebApplication.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Infrastructure.Repository;
 
-internal class EventsRepository : AppRepository<Event>, IEventsRepository
+public class EventsRepository : AppRepository<Event>, IEventsRepository
 {
     public EventsRepository(ApplicationDbContext context) : base(context) { }
 

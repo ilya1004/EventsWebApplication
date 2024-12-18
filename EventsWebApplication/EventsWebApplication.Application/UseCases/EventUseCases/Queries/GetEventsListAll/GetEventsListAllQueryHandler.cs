@@ -2,7 +2,7 @@
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 
-internal class GetEventsListAllQueryHandler : IRequestHandler<GetEventsListAllQuery, IEnumerable<Event>>
+public class GetEventsListAllQueryHandler : IRequestHandler<GetEventsListAllQuery, IEnumerable<Event>>
 {
     private readonly IUnitOfWork _unitOfWork;
     public GetEventsListAllQueryHandler(IUnitOfWork unitOfWork)

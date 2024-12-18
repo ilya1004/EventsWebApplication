@@ -1,6 +1,4 @@
-﻿
-using EventsWebApplication.Domain.Abstractions.Data;
-using MediatR;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByFilter;
 
@@ -30,5 +28,4 @@ public class GetEventsByFilterQueryHandler : IRequestHandler<GetEventsByFilterQu
 
         return result;
     }
-
 }

@@ -4,7 +4,7 @@ using EventsWebApplication.Infrastructure.Data;
 
 namespace EventsWebApplication.Infrastructure.Repository;
 
-internal class AppUnitOfWork : IUnitOfWork
+public class AppUnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
     private readonly Lazy<IEventsRepository> _eventsRepository;

@@ -1,5 +1,4 @@
-﻿
-using EventsWebApplication.Domain.Abstractions.Data;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.RemoveParticipantFromEvent;
 
@@ -28,5 +27,6 @@ public class RemoveParticipantFromEventCommandHandler : IRequestHandler<RemovePa
         }
 
         await _unitOfWork.ParticipantsRepository.DeleteAsync(participant, cancellationToken);
+        await _unitOfWork.SaveAllAsync(cancellationToken);
     }
 }

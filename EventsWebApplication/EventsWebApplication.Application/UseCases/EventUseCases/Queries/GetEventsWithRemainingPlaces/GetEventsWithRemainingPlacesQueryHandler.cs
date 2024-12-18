@@ -1,6 +1,5 @@
 ﻿using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Domain.Abstractions.Data;
-using System.Runtime.CompilerServices;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsWithRemainingPlaces;
 
@@ -12,6 +11,7 @@ public class GetEventsWithRemainingPlacesQueryHandler : IRequestHandler<GetEvent
     {
         _unitOfWork = unitOfWork;
     }
+
     public async Task<IEnumerable<EventWithRemainingPlacesDTO>> Handle(GetEventsWithRemainingPlacesQuery request, CancellationToken cancellationToken)
     {
         int offset = (request.PageNo - 1) * request.PageSize;
@@ -19,7 +19,6 @@ public class GetEventsWithRemainingPlacesQueryHandler : IRequestHandler<GetEvent
         var events = await _unitOfWork.EventsRepository.PaginatedListAllAsync(offset, request.PageSize, cancellationToken);
 
         var values = await _unitOfWork.ParticipantsRepository.CountParticipantsByEvents(cancellationToken);
-
 
         (int EventId, int Count) defaultValue = (0, 0);
         IEnumerable<EventWithRemainingPlacesDTO> result = [];
@@ -38,19 +37,6 @@ public class GetEventsWithRemainingPlacesQueryHandler : IRequestHandler<GetEvent
                 item.Place.Name,
                 item.Category?.Name));
         }
-
-        
-
-        //var result = events.Zip(values)
-        //        .Select(item => new EventWithRemainingPlacesDTO(
-        //            item.First.Id,
-        //            item.First.Title, 
-        //            item.First.Description, 
-        //            item.First.EventDateTime,
-        //            item.First.ParticipantsMaxCount,
-        //            item.First.ParticipantsMaxCount - values.FirstOrDefault(val => item.First.Id == val.EventId, defaultValue).Count,
-        //            item.First.Place.Name,
-        //            item.First.Category?.Name));
 
         return result;
     }

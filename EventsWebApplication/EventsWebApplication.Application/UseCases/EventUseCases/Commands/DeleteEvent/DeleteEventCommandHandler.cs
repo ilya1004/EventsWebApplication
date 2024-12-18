@@ -1,5 +1,4 @@
-﻿
-using EventsWebApplication.Domain.Abstractions.BlobStorage;
+﻿using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
@@ -25,5 +24,6 @@ public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
         }
 
         await _unitOfWork.EventsRepository.DeleteAsync(eventObj, cancellationToken);
+        await _unitOfWork.SaveAllAsync(cancellationToken);
     }
 }

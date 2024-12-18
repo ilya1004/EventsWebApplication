@@ -2,7 +2,7 @@
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByDateRange;
 
-internal class GetEventsByDateRangeQueryHandler : IRequestHandler<GetEventsByDateRangeQuery, IEnumerable<Event>>
+public class GetEventsByDateRangeQueryHandler : IRequestHandler<GetEventsByDateRangeQuery, IEnumerable<Event>>
 {
     private readonly IUnitOfWork _unitOfWork;
     public GetEventsByDateRangeQueryHandler(IUnitOfWork unitOfWork)

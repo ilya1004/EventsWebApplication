@@ -1,5 +1,4 @@
-﻿
-using EventsWebApplication.Domain.Abstractions.Data;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByCurrentUser;
 

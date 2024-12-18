@@ -3,7 +3,7 @@ using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByTitle;
 
-internal class GetEventsByTitleQueryHandler : IRequestHandler<GetEventsByTitleQuery, IEnumerable<Event>>
+public class GetEventsByTitleQueryHandler : IRequestHandler<GetEventsByTitleQuery, IEnumerable<Event>>
 {
     private readonly IUnitOfWork _unitOfWork;
     public GetEventsByTitleQueryHandler(IUnitOfWork unitOfWork)

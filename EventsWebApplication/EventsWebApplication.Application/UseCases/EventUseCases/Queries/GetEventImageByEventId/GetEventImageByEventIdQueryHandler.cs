@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using EventsWebApplication.Application.DTOs;
+﻿using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventImageByEventId;
 
-internal class GetEventImageByEventIdQueryHandler : IRequestHandler<GetEventImageByEventIdQuery, FileResponseDTO>
+public class GetEventImageByEventIdQueryHandler : IRequestHandler<GetEventImageByEventIdQuery, FileResponseDTO>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBlobService _blobService;

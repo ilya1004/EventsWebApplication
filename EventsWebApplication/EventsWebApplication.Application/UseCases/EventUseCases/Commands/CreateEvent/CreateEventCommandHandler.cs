@@ -5,7 +5,7 @@ using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
 
-internal class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
+public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -45,7 +45,6 @@ internal class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
         eventEntity.Image = imageFileId?.ToString();
 
         await _unitOfWork.EventsRepository.AddAsync(eventEntity, cancellationToken);
-
         await _unitOfWork.SaveAllAsync(cancellationToken);
     }
 }
