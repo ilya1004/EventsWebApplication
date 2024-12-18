@@ -21,16 +21,6 @@ services.AddDbContext<ApplicationDbContext>(options =>
 
 services.AddControllers();
 
-//services.AddAuthorizationBuilder()
-//    .AddPolicy("User", policy =>
-//    {
-//        policy.RequireRole("User");
-//    })
-//    .AddPolicy("Admin", policy =>
-//    {
-//        policy.RequireRole("Admin");
-//    });
-
 services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
 services.AddTransient<IProfileService, MyProfileService>();
@@ -76,7 +66,6 @@ services.AddCors(options =>
 });
 
 var app = builder.Build();
-
 
 
 if (app.Environment.IsDevelopment())

@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace EventsAppIdentityServer.API.Validators;
 
-internal class RegisterUserDTOValidator : AbstractValidator<RegisterUserDTO>
+public class RegisterUserDTOValidator : AbstractValidator<RegisterUserDTO>
 {
     public RegisterUserDTOValidator()
     {

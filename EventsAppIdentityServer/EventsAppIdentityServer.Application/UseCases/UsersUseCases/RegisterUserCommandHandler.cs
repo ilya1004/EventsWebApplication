@@ -34,7 +34,5 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
             var errors = string.Join(", ", result1.Errors, result2.Errors);
             throw new Exception($"User is not successfully registered. Errors: {errors}");
         }
-
-
     }
 }

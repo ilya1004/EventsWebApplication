@@ -6,10 +6,7 @@ namespace EventsAppIdentityServer.Infrastructure.Data;
 
 public class ApplicationDbContext : IdentityDbContext<AppUser>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-    {
-        
-    }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<AppUser> AppUsers { get; set; }
 

@@ -16,7 +16,7 @@ public static class AzuriteExtension
         try
         {
             containerClient.CreateIfNotExists(
-                PublicAccessType.Blob, // Обеспечивает общедоступный доступ
+                PublicAccessType.Blob,
                 metadata: null,
                 cancellationToken: cancellationToken
             );

@@ -23,29 +23,16 @@ public static class UtilsProvider
     public static IEnumerable<Client> Clients =>
         new List<Client>
         {
-            //    AllowedScopes = {
-            //        "events",
-            //        IdentityServerConstants.StandardScopes.OpenId,
-            //        IdentityServerConstants.StandardScopes.Profile,
-            //        IdentityServerConstants.StandardScopes.Email,
-            //    },
-            //    RedirectUris = { "https://localhost:7096/signin-oidc" },
-            //    PostLogoutRedirectUris = { "https://localhost:7096/signout-callback-oidc" }
-            //}
-
             new Client
             {
                 ClientId = "react_client",
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword, // ROPC
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = { new Secret("react_secret".Sha256()) },
                 AllowOfflineAccess = true,
                 AccessTokenLifetime = 3600, // 1 час
                 RefreshTokenUsage = TokenUsage.ReUse,
                 AllowedScopes = { "openid", "profile", "offline_access", "events_scope" },
 
-
-                 // Важная настройка для использования куков
-                //AllowAccessTokensViaBrowser = false,
             }
 
         };

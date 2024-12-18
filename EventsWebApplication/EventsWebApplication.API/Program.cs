@@ -26,17 +26,18 @@ services.AddAPI(builder.Configuration);
 services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
 var identityBase = builder.Configuration["AUTHORITY_URI"] ?? "http://localhost:7013";
-builder.Services.AddAuthentication(opt =>
+
+builder.Services.AddAuthentication(options =>
 {
-    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-        .AddJwtBearer(opt =>
-        {
-            opt.Authority = identityBase;
-            opt.RequireHttpsMetadata = false;
-            opt.Audience = $"{identityBase}/resources";
-        });
+    .AddJwtBearer(options =>
+    {
+        options.Authority = identityBase;
+        options.RequireHttpsMetadata = false;
+        options.Audience = $"{identityBase}/resources";
+    });
 
 
 

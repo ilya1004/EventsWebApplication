@@ -9,10 +9,10 @@ public static class DependencyInjection
     public static IServiceCollection AddAPI(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddFluentValidationAutoValidation(cfg =>
+        services.AddFluentValidationAutoValidation(config =>
         {
-            cfg.EnableFormBindingSourceAutomaticValidation = true;
-            cfg.EnableBodyBindingSourceAutomaticValidation = true;
+            config.EnableFormBindingSourceAutomaticValidation = true;
+            config.EnableBodyBindingSourceAutomaticValidation = true;
         });
         
         return services;

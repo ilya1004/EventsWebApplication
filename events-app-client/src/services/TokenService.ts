@@ -42,7 +42,7 @@ export const refreshAccessToken = async () => {
 
 
 interface CustomJwtPayload extends JwtPayload {
-  role?: string | string[]; // 'role' может быть строкой или массивом строк
+  role?: string | string[];
 }
 
 export const getUserRole = (): string | string[] | null => {

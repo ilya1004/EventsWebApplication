@@ -4,9 +4,6 @@ import { Flex, Image, Menu, Typography, Button, MenuProps } from "antd";
 import { HomeOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
 import MenuItem from "antd/es/menu/MenuItem";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../store/store";
-// import siteIcon from "../../assets/music-player.png"
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -20,7 +17,6 @@ type NavProps = {
 }
 
 const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
-  // const authState = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   const [loginState, setLoginState] = useState<boolean>(appLoginState);

@@ -12,7 +12,8 @@ namespace EventsWebApplication.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+            migrationBuilder.
+                Table(
                 name: "Events",
                 columns: table => new
                 {
