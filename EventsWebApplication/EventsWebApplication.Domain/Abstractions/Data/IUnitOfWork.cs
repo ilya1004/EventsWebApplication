@@ -9,5 +9,4 @@ public interface IUnitOfWork
     IParticipantsRepository ParticipantsRepository { get; }
 
     public Task SaveAllAsync(CancellationToken cancellationToken);
-    public Task CreateDatabaseAsync();
 }

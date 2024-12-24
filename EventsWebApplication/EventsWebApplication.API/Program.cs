@@ -1,14 +1,9 @@
 using EventsWebApplication.API;
 using EventsWebApplication.API.Extensions;
 using EventsWebApplication.API.Middlewares;
-using EventsWebApplication.API.Utils;
 using EventsWebApplication.Application;
 using EventsWebApplication.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Security.Claims;
-using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,48 +20,10 @@ services.AddAPI(builder.Configuration);
 
 services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
-var identityBase = builder.Configuration["AUTHORITY_URI"] ?? "http://localhost:7013";
+services.AddAuthenticationOptions(builder.Configuration);
+services.AddAuthorizationPolicies();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(options =>
-    {
-        options.Authority = identityBase;
-        options.RequireHttpsMetadata = false;
-        options.Audience = $"{identityBase}/resources";
-    });
-
-
-
-services.AddAuthorizationBuilder()
-    .AddPolicy(AuthPolicies.UserPolicy, policy =>
-    {
-        policy.RequireRole("User");
-        policy.RequireClaim(ClaimTypes.NameIdentifier);
-    })
-    .AddPolicy(AuthPolicies.AdminPolicy, policy =>
-    {
-         policy.RequireRole("Admin");
-    })
-    .AddPolicy(AuthPolicies.AdminOrUserPolicy, policy =>
-    {
-        policy.RequireRole("Admin", "User");
-    });
-
-services.AddCors(options =>
-{
-    options.AddPolicy("ReactClientCors", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000", "http://eventwebapp.client:3000")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
-    });
-});
-
+services.AddCorsPolicies();
 
 builder.Host.UseSerilog();
 

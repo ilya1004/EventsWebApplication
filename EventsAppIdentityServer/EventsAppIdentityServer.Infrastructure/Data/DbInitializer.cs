@@ -1,12 +1,11 @@
 ﻿using EventsAppIdentityServer.Domain.Abstractions;
 using EventsAppIdentityServer.Domain.Entities;
 using EventsAppIdentityServer.Domain.Models;
-using EventsAppIdentityServer.Infrastructure.Data;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace EventsAppIdentityServer.Infrastructure.DbInitializer;
+namespace EventsAppIdentityServer.Infrastructure.Data;
 
 public class DbInitializer : IDbInitializer
 {

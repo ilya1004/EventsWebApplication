@@ -39,7 +39,6 @@ public class MyProfileService : IProfileService
 
     public Task IsActiveAsync(IsActiveContext context)
     {
-        context.IsActive = true;
-        return Task.CompletedTask;
+        return Task.FromResult(context.IsActive);
     }
 }

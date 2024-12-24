@@ -19,10 +19,6 @@ public class AppUnitOfWork : IUnitOfWork
     public IEventsRepository EventsRepository => _eventsRepository.Value;
     public IParticipantsRepository ParticipantsRepository => _participantsRepository.Value;
 
-    public async Task CreateDatabaseAsync()
-    {
-        await _context.Database.EnsureCreatedAsync();
-    }
 
     public async Task SaveAllAsync(CancellationToken cancellationToken)
     {
