@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EventsWebApplication.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Text.Json;
 
@@ -16,14 +17,26 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         {
             Log.Error(ex, "An exception occurred during request processing: {RequestPath}", context.Request.Path);
 
-            var details = new ProblemDetails
+            var statusCode = ex switch
             {
-                Title = "Server error",
-                Type = "Server error",
-                Detail = ex.Message
+                BadRequestException => StatusCodes.Status400BadRequest,
+                AlreadyExistsException => StatusCodes.Status400BadRequest,
+                NotFoundException => StatusCodes.Status404NotFound,
+                UnauthorizedException => StatusCodes.Status401Unauthorized,
+                ForbiddenException => StatusCodes.Status403Forbidden,
+                _ => StatusCodes.Status500InternalServerError
             };
 
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            var details = new ProblemDetails
+            {
+                Title = statusCode == StatusCodes.Status500InternalServerError ? "Server Error" : "Error",
+                Type = ex.GetType().Name,
+                Status = statusCode,
+                Detail = ex.Message,
+                Instance = context.Request.Path 
+            };
+
+            context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
 
             var json = JsonSerializer.Serialize(details);
