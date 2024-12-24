@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
@@ -70,7 +71,7 @@ public class DeleteEventCommandHandlerTests
 
         // Assert
         await act.Should()
-            .ThrowAsync<Exception>()
+            .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} not found.");
 
         _unitOfWorkMock.Verify(u => 

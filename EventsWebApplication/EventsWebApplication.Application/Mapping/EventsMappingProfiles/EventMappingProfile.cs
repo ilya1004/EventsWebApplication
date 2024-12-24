@@ -1,10 +1,10 @@
 ﻿using EventsWebApplication.Application.DTOs;
 
-namespace EventsWebApplication.Application.Mapping;
+namespace EventsWebApplication.Application.Mapping.EventsMappingProfile;
 
-public class EventsMappingProfile : Profile
+public class EventMappingProfile : Profile
 {
-    public EventsMappingProfile()
+    public EventMappingProfile()
     {
         CreateMap<EventDTO, Event>()
             .ForMember(e => e.Place, opt =>

@@ -10,12 +10,3 @@ public record UserInfoDTO
     public DateTime Birthday { get; set; }
 }
 
-var userData = new
-{
-    user.Id,
-    user.UserName,
-    user.Email,
-    user.Name,
-    user.Surname,
-    user.Birthday
-};

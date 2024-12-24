@@ -1,6 +1,4 @@
-﻿
-using EventsWebApplication.Domain.Abstractions.Data;
-using EventsWebApplication.Domain.Entities.Participants;
+﻿using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.GetParticipantsByEventId;
 

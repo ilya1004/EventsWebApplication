@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
+﻿using EventsWebApplication.Application.Exceptions;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
 using EventsWebApplication.Domain.Abstractions.Data;
 using EventsWebApplication.Domain.Entities.Events;
 using FluentAssertions;
@@ -90,7 +91,7 @@ public class GetEventByIdQueryHandlerTests
 
         // Assert
         await act.Should()
-            .ThrowAsync<Exception>()
+            .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} not found.");
 
         _unitOfWorkMock.Verify(u => 

@@ -1,4 +1,5 @@
 ﻿using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 
@@ -23,12 +24,12 @@ public class GetEventImageByEventIdQueryHandler : IRequestHandler<GetEventImageB
 
         if (eventObj == null)
         {
-            throw new Exception($"Event with ID {request.EventId} not found.");
+            throw new NotFoundException($"Event with ID {request.EventId} not found.");
         }
 
         if (eventObj.Image == null)
         {
-            throw new Exception($"Event with ID {request.EventId} don't have an image");
+            throw new NotFoundException($"Event with ID {request.EventId} don't have an image");
         }
 
         if (!Guid.TryParse(eventObj.Image, out var imageId))

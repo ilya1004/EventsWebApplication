@@ -14,6 +14,11 @@ public static class DependencyInjection
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
 
+        services.AddAutoMapper(config =>
+        {
+            config.AddMaps(Assembly.GetExecutingAssembly());
+        });
+
         services.AddTransient<IProfileService, MyProfileService>();
 
         return services;

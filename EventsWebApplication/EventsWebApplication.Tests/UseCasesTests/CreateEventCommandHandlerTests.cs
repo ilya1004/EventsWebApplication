@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
@@ -56,7 +57,7 @@ public class CreateEventCommandHandlerTests
 
         // Assert
         await act.Should()
-            .ThrowAsync<Exception>()
+            .ThrowAsync<AlreadyExistsException>()
             .WithMessage("Event with this Title, DateTime and Place already exists");
 
         _unitOfWorkMock.Verify(u => u.EventsRepository.IsSameEventExists(

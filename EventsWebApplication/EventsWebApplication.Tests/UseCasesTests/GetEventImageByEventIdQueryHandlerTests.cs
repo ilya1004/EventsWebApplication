@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventImageByEventId;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
@@ -91,7 +92,7 @@ public class GetEventImageByEventIdQueryHandlerTests
 
         // Assert
         await act.Should()
-            .ThrowAsync<Exception>()
+            .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} don't have an image");
 
         _unitOfWorkMock.Verify(u => 

@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Domain.Abstractions.Data;
+﻿using EventsWebApplication.Application.Exceptions;
+using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventById;
 
@@ -19,7 +20,7 @@ public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Event
         
         if (eventObj == null)
         {
-            throw new Exception($"Event with ID {query.EventId} not found.");
+            throw new NotFoundException($"Event with ID {query.EventId} not found.");
         }
 
         return eventObj;

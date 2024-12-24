@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration.Annotations;
 using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.Data;
+using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -9,15 +11,15 @@ namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands
 
 public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipantToEventCommand>
 {
-    private readonly HttpClient _httpClient;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUserInfoProvider _userInfoProvider;
 
-    public AddParticipantToEventCommandHandler(IHttpClientFactory httpClientFactory, IUnitOfWork unitOfWork, IMapper mapper)
+    public AddParticipantToEventCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserInfoProvider userInfoProvider)
     {
-        _httpClient = httpClientFactory.CreateClient("IdentityClient");
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _userInfoProvider = userInfoProvider;
     }
 
     public async Task Handle(AddParticipantToEventCommand command, CancellationToken cancellationToken)
@@ -26,47 +28,33 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
 
         if (eventObj == null)
         {
-            throw new Exception($"Event with given ID {command.EventId} not found.");
+            throw new NotFoundException($"Event with given ID {command.EventId} not found.");
         }
 
         if (eventObj.Participants.Count == eventObj.ParticipantsMaxCount)
         {
-            throw new Exception($"Event has reached the maximum number of participants.");
+            throw new BadRequestException($"Event has reached the maximum number of participants.");
         }
 
-        var request = new HttpRequestMessage(HttpMethod.Get, $"api/Users/{command.UserId}");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", command.Token);
+        var userInfoResponse = await _userInfoProvider.GetUserInfoAsync(command.UserId, command.Token, cancellationToken);
 
-        var responseMessage = await _httpClient.SendAsync(request, cancellationToken);
+        var userInfo = _mapper.Map<UserInfoDTO>(userInfoResponse);
 
-        if (!responseMessage.IsSuccessStatusCode)
-        {
-            throw new Exception($"Failed to get user data. Status Code: {responseMessage.StatusCode}");
-        }
-
-        var responseContent = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
-
-        var userModel = JsonSerializer.Deserialize<UserInfoDTO>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-        if (userModel == null)
-        {
-            throw new Exception("Failed to deserialize user data.");
-        }
-
-        var isAlreadyParticipate = await _unitOfWork.ParticipantsRepository.AnyAsync(p => p.Email == userModel.Email && p.EventId == command.EventId, cancellationToken);
+        var isAlreadyParticipate = await _unitOfWork.ParticipantsRepository.AnyAsync(
+            p => p.Email == userInfo.Email && p.EventId == command.EventId, 
+            cancellationToken);
 
         if (isAlreadyParticipate)
         {
-            throw new Exception("You are alredy participating in this event");
+            throw new AlreadyExistsException("You are alredy participating in this event");
         }
 
         var participant = new Participant(
-            userModel.Email,
-            new Person(userModel.Name, userModel.Surname, userModel.Birthday),
+            userInfo.Email,
+            new Person(userInfo.Name, userInfo.Surname, userInfo.Birthday),
             eventObj);
 
         await _unitOfWork.ParticipantsRepository.AddAsync(participant, cancellationToken);
         await _unitOfWork.SaveAllAsync(cancellationToken);
-
     }
 }

@@ -29,7 +29,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
 
             var details = new ProblemDetails
             {
-                Title = statusCode == StatusCodes.Status500InternalServerError ? "Server Error" : "Error",
+                Title = statusCode == StatusCodes.Status500InternalServerError ? "Internal Server Error" : "Error",
                 Type = ex.GetType().Name,
                 Status = statusCode,
                 Detail = ex.Message,

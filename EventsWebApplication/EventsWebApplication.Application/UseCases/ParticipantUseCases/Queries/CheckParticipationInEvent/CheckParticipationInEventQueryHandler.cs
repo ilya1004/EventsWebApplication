@@ -14,7 +14,9 @@ public class CheckParticipationInEventQueryHandler : IRequestHandler<CheckPartic
 
     public async Task<bool> Handle(CheckParticipationInEventQuery request, CancellationToken cancellationToken)
     {
-        var result = await _unitOfWork.ParticipantsRepository.AnyAsync(p => p.Email == request.Email && p.EventId == request.EventId, cancellationToken);
+        var result = await _unitOfWork.ParticipantsRepository.AnyAsync(
+            p => p.Email == request.Email && p.EventId == request.EventId, 
+            cancellationToken);
 
         return result;
     }

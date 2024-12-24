@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 
@@ -25,7 +26,7 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
                                                                  command.EventDTO.PlaceName,
                                                                  cancellationToken))
         {
-            throw new Exception("Event with this Title, DateTime and Place already exists");
+            throw new AlreadyExistsException("Event with this Title, DateTime and Place already exists");
         }
 
         Guid? imageFileId = null;

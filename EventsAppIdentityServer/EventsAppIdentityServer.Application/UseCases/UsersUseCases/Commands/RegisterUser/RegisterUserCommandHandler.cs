@@ -26,13 +26,23 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
             Birthday = new DateTime(request.UserDTO.Birthday, TimeOnly.MinValue, DateTimeKind.Utc),
         };
 
+
+        // проверку на существующий email
+
         var result1 = await _userManager.CreateAsync(user, request.UserDTO.Password);
-        var result2 = await _userManager.AddToRoleAsync(user, AppRoles.UserRole);
 
         if (!result1.Succeeded)
         {
-            var errors = string.Join(", ", result1.Errors, result2.Errors);
+            var errors = string.Join(", ", result1.Errors);
             throw new Exception($"User is not successfully registered. Errors: {errors}");
+        }
+
+        var result2 = await _userManager.AddToRoleAsync(user, AppRoles.UserRole);
+
+        if (!result2.Succeeded)
+        {
+            var errors = string.Join(", ", result2.Errors);
+            throw new Exception($"User is not successfully added to role. Errors: {errors}");
         }
     }
 }

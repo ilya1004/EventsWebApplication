@@ -1,4 +1,5 @@
 ﻿using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 using FluentEmail.Core;
@@ -26,7 +27,7 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
 
         if (eventObj == null)
         {
-            throw new Exception($"Event with ID {command.Id} not found.");
+            throw new NotFoundException($"Event with ID {command.Id} not found.");
         }
 
         Guid? imageFileId = null;

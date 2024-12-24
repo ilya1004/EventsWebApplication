@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Domain.Abstractions.Data;
+﻿using EventsWebApplication.Application.Exceptions;
+using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.RemoveParticipantFromEvent;
 
@@ -16,14 +17,14 @@ public class RemoveParticipantFromEventCommandHandler : IRequestHandler<RemovePa
 
         if (eventObj == null)
         {
-            throw new Exception($"Event with given ID {command.EventId} not found.");
+            throw new NotFoundException($"Event with given ID {command.EventId} not found.");
         }
 
         var participant = await _unitOfWork.ParticipantsRepository.FirstOrDefaultAsync(p => p.Email == command.Email && p.EventId == command.EventId, cancellationToken);
 
         if (participant == null)
         {
-            throw new Exception($"Participant with given Email {command.Email} not found.");
+            throw new NotFoundException($"Participant with given Email {command.Email} not found.");
         }
 
         await _unitOfWork.ParticipantsRepository.DeleteAsync(participant, cancellationToken);

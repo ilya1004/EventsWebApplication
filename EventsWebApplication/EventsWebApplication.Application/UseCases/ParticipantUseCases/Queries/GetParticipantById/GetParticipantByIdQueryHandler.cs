@@ -1,5 +1,5 @@
-﻿using EventsWebApplication.Domain.Abstractions.Data;
-using EventsWebApplication.Domain.Entities.Participants;
+﻿using EventsWebApplication.Application.Exceptions;
+using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.GetParticipantById;
 
@@ -17,7 +17,7 @@ public class GetParticipantByIdQueryHandler : IRequestHandler<GetParticipantById
 
         if (participant == null) 
         {
-            throw new Exception($"Participant with ID {query.Id} not found.");
+            throw new NotFoundException($"Participant with ID {query.Id} not found.");
         }
 
         return participant;

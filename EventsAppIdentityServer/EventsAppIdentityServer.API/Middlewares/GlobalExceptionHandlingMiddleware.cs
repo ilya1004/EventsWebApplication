@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EventsAppIdentityServer.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 namespace EventsAppIdentityServer.API.Middlewares;
@@ -13,14 +14,26 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         }
         catch (Exception ex)
         {
-            var details = new ProblemDetails
+            var statusCode = ex switch
             {
-                Title = "Server error",
-                Type = "Server error",
-                Detail = ex.Message
+                BadRequestException => StatusCodes.Status400BadRequest,
+                AlreadyExistsException => StatusCodes.Status400BadRequest,
+                NotFoundException => StatusCodes.Status404NotFound,
+                UnauthorizedException => StatusCodes.Status401Unauthorized,
+                ForbiddenException => StatusCodes.Status403Forbidden,
+                _ => StatusCodes.Status500InternalServerError
             };
 
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            var details = new ProblemDetails
+            {
+                Title = statusCode == StatusCodes.Status500InternalServerError ? "Internal Server Error" : "Error",
+                Type = ex.GetType().Name,
+                Status = statusCode,
+                Detail = ex.Message,
+                Instance = context.Request.Path
+            };
+
+            context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
 
             var json = JsonSerializer.Serialize(details);

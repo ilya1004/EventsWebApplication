@@ -1,4 +1,5 @@
 ﻿using EventsWebApplication.Application.DTOs;
+using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.Data;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventByIdWithRemainingPlaces;
@@ -6,10 +7,12 @@ namespace EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEve
 public class GetEventByIdWithRemainingPlacesQueryHandler : IRequestHandler<GetEventByIdWithRemainingPlacesQuery, EventWithRemainingPlacesDTO>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public GetEventByIdWithRemainingPlacesQueryHandler(IUnitOfWork unitOfWork)
+    public GetEventByIdWithRemainingPlacesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
     public async Task<EventWithRemainingPlacesDTO> Handle(GetEventByIdWithRemainingPlacesQuery query, CancellationToken cancellationToken)
     {
@@ -17,18 +20,10 @@ public class GetEventByIdWithRemainingPlacesQueryHandler : IRequestHandler<GetEv
 
         if (eventObj == null)
         {
-            throw new Exception($"Event with ID {query.EventId} not found.");
+            throw new NotFoundException($"Event with ID {query.EventId} not found.");
         }
 
-        var eventWithRemainingPlaces = new EventWithRemainingPlacesDTO(
-            eventObj.Id,
-            eventObj.Title,
-            eventObj.Description,
-            eventObj.EventDateTime,
-            eventObj.ParticipantsMaxCount,
-            eventObj.ParticipantsMaxCount - eventObj.Participants.Count,
-            eventObj.Place.Name,
-            eventObj.Category?.Name);
+        var eventWithRemainingPlaces = _mapper.Map<EventWithRemainingPlacesDTO>(eventObj);
 
         return eventWithRemainingPlaces;
     }
