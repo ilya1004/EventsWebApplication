@@ -1,7 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System;
 using System.Text.Json;
 
 namespace EventsWebApplication.API.Middlewares;

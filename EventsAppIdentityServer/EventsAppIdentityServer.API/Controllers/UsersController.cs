@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using EventsAppIdentityServer.Application.UseCases.UsersUseCases;
 using EventsAppIdentityServer.Application.DTOs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using EventsAppIdentityServer.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
+using EventsAppIdentityServer.Application.UseCases.UsersUseCases.Commands.RegisterUser;
+using EventsAppIdentityServer.Application.UseCases.UsersUseCases.Queries.GetUserInfoById;
 
 namespace EventsAppIdentityServer.API.Controllers;
 
@@ -35,61 +35,66 @@ public class UsersController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserById(string id)
     {
-        if (!Request.Headers.ContainsKey("Authorization"))
-        {
-            return Unauthorized();
-        }
 
-        var authHeader = Request.Headers.Authorization.FirstOrDefault();
-        if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
-        {
-            return Unauthorized();
-        }
+        var result = await _mediator.Send(new GetUserInfoByIdQuery(
+            id, 
+            Request.Headers.Authorization.FirstOrDefault()));
 
-        var token = authHeader["Bearer ".Length..].Trim();
+        //if (!Request.Headers.ContainsKey("Authorization"))
+        //{
+        //    return Unauthorized();
+        //}
 
-        var handler = new JwtSecurityTokenHandler();
-        JwtSecurityToken jwtToken;
-        try
-        {
-            jwtToken = handler.ReadJwtToken(token);
-        }
-        catch (Exception)
-        {
-            return Unauthorized("Invalid token");
-        }
+        //var authHeader = Request.Headers.Authorization.FirstOrDefault();
+        //if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+        //{
+        //    return Unauthorized();
+        //}
 
-        var userIdFromToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-        var userRoleFromToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+        //var token = authHeader["Bearer ".Length..].Trim();
 
-        if (string.IsNullOrEmpty(userIdFromToken))
-        {
-            return Unauthorized("Token does not contain user ID");
-        }
+        //var handler = new JwtSecurityTokenHandler();
+        //JwtSecurityToken jwtToken;
+        //try
+        //{
+        //    jwtToken = handler.ReadJwtToken(token);
+        //}
+        //catch (Exception)
+        //{
+        //    return Unauthorized("Invalid token");
+        //}
 
-        if (userIdFromToken != id && userRoleFromToken != "Admin")
-        {
-            return Forbid();
-        }
+        //var userIdFromToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        //var userRoleFromToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
 
-        var user = await _userManager.FindByIdAsync(id);
+        //if (string.IsNullOrEmpty(userIdFromToken))
+        //{
+        //    return Unauthorized("Token does not contain user ID");
+        //}
 
-        if (user == null)
-        {
-            return NoContent();
-        }
+        //if (userIdFromToken != id && userRoleFromToken != "Admin")
+        //{
+        //    return Forbid();
+        //}
 
-        var userData = new
-        {
-            user.Id,
-            user.UserName,
-            user.Email,
-            user.Name,
-            user.Surname,
-            user.Birthday
-        };
+        //var user = await _userManager.FindByIdAsync(id);
 
-        return Ok(userData);
+        //if (user == null)
+        //{
+        //    return NoContent();
+        //}
+
+        //var userData = new
+        //{
+        //    user.Id,
+        //    user.UserName,
+        //    user.Email,
+        //    user.Name,
+        //    user.Surname,
+        //    user.Birthday
+        //};
+
+        //return Ok(userData);
     }
 
 }

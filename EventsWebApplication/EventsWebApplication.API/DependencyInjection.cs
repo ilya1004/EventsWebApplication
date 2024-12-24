@@ -15,7 +15,6 @@ public static class DependencyInjection
         services.AddAutoMapper(config =>
         {
             config.AddMaps(Assembly.GetExecutingAssembly());
-
             config.AddMaps(typeof(Application.DependencyInjection).Assembly);
         });
 

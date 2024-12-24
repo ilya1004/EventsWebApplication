@@ -3,7 +3,7 @@ using EventsAppIdentityServer.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace EventsAppIdentityServer.Application.UseCases.UsersUseCases;
+namespace EventsAppIdentityServer.Application.UseCases.UsersUseCases.Commands.RegisterUser;
 
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 {

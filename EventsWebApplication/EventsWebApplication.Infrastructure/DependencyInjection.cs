@@ -1,8 +1,10 @@
 ﻿using Azure.Storage.Blobs;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
+using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
 using EventsWebApplication.Infrastructure.BlobStorage;
 using EventsWebApplication.Infrastructure.Data;
+using EventsWebApplication.Infrastructure.IdentityServerApiAccessor;
 using EventsWebApplication.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
@@ -26,6 +28,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IBlobService, BlobService>();
         services.AddSingleton(_ => new BlobServiceClient(connectionStringAzurite));
+
+        services.AddScoped<IUserInfoProvider, UserInfoProvider>();
 
         return services;
     }
