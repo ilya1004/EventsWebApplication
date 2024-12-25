@@ -25,8 +25,7 @@ public static class AzuriteExtension
         }
         catch (Azure.RequestFailedException ex)
         {
-            Console.WriteLine($"Failed to create container '{containerName}': {ex.Message}");
-            throw;
+            throw new Exception($"Failed to create container '{containerName}': {ex.Message}");
         }
     }
 }

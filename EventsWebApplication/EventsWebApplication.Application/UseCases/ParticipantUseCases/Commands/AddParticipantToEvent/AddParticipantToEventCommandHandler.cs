@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration.Annotations;
-using EventsWebApplication.Application.DTOs;
+﻿using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.Data;
 using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
-using System.Net.Http.Headers;
-using System.Text.Json;
 
 namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
 
@@ -49,10 +45,10 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
             throw new AlreadyExistsException("You are alredy participating in this event");
         }
 
-        var participant = new Participant(
-            userInfo.Email,
-            new Person(userInfo.Name, userInfo.Surname, userInfo.Birthday),
-            eventObj);
+        var participant = _mapper.Map<Participant>(userInfo);
+
+        participant.Event = eventObj;
+        participant.EventRegistrationDate = DateTime.UtcNow;
 
         await _unitOfWork.ParticipantsRepository.AddAsync(participant, cancellationToken);
         await _unitOfWork.SaveAllAsync(cancellationToken);

@@ -12,13 +12,11 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsB
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByTitle;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsListAll;
 using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsWithRemainingPlaces;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace EventsWebApplication.API.Controllers;

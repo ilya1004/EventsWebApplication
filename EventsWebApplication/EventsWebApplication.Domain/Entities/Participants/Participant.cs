@@ -20,7 +20,7 @@ public class Participant : Entity
     public string Email { get; private set; }
     public Person Person { get; private set; }
     public int EventId { get; set; }    
-    public Event? Event { get; private set; }
+    public Event? Event { get; set; }
     public DateTime EventRegistrationDate { get; set; }
 
 }
