@@ -20,6 +20,7 @@ public static class DependencyInjection
         });
 
         services.AddTransient<IProfileService, MyProfileService>();
+        services.AddScoped<TokenValidationService, TokenValidationService>();
 
         return services;
     }
