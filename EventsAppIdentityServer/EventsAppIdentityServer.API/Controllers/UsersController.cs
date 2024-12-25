@@ -13,12 +13,10 @@ namespace EventsAppIdentityServer.API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly UserManager<AppUser> _userManager;
 
-    public UsersController(IMediator mediator, UserManager<AppUser> userManager)
+    public UsersController(IMediator mediator)
     {
         _mediator = mediator;
-        _userManager = userManager;
     }
 
     [HttpPost]

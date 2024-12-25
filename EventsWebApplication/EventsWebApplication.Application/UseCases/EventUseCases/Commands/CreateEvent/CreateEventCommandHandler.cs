@@ -31,17 +31,15 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
 
         Guid? imageFileId = null;
 
-        if (command.EventDTO.ImageFile != null)
+        if (command.FileStream != null)
         {
-            using var stream = command.EventDTO.ImageFile.OpenReadStream();
-
             imageFileId = await _blobService.UploadAsync(
-                stream,
-                command.EventDTO.ImageFile.ContentType,
+                command.FileStream,
+                command.ContentType!,
                 cancellationToken);
         }
 
-        var eventEntity = _mapper.Map<Event>(command.EventDTO);
+        var eventEntity = _mapper.Map<Event>(command);
 
         eventEntity.Image = imageFileId?.ToString();
 

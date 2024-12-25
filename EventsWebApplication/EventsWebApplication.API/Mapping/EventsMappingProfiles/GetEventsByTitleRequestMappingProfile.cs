@@ -4,9 +4,9 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsB
 
 namespace EventsWebApplication.API.Mapping.EventsMappingProfiles;
 
-public class GetEventsByTitleMappingProfile : Profile
+public class GetEventsByTitleRequestMappingProfile : Profile
 {
-    public GetEventsByTitleMappingProfile()
+    public GetEventsByTitleRequestMappingProfile()
     {
         CreateMap<GetEventsByTitleRequest, GetEventsByTitleQuery>();
     }

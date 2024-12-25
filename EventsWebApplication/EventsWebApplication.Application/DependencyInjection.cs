@@ -1,5 +1,4 @@
-﻿using EventsWebApplication.Application.Services;
-using EventsWebApplication.Domain.Abstractions.EmailSenderService;
+﻿using EventsWebApplication.Domain.Abstractions.EmailSenderService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -26,7 +25,7 @@ public static class DependencyInjection
         services.AddFluentEmail(configuration["EmailSenderPapercut:EmailSender"], configuration["EmailSenderPapercut:SenderName"])
                 .AddSmtpSender(configuration["EmailSenderPapercut:Host"], configuration.GetValue<int>("EmailSenderPapercut:Port"));
 
-        services.AddScoped<IEmailSenderService, EmailSenderService>();
+        
 
         return services;
     }

@@ -2,4 +2,4 @@
 
 namespace EventsWebApplication.API.Contracts.Events;
 
-public sealed record CreateEventRequest(EventDTO EventDTO);
+public sealed record CreateEventRequest(EventDTO EventDTO, IFormFile ImageFile);

@@ -2,7 +2,7 @@
 using EventsWebApplication.Domain.Abstractions.EmailSenderService;
 using FluentEmail.Core;
 
-namespace EventsWebApplication.Application.Services;
+namespace EventsWebApplication.Infrastructure.Services.EmailService;
 
 public class EmailSenderService : IEmailSenderService
 {

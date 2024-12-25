@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using EventsWebApplication.Application.DTOs;
-using EventsWebApplication.Domain.Abstractions.Data;
-using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
+﻿using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
 using System.Net.Http.Headers;
 using System.Text.Json;
-namespace EventsWebApplication.Infrastructure.IdentityServerApiAccessor;
+namespace EventsWebApplication.Infrastructure.Services.IdentityServerApiAccessor;
 
 public class UserInfoProvider : IUserInfoProvider
 {

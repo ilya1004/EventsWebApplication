@@ -1,9 +1,7 @@
-﻿using EventsWebApplication.Application.DTOs;
-using EventsWebApplication.Application.Exceptions;
+﻿using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 using EventsWebApplication.Domain.Abstractions.EmailSenderService;
-using FluentEmail.Core;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
 
@@ -33,18 +31,16 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
         }
 
         Guid? imageFileId = null;
-        if (command.EventDTO.ImageFile != null)
+        if (command.FileStream is not null && command.ContentType is not null)
         {
             if (!string.IsNullOrEmpty(eventObj.Image) && Guid.TryParse(eventObj.Image, out Guid imageId))
             {
                 await _blobService.DeleteAsync(imageId, cancellationToken);
             }
             
-            using var stream = command.EventDTO.ImageFile.OpenReadStream();
-            
             imageFileId = await _blobService.UploadAsync(
-                stream,
-                command.EventDTO.ImageFile.ContentType,
+                command.FileStream,
+                command.ContentType,
                 cancellationToken);
         }
 

@@ -40,11 +40,10 @@ public class CreateEventCommandHandlerTests
             "",
             DateTime.UtcNow.AddDays(1),
             10,
-            null,
             "Place 1",
             "Category 1");
 
-        var command = new CreateEventCommand(eventDTO);
+        var command = new CreateEventCommand(eventDTO, null, null);
         var cancellationToken = CancellationToken.None;
 
         _unitOfWorkMock
@@ -75,11 +74,12 @@ public class CreateEventCommandHandlerTests
             "",
             DateTime.UtcNow.AddDays(1),
             10,
-            new FakeFormFile(),
             "Place 1",
             "Category 1");
 
-        var command = new CreateEventCommand(eventDTO);
+        var fakeFormFile = new FakeFormFile();
+
+        var command = new CreateEventCommand(eventDTO, fakeFormFile.OpenReadStream(), fakeFormFile.ContentType);
         var cancellationToken = CancellationToken.None;
 
         _unitOfWorkMock
@@ -95,7 +95,7 @@ public class CreateEventCommandHandlerTests
         var newEventObj = new Event("Event 1", null, eventDTO.EventDateTime, 10, null, new Place("Place 1", "PLACE 1"), null);
 
         _mapperMock
-            .Setup(m => m.Map<Event>(eventDTO))
+            .Setup(m => m.Map<Event>(command))
             .Returns(newEventObj);
 
         _unitOfWorkMock
@@ -111,7 +111,7 @@ public class CreateEventCommandHandlerTests
 
         // Assert
         _blobServiceMock.Verify(b => b.UploadAsync(
-            It.IsAny<Stream>(), eventDTO.ImageFile!.ContentType, cancellationToken), Times.Once);
+            It.IsAny<Stream>(), command.ContentType!, cancellationToken), Times.Once);
 
         _unitOfWorkMock.Verify(u => u.EventsRepository.AddAsync(It.IsAny<Event>(), cancellationToken), Times.Once);
 
@@ -127,11 +127,10 @@ public class CreateEventCommandHandlerTests
             "",
             DateTime.UtcNow.AddDays(1),
             10,
-            null,
             "Place 1",
             "Category 1");
 
-        var command = new CreateEventCommand(eventDTO);
+        var command = new CreateEventCommand(eventDTO, null, null);
         var cancellationToken = CancellationToken.None;
 
         _unitOfWorkMock
@@ -142,7 +141,7 @@ public class CreateEventCommandHandlerTests
         var newEventObj = new Event("Event 1", null, eventDTO.EventDateTime, 10, null, new Place("Place 1", "PLACE 1"), null);
 
         _mapperMock
-            .Setup(m => m.Map<Event>(eventDTO))
+            .Setup(m => m.Map<Event>(command))
             .Returns(newEventObj);
 
         _unitOfWorkMock

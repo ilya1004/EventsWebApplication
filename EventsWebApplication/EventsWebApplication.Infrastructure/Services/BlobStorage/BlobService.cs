@@ -4,7 +4,7 @@ using Azure.Storage.Blobs.Models;
 using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 
-namespace EventsWebApplication.Infrastructure.BlobStorage;
+namespace EventsWebApplication.Infrastructure.Services.BlobStorage;
 
 public class BlobService : IBlobService
 {

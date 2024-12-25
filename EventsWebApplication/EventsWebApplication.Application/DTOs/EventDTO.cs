@@ -7,6 +7,5 @@ public record EventDTO(
     string? Description,
     DateTime EventDateTime,
     int ParticipantsMaxCount,
-    IFormFile? ImageFile,
     string PlaceName,
     string? CategoryName);

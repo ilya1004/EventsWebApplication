@@ -1,11 +1,13 @@
 ﻿using Azure.Storage.Blobs;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
+using EventsWebApplication.Domain.Abstractions.EmailSenderService;
 using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
-using EventsWebApplication.Infrastructure.BlobStorage;
 using EventsWebApplication.Infrastructure.Data;
-using EventsWebApplication.Infrastructure.IdentityServerApiAccessor;
 using EventsWebApplication.Infrastructure.Repository;
+using EventsWebApplication.Infrastructure.Services.BlobStorage;
+using EventsWebApplication.Infrastructure.Services.EmailService;
+using EventsWebApplication.Infrastructure.Services.IdentityServerApiAccessor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +32,7 @@ public static class DependencyInjection
         services.AddSingleton(_ => new BlobServiceClient(connectionStringAzurite));
 
         services.AddScoped<IUserInfoProvider, UserInfoProvider>();
+        services.AddScoped<IEmailSenderService, EmailSenderService>();
 
         return services;
     }

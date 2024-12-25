@@ -4,9 +4,9 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEve
 
 namespace EventsWebApplication.API.Mapping.EventsMappingProfiles;
 
-public class UpdateEventMappingProfile : Profile
+public class UpdateEventRequestMappingProfile : Profile
 {
-    public UpdateEventMappingProfile()
+    public UpdateEventRequestMappingProfile()
     {
         CreateMap<UpdateEventRequest, UpdateEventCommand>();
     }

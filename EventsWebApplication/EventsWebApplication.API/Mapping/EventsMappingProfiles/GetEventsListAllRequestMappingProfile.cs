@@ -5,9 +5,9 @@ using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsW
 
 namespace EventsWebApplication.API.Mapping.EventsMappingProfiles;
 
-public class GetEventsListAllMappingProfile : Profile
+public class GetEventsListAllRequestMappingProfile : Profile
 {
-    public GetEventsListAllMappingProfile()
+    public GetEventsListAllRequestMappingProfile()
     {
         CreateMap<GetEventsListAllRequest, GetEventsListAllQuery>();
         CreateMap<GetEventsListAllRequest, GetEventsWithRemainingPlacesQuery>();

@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer.Services;
 using EventsAppIdentityServer.Application.Services;
+using EventsAppIdentityServer.Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -20,7 +21,7 @@ public static class DependencyInjection
         });
 
         services.AddTransient<IProfileService, MyProfileService>();
-        services.AddScoped<TokenValidationService, TokenValidationService>();
+        services.AddScoped<ITokenValidationService, TokenValidationService>();
 
         return services;
     }
