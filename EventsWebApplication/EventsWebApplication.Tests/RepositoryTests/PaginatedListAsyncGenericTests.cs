@@ -17,7 +17,6 @@ public class PaginatedListAsyncGenericTests
 
         var context = new ApplicationDbContext(options);
 
-        await context.Database.EnsureCreatedAsync();
         return context;
     }
 

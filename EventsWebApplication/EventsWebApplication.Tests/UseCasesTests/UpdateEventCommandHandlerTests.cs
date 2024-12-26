@@ -51,7 +51,7 @@ public class UpdateEventCommandHandlerTests
             .ReturnsAsync(existingEvent);
 
         _mapperMock.Setup(m => 
-            m.Map<Event>(eventDTO))
+            m.Map<Event>(command))
             .Returns(existingEvent);
 
         _unitOfWorkMock.Setup(u => 
@@ -108,7 +108,7 @@ public class UpdateEventCommandHandlerTests
             .ReturnsAsync(Guid.NewGuid());
         
         _mapperMock.Setup(m => 
-            m.Map<Event>(eventDTO))
+            m.Map<Event>(command))
             .Returns(existingEvent);
         
         _unitOfWorkMock.Setup(u => 
@@ -166,7 +166,7 @@ public class UpdateEventCommandHandlerTests
             u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken))
             .ReturnsAsync(new List<Participant> { participant });
 
-        _mapperMock.Setup(m => m.Map<Event>(newEventDTO))
+        _mapperMock.Setup(m => m.Map<Event>(command))
             .Returns(new Event(
                 "Event 2",
                 null,
