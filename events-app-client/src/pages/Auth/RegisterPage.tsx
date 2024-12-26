@@ -64,8 +64,8 @@ export const RegisterPage: React.FC = () => {
 
       navigate("/login");
     } catch (err: any) {
-      console.error("Error during user registration:", err);
-      showMessageStc(err.response.detail, "error");
+      console.error("Error during user registration:", err.response.data);
+      showMessageStc(err.response.data.detail, "error");
     }
   };
 
