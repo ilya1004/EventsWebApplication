@@ -31,20 +31,19 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
         }
 
         Guid? imageFileId = null;
-        if (command.FileStream is not null && command.ContentType is not null)
+        if (command.FileStream != null)
         {
             if (!string.IsNullOrEmpty(eventObj.Image) && Guid.TryParse(eventObj.Image, out Guid imageId))
             {
                 await _blobService.DeleteAsync(imageId, cancellationToken);
             }
-            
+
             imageFileId = await _blobService.UploadAsync(
                 command.FileStream,
-                command.ContentType,
+                command.ContentType!,
                 cancellationToken);
         }
-
-        var eventEntity = _mapper.Map<Event>(command.EventDTO);
+        var eventEntity = _mapper.Map<Event>(command);
 
         eventEntity.Image = imageFileId?.ToString();
         eventEntity.Id = command.Id;
@@ -52,8 +51,6 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
         await _unitOfWork.EventsRepository.UpdateAsync(eventEntity, cancellationToken);
         await _unitOfWork.SaveAllAsync(cancellationToken);
 
-        var newEventEntity = _mapper.Map<Event>(command.EventDTO);
-
-        await _emailSenderService.SendEmailNotifications(eventEntity, newEventEntity, cancellationToken);
+        await _emailSenderService.SendEmailNotifications(eventObj, eventEntity, cancellationToken);
     }
 }

@@ -1,12 +1,12 @@
-﻿using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
+﻿using EventsWebApplication.Application.UseCases.EventUseCases.Commands.UpdateEvent;
 
 namespace EventsWebApplication.Application.Mapping.EventsMappingProfiles;
 
-public class CreateEventCommandMappingProfile : Profile
+public class UpdateEventCommandMappingProfile : Profile
 {
-    public CreateEventCommandMappingProfile()
+    public UpdateEventCommandMappingProfile()
     {
-        CreateMap<CreateEventCommand, Event>()
+        CreateMap<UpdateEventCommand, Event>()
             .ForMember(dest => dest.Title, opt =>
                 opt.MapFrom(src => src.EventDTO.Title))
             .ForMember(dest => dest.Description, opt =>

@@ -9,5 +9,6 @@ public class UserInfoMappingProfile : Profile
     public UserInfoMappingProfile()
     {
         CreateMap<AppUser, UserInfoDTO>();
+            
     }
 }

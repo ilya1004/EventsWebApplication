@@ -65,16 +65,15 @@ export const AdminEditEventPage: React.FC = () => {
     formData.append("EventDTO.Title", eventData.Title);
     formData.append("EventDTO.Description", eventData.Description ?? "");
     formData.append("EventDTO.EventDateTime", eventData.EventDateTime);
-    formData.append("EventDTO.ParticipantsMaxCount", eventData.ParticipantsMaxCount.toString());
-  
-    if (eventData.ImageFile) {
-      formData.append("EventDTO.ImageFile", eventData.ImageFile);
-    } else {
-      formData.append("EventDTO.ImageFile", "");
-    }
-  
+    formData.append("EventDTO.ParticipantsMaxCount", eventData.ParticipantsMaxCount.toString());  
     formData.append("EventDTO.PlaceName", eventData.PlaceName);
     formData.append("EventDTO.CategoryName", eventData.CategoryName ?? "");
+
+    if (eventData.ImageFile) {
+      formData.append("ImageFile", eventData.ImageFile);
+    } else {
+      formData.append("ImageFile", "");
+    }
   
     const accessToken = localStorage.getItem("access_token");
   

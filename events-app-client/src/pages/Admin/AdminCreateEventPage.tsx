@@ -54,14 +54,14 @@ export const AdminCreateEventPage: React.FC = () => {
       eventData.ParticipantsMaxCount?.toString() ?? "0"
     );
 
-    if (eventData.ImageFile) {
-      formData.append("EventDTO.ImageFile", eventData.ImageFile);
-    } else {
-      formData.append("EventDTO.ImageFile", "");
-    }
-
     formData.append("EventDTO.PlaceName", eventData.PlaceName ?? "");
     formData.append("EventDTO.CategoryName", eventData.CategoryName ?? "");
+
+    if (eventData.ImageFile) {
+      formData.append("ImageFile", eventData.ImageFile);
+    } else {
+      formData.append("ImageFile", "");
+    }
 
     const accessToken = localStorage.getItem("access_token");
 

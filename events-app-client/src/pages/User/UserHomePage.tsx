@@ -5,6 +5,9 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs, { Dayjs } from "dayjs";
 import { getRequestData } from "../../services/RequestRervice.ts";
+import utc from "dayjs-plugin-utc";
+
+dayjs.extend(utc);
 
 const { Title, Text } = Typography;
 
@@ -106,8 +109,6 @@ export const UserHomePage: React.FC = () => {
     if (dates != null) {
       let date1: Dayjs = dates[0];
       let date2: Dayjs = dates[1];
-      date1 = date1.add(4, "hour");
-      date2 = date2.add(4, "hour");
       setDateStart(date1);
       setDateEnd(date2);
     }

@@ -47,8 +47,7 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
 
         var participant = _mapper.Map<Participant>(userInfo);
 
-        participant.Event = eventObj;
-        participant.EventRegistrationDate = DateTime.UtcNow;
+        participant.EventId = eventObj.Id;
 
         await _unitOfWork.ParticipantsRepository.AddAsync(participant, cancellationToken);
         await _unitOfWork.SaveAllAsync(cancellationToken);

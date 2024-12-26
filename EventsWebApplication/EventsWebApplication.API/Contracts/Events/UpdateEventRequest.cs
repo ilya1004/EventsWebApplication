@@ -2,4 +2,7 @@
 
 namespace EventsWebApplication.API.Contracts.Events;
 
-public sealed record UpdateEventRequest(int Id, EventDTO EventDTO);
+public sealed record UpdateEventRequest(
+    int Id, 
+    EventDTO EventDTO, 
+    IFormFile? ImageFile);

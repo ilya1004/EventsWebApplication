@@ -54,4 +54,3 @@ export interface Person {
   surname: string,
   birthday: string,
 }
-

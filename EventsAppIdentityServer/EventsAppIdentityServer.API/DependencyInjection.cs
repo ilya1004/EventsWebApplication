@@ -39,9 +39,9 @@ public static class DependencyInjection
             option.EmitStaticAudienceClaim = true;
             option.IssuerUri = configuration["ISSUER_URI"] ?? "http://localhost:7013";
         })
-            .AddInMemoryIdentityResources(UtilsProvider.IdentityResources)
-            .AddInMemoryApiScopes(UtilsProvider.ApiScopes)
-            .AddInMemoryClients(UtilsProvider.Clients)
+            .AddInMemoryIdentityResources(IdentityConfigurationProvider.IdentityResources)
+            .AddInMemoryApiScopes(IdentityConfigurationProvider.ApiScopes)
+            .AddInMemoryClients(IdentityConfigurationProvider.Clients)
             .AddAspNetIdentity<AppUser>()
             .AddDeveloperSigningCredential()
             .AddProfileService<MyProfileService>();

@@ -55,9 +55,9 @@ public class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entit
     {
         return await _entities
             .AsNoTracking()
+            .OrderBy(x => x.Id)
             .Skip(offset)
             .Take(limit)
-            .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
     }
 
@@ -99,9 +99,9 @@ public class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entit
         }
 
         return await query
+            .OrderBy(x => x.Id)
             .Skip(offset)
             .Take(limit)
-            .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
     }
 

@@ -7,11 +7,14 @@ public class EventWithRemainingPlacesMappingProfile : Profile
     public EventWithRemainingPlacesMappingProfile()
     {
         CreateMap<Event, EventWithRemainingPlacesDTO>()
-            .ForMember(e => e.PlacesRemain, opt =>
-                opt.MapFrom(e => e.ParticipantsMaxCount - e.Participants.Count))
-            .ForMember(e => e.PlaceName, opt => 
-                opt.MapFrom(e => e.Place.Name))
-            .ForMember(e => e.CategoryName, opt =>
-                opt.MapFrom(e => e.Category == null ? null : e.Category.Name));
+            .ConstructUsing(src => new EventWithRemainingPlacesDTO(
+                src.Id,
+                src.Title,
+                src.Description,
+                src.EventDateTime,
+                src.ParticipantsMaxCount,
+                src.ParticipantsMaxCount - src.Participants.Count,
+                src.Place.Name,
+                src.Category == null ? null : src.Category.Name));
     }
 }

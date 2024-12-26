@@ -3,7 +3,7 @@ using Duende.IdentityServer.Models;
 
 namespace EventsAppIdentityServer.API.Utils;
 
-public static class UtilsProvider
+public static class IdentityConfigurationProvider
 {
     public static IEnumerable<IdentityResource> IdentityResources =>
         new List<IdentityResource>
@@ -29,7 +29,7 @@ public static class UtilsProvider
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = { new Secret("react_secret".Sha256()) },
                 AllowOfflineAccess = true,
-                AccessTokenLifetime = 3600, // 1 час
+                AccessTokenLifetime = 3600,
                 RefreshTokenUsage = TokenUsage.ReUse,
                 AllowedScopes = { "openid", "profile", "offline_access", "events_scope" },
 

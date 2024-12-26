@@ -14,7 +14,9 @@ public class EventsRepository : AppRepository<Event>, IEventsRepository
 
         if (dateStart != null && dateEnd != null)
         {
-            query = query.Where(e => dateStart.Value.Date <= e.EventDateTime.Date && e.EventDateTime.Date <= dateEnd.Value.Date);
+            query = query.Where(e =>
+                new DateTime(dateStart.Value.Ticks, DateTimeKind.Utc) <= e.EventDateTime.Date &&
+                e.EventDateTime.Date <= new DateTime(dateEnd.Value.AddDays(1).Ticks, DateTimeKind.Utc));
         }
 
         if (!string.IsNullOrEmpty(placeName))
@@ -27,7 +29,7 @@ public class EventsRepository : AppRepository<Event>, IEventsRepository
             query = query.Where(e => e.Category != null && e.Category.Name.ToLower().Contains(categoryName.ToLower()));
         }
 
-        return await query.Skip(offset).Take(limit).ToListAsync(cancellationToken);
+        return await query.OrderBy(e => e.Id).Skip(offset).Take(limit).ToListAsync(cancellationToken);
     }
 
     public async Task<bool> IsSameEventExists(string title, DateTime dateTime, string placeName, CancellationToken cancellationToken = default)

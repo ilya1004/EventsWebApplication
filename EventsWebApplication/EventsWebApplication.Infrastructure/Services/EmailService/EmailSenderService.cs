@@ -17,10 +17,12 @@ public class EmailSenderService : IEmailSenderService
 
     public async Task SendEmailNotifications(Event existingEventData, Event newEventData, CancellationToken cancellationToken)
     {
+        Console.WriteLine("qweqwe");
         var eventDateTimeChanged = existingEventData.EventDateTime != newEventData.EventDateTime;
         var eventPlaceChanged = existingEventData.Place.Name != newEventData.Place.Name;
         if (!eventDateTimeChanged && !eventDateTimeChanged)
         {
+            Console.WriteLine("123123");
             return;
         }
 
