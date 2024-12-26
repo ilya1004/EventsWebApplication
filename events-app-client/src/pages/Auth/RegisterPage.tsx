@@ -6,6 +6,7 @@ import { BASE_IDENTITY_URL } from "../../store/constants.ts";
 import { GithubOutlined } from "@ant-design/icons";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
+import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
 
 const { Title, Text } = Typography;
 
@@ -17,7 +18,7 @@ export const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
-  const [birthday, setBirthday] = useState<Dayjs | null>(dayjs('2000-01-01', dateFormat));
+  const [birthday, setBirthday] = useState<Dayjs | null>(dayjs(dateFormat));
 
   const navigate = useNavigate();
 
@@ -43,14 +44,6 @@ export const RegisterPage: React.FC = () => {
 
   const handleBack = () => navigate(-1);
 
-  // {
-  //   "email": "string",
-  //   "password": "string",
-  //   "name": "string",
-  //   "surname": "string",
-  //   "birthday": "2024-12-14"
-  // }
-
   const registerUser = async (): Promise<any> => {
     try {
       const data = {
@@ -72,6 +65,7 @@ export const RegisterPage: React.FC = () => {
       navigate("/login");
     } catch (err: any) {
       console.error("Error during user registration:", err);
+      showMessageStc(err.response.detail, "error");
     }
   };
 
@@ -168,9 +162,7 @@ export const RegisterPage: React.FC = () => {
                 name="birthday"
                 rules={[{ required: true, message: "Enter your birthday date!", },]}
               >
-                <DatePicker name="birthday" onChange={handleChangeBirthday} value={birthday} disabledDate={disabledDate}
-                  defaultValue={dayjs('2000-01-01', dateFormat)} />
-                {/* <Input name="birthday" onChange={handleChange} value={surname} /> */}
+                <DatePicker name="birthday" onChange={handleChangeBirthday} value={birthday} disabledDate={disabledDate} />
               </Form.Item>
 
               <Form.Item>
