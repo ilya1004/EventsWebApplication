@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using EventsAppIdentityServer.Application.DTOs;
-using Microsoft.AspNetCore.Identity;
-using EventsAppIdentityServer.Domain.Entities;
 using EventsAppIdentityServer.Application.UseCases.UsersUseCases.Commands.RegisterUser;
 using EventsAppIdentityServer.Application.UseCases.UsersUseCases.Queries.GetUserInfoById;
 

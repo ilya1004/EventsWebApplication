@@ -30,9 +30,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MakeMigrations();
 }
 
+app.MakeMigrations();
 await app.SeedDatabase();
 
 app.UseCors("CorsPolicy");
