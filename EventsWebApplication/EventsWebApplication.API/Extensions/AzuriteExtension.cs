@@ -13,19 +13,12 @@ public static class AzuriteExtension
         var containerName = configuration["BlobStorage:ContainerName"] ?? "images";
         var containerClient = blobService.GetBlobContainerClient(containerName);
 
-        try
-        {
-            containerClient.CreateIfNotExists(
-                PublicAccessType.Blob,
-                metadata: null,
-                cancellationToken: cancellationToken
-            );
+        containerClient.CreateIfNotExists(
+            PublicAccessType.Blob,
+            metadata: null,
+            cancellationToken: cancellationToken
+        );
 
-            Console.WriteLine($"Container '{containerName}' successfully created or already exists.");
-        }
-        catch (Azure.RequestFailedException ex)
-        {
-            throw new Exception($"Failed to create container '{containerName}': {ex.Message}");
-        }
+        Console.WriteLine($"Container '{containerName}' successfully created or already exists.");
     }
 }

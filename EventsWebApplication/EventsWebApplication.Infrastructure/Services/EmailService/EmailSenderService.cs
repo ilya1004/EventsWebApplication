@@ -37,11 +37,6 @@ public class EmailSenderService : IEmailSenderService
                     .Subject($"Changes in event: {existingEventData.Title}")
                     .Body(message, isHtml: true)
                     .SendAsync(cancellationToken);
-
-                if (!response.Successful)
-                {
-                    throw new Exception($"Email sending failed to {participant.Email}: {string.Join(", ", response.ErrorMessages)}");
-                }
             }
         }
     }

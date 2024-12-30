@@ -1,9 +1,9 @@
 using EventsAppIdentityServer.API;
-using EventsAppIdentityServer.API.Extensions;
 using EventsAppIdentityServer.API.Middlewares;
 using EventsAppIdentityServer.Application;
 using EventsAppIdentityServer.Domain.Entities;
 using EventsAppIdentityServer.Infrastructure;
+using EventsAppIdentityServer.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;

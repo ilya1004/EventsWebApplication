@@ -34,7 +34,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         if (!result1.Succeeded)
         {
             var errors = string.Join(", ", result1.Errors);
-            throw new Exception($"User is not successfully registered. Errors: {errors}");
+            throw new BadRequestException($"User is not successfully registered. Errors: {errors}");
         }
 
         var result2 = await _userManager.AddToRoleAsync(user, AppRoles.UserRole);
@@ -42,7 +42,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         if (!result2.Succeeded)
         {
             var errors = string.Join(", ", result2.Errors);
-            throw new Exception($"User is not successfully added to role. Errors: {errors}");
+            throw new BadRequestException($"User is not successfully registered. Errors: {errors}");
         }
     }
 }

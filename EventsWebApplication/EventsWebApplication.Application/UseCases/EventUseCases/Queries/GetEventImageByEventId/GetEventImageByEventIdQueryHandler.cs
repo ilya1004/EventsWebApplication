@@ -34,7 +34,7 @@ public class GetEventImageByEventIdQueryHandler : IRequestHandler<GetEventImageB
 
         if (!Guid.TryParse(eventObj.Image, out var imageId))
         {
-            throw new Exception($"Event with ID {request.EventId} have an incorrect format of the image name");
+            throw new BadRequestException($"Event with ID {request.EventId} have an incorrect format of the image name");
         }
 
         var result = await _blobService.DownloadAsync(imageId, cancellationToken);

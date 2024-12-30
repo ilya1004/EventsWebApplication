@@ -35,7 +35,7 @@ public class BlobService : IBlobService
         }
         catch (Exception ex)
         {
-            throw new Exception($"An error occurred during the upload process: {ex.Message}");
+            throw new BadRequestException($"An error occurred during the upload process: {ex.Message}");
         }
     }
 
@@ -57,7 +57,7 @@ public class BlobService : IBlobService
         }
         catch (Exception ex)
         {
-            throw new Exception($"An error occurred during the download process: {ex.Message}", ex);
+            throw new BadRequestException($"An error occurred during the download process: {ex.Message}");
         }
     }
 
@@ -77,7 +77,7 @@ public class BlobService : IBlobService
         }
         catch (Exception ex)
         {
-            throw new Exception($"An error occurred during the deletion process: {ex.Message}");
+            throw new BadRequestException($"An error occurred during the deletion process: {ex.Message}");
         }
     }
 }

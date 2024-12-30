@@ -1,8 +1,10 @@
 ﻿using EventsAppIdentityServer.Domain.Abstractions;
 using EventsAppIdentityServer.Infrastructure.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace EventsAppIdentityServer.API.Extensions;
+namespace EventsAppIdentityServer.Infrastructure.Extensions;
 
 public static class DatabaseExtension
 {
