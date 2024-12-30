@@ -21,7 +21,6 @@ public class GetEventsByDateRangeQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEvents_WhenEventsExistInDateRange()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
         var dateStart = DateTime.UtcNow.Date;
         var dateEnd = DateTime.UtcNow.Date.AddDays(7);
@@ -38,10 +37,8 @@ public class GetEventsByDateRangeQueryHandlerTests
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(events);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEquivalentTo(events);
 
         _unitOfWorkMock.Verify(u => 
@@ -52,21 +49,18 @@ public class GetEventsByDateRangeQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEmptyList_WhenNoEventsInDateRange()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
         var dateStart = DateTime.UtcNow.Date;
         var dateEnd = DateTime.UtcNow.Date.AddDays(7);
 
-        var query = new GetEventsByDateRangeQuery(dateStart, dateEnd, 1, 10); // PageNo = 1, PageSize = 10
+        var query = new GetEventsByDateRangeQuery(dateStart, dateEnd, 1, 10); 
 
         _unitOfWorkMock.Setup(u => 
             u.EventsRepository.PaginatedListAsync( It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(new List<Event>());
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEmpty();
 
         _unitOfWorkMock.Verify(u => 

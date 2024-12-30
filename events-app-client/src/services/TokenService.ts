@@ -36,7 +36,6 @@ export const refreshAccessToken = async () => {
   } catch (error) {
     console.error("Failed to refresh token:", error);
     window.location.href = "/login";
-    // return redirect("/login");
   }
 };
 
@@ -53,8 +52,7 @@ export const getUserRole = (): string | string[] | null => {
 
   try {
     const decodedToken = jwtDecode<CustomJwtPayload>(token);
-    // console.log("Decoded Token:", decodedToken);
-
+    
     return decodedToken.role || null;
   } catch (error) {
     console.error("Failed to decode token:", error);

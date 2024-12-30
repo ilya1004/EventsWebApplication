@@ -9,15 +9,10 @@ namespace EventsAppIdentityServer.Infrastructure.Data;
 
 public class DbInitializer : IDbInitializer
 {
-    private readonly ApplicationDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    public DbInitializer(
-        ApplicationDbContext context,
-        UserManager<AppUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+    public DbInitializer(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
     {
-        _context = context;
         _userManager = userManager;
         _roleManager = roleManager;
     }
@@ -68,15 +63,11 @@ public class DbInitializer : IDbInitializer
         await _userManager.CreateAsync(user, "Ilya_123");
         await _userManager.AddToRoleAsync(user, AppRoles.UserRole);
 
-        //await _userManager.AddClaimsAsync(user,
-        //    [
-        //        new Claim(JwtClaimTypes.Id, user.Id),
-        //        new Claim(JwtClaimTypes.Name, user.Name),
-        //        new Claim("surname", user.Surname),
-        //        new Claim(JwtClaimTypes.Email, user.Email),
-        //        new Claim(JwtClaimTypes.BirthDate, user.Birthday.ToString()),
-        //        new Claim(JwtClaimTypes.Role, AppRoles.UserRole)
-        //    ]);
-
+        await _userManager.AddClaimsAsync(user,
+            [
+                new Claim(JwtClaimTypes.Id, user.Id),
+                new Claim(JwtClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.Role, AppRoles.UserRole)
+            ]);
     }
 }

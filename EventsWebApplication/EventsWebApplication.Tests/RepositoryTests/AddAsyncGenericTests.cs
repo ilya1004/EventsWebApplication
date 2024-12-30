@@ -8,7 +8,7 @@ namespace EventsWebApplication.Tests.RepositoryTests;
 
 public class AddAsyncGenericTests
 {
-    private async Task<ApplicationDbContext> GetInMemoryDbContextAsync()
+    private ApplicationDbContext GetInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase("InMemoryDB1")
@@ -22,9 +22,8 @@ public class AddAsyncGenericTests
     [Fact]
     public async Task AddAsync_ShouldAddEntityToDatabase()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
-        var context = await GetInMemoryDbContextAsync();
+        var context = GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
@@ -41,11 +40,9 @@ public class AddAsyncGenericTests
             Id = 1
         };
 
-        // Act
         await repository.AddAsync(eventEntity, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        // Assert
         var addedEntity = await context.Events.FirstOrDefaultAsync(e => e.Id == eventEntity.Id);
 
         addedEntity.Should().NotBeNull();
@@ -59,26 +56,22 @@ public class AddAsyncGenericTests
     [Fact]
     public async Task AddAsync_ShouldThrowException_WhenEntityIsNull()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
-        var context = await GetInMemoryDbContextAsync();
+        var context = GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
 
-        // Act
         var act = async () => await repository.AddAsync(null!, CancellationToken.None);
 
-        // Assert
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
     public async Task AddAsync_ShouldSaveChangesToDatabase()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
-        var context = await GetInMemoryDbContextAsync();
+        var context = GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
@@ -95,10 +88,8 @@ public class AddAsyncGenericTests
                 Id = 2
             };
 
-        // Act
         await repository.AddAsync(eventEntity, cancellationToken);
 
-        // Assert
         var count = await context.Events.CountAsync();
         count.Should().Be(0);
     }

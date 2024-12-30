@@ -16,11 +16,6 @@ public static class DependencyInjection
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddHttpClient("IdentityClient", client =>
-        {
-            client.BaseAddress = new Uri("http://eventwebapp_identityserver:7013");
-        });
-
         services.AddFluentEmail(configuration["EmailSenderPapercut:EmailSender"], configuration["EmailSenderPapercut:SenderName"])
                 .AddSmtpSender(configuration["EmailSenderPapercut:Host"], configuration.GetValue<int>("EmailSenderPapercut:Port"));
 

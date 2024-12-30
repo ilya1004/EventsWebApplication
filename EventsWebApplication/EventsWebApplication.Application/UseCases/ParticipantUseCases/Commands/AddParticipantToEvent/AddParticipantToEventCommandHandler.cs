@@ -1,7 +1,5 @@
-﻿using EventsWebApplication.Application.DTOs;
-using EventsWebApplication.Application.Exceptions;
+﻿using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.Data;
-using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
 
 namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
 
@@ -9,13 +7,11 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IUserInfoProvider _userInfoProvider;
 
-    public AddParticipantToEventCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserInfoProvider userInfoProvider)
+    public AddParticipantToEventCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _userInfoProvider = userInfoProvider;
     }
 
     public async Task Handle(AddParticipantToEventCommand command, CancellationToken cancellationToken)

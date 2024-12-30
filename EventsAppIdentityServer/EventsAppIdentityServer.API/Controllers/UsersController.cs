@@ -2,7 +2,6 @@
 using MediatR;
 using EventsAppIdentityServer.Application.DTOs;
 using EventsAppIdentityServer.Application.UseCases.UsersUseCases.Commands.RegisterUser;
-using EventsAppIdentityServer.Application.UseCases.UsersUseCases.Queries.GetUserInfoById;
 
 namespace EventsAppIdentityServer.API.Controllers;
 

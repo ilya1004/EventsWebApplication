@@ -22,7 +22,6 @@ public class GetEventsByCurrentUserQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEvents_WhenUserHasEvents()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
 
         var events = new List<Event>
@@ -50,10 +49,8 @@ public class GetEventsByCurrentUserQueryHandlerTests
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(events);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEquivalentTo(events);
         _unitOfWorkMock.Verify(u => 
             u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken), 
@@ -67,7 +64,6 @@ public class GetEventsByCurrentUserQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEmptyList_WhenUserHasNoEvents()
     {
-        // Arrange
         var email = "test@gmail.com";
         var cancellationToken = CancellationToken.None;
         var query = new GetEventsByCurrentUserQuery(email, 1, 10);
@@ -80,10 +76,8 @@ public class GetEventsByCurrentUserQueryHandlerTests
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(new List<Event>());
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEmpty();
         
         _unitOfWorkMock.Verify(u => 

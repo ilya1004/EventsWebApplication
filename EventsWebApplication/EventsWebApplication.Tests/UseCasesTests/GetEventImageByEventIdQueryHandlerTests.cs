@@ -28,7 +28,6 @@ public class GetEventImageByEventIdQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnImage_WhenEventAndImageExist()
     {
-        // Arrange
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
         var stream = new Mock<Stream>();
@@ -52,10 +51,8 @@ public class GetEventImageByEventIdQueryHandlerTests
             m.Map<FileResponseDTO>(fileResponse))
             .Returns(fileResponseDTO);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should()
             .BeEquivalentTo(fileResponseDTO);
 
@@ -75,7 +72,6 @@ public class GetEventImageByEventIdQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldThrowException_WhenEventHasNoImage()
     {
-        // Arrange
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
@@ -87,10 +83,8 @@ public class GetEventImageByEventIdQueryHandlerTests
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken))
             .ReturnsAsync(eventObj);
 
-        // Act
         var act = async () => await _handler.Handle(query, cancellationToken);
 
-        // Assert
         await act.Should()
             .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} don't have an image");
@@ -107,7 +101,6 @@ public class GetEventImageByEventIdQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldThrowException_WhenImageIdIsInvalid()
     {
-        // Arrange
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
@@ -119,10 +112,8 @@ public class GetEventImageByEventIdQueryHandlerTests
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken))
             .ReturnsAsync(eventObj);
 
-        // Act
         var act = async () => await _handler.Handle(query, cancellationToken);
 
-        // Assert
         await act.Should()
             .ThrowAsync<Exception>()
             .WithMessage($"Event with ID {eventId} have an incorrect format of the image name");

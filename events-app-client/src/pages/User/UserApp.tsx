@@ -16,8 +16,6 @@ export const userAppLoader = () => {
 
     let role = getUserRole();
 
-    console.log(role);
-
     if (!role || role !== "User") {
       return redirect("/login");
     }

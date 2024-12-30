@@ -20,7 +20,6 @@ public class GetEventsByFilterQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnFilteredEvents_WhenEventsMatchFilters()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
 
         var events = new List<Event>
@@ -43,10 +42,8 @@ public class GetEventsByFilterQueryHandlerTests
                 query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken))
             .ReturnsAsync(events);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEquivalentTo(events);
 
         _unitOfWorkMock.Verify(u => 
@@ -58,7 +55,6 @@ public class GetEventsByFilterQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEmptyList_WhenNoEventsMatchFilters()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
         var query = new GetEventsByFilterQuery(
             DateTime.UtcNow.AddDays(-7),
@@ -71,10 +67,8 @@ public class GetEventsByFilterQueryHandlerTests
                 query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken))
             .ReturnsAsync(new List<Event>());
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEmpty();
 
         _unitOfWorkMock.Verify(u => 
@@ -85,7 +79,6 @@ public class GetEventsByFilterQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnFullPaginatedList_WhenFiltersIsNull()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
         var query = new GetEventsByFilterQuery(null, null, null, null);
 
@@ -100,10 +93,8 @@ public class GetEventsByFilterQueryHandlerTests
                 query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken))
             .ReturnsAsync(events);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEquivalentTo(events);
 
         _unitOfWorkMock.Verify(u => 

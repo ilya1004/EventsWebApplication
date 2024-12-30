@@ -34,7 +34,6 @@ public class CreateEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldThrowException_WhenEventAlreadyExists()
     {
-        // Arrange
         var eventDTO = new EventDTO(
             "Event 1",
             "",
@@ -51,10 +50,8 @@ public class CreateEventCommandHandlerTests
                 eventDTO.Title, eventDTO.EventDateTime, eventDTO.PlaceName, cancellationToken))
             .ReturnsAsync(true);
 
-        // Act
         var act = async () => await _handler.Handle(command, cancellationToken);
 
-        // Assert
         await act.Should()
             .ThrowAsync<AlreadyExistsException>()
             .WithMessage("Event with this Title, DateTime and Place already exists");
@@ -68,7 +65,6 @@ public class CreateEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldCreateEvent_WhenImageIsProvided()
     {
-        // Arrange
         var eventDTO = new EventDTO(
             "Event 1",
             "",
@@ -106,10 +102,8 @@ public class CreateEventCommandHandlerTests
             .Setup(u => u.SaveAllAsync(cancellationToken))
             .Returns(Task.CompletedTask);
 
-        // Act
         await _handler.Handle(command, cancellationToken);
 
-        // Assert
         _blobServiceMock.Verify(b => b.UploadAsync(
             It.IsAny<Stream>(), command.ContentType!, cancellationToken), Times.Once);
 
@@ -121,7 +115,6 @@ public class CreateEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldCreateEvent_WhenImageIsNotProvided()
     {
-        // Arrange
         var eventDTO = new EventDTO(
             "Event 1",
             "",
@@ -152,10 +145,8 @@ public class CreateEventCommandHandlerTests
             .Setup(u => u.SaveAllAsync(cancellationToken))
             .Returns(Task.CompletedTask);
 
-        // Act
         await _handler.Handle(command, cancellationToken);
 
-        // Assert
         _unitOfWorkMock.Verify(u => u.EventsRepository.AddAsync(It.IsAny<Event>(), cancellationToken), Times.Once);
 
         _unitOfWorkMock.Verify(u => u.SaveAllAsync(cancellationToken), Times.Once);

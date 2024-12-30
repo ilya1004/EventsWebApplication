@@ -22,7 +22,6 @@ public class GetEventByIdQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEvent_WhenEventExists()
     {
-        // Arrange
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
@@ -34,10 +33,8 @@ public class GetEventByIdQueryHandlerTests
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null))
             .ReturnsAsync(expectedEvent);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEquivalentTo(expectedEvent);
 
         _unitOfWorkMock.Verify(u => 
@@ -48,7 +45,6 @@ public class GetEventByIdQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEventWithParticipants_IfProvided()
     {
-        // Arrange
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
@@ -62,10 +58,8 @@ public class GetEventByIdQueryHandlerTests
             .GetByIdAsync(eventId, cancellationToken, includeProperties))
             .ReturnsAsync(expectedEvent);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEquivalentTo(expectedEvent);
 
         _unitOfWorkMock.Verify(u =>
@@ -76,7 +70,6 @@ public class GetEventByIdQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldThrowException_WhenEventNotFound()
     {
-        // Arrange
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
@@ -86,10 +79,8 @@ public class GetEventByIdQueryHandlerTests
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null))
             .ReturnsAsync((Event?)null);
 
-        // Act
         var act = async () => await _handler.Handle(query, cancellationToken);
 
-        // Assert
         await act.Should()
             .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} not found.");

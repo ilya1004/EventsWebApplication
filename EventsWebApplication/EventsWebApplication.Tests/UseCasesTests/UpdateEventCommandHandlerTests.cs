@@ -37,13 +37,9 @@ public class UpdateEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldUpdateEvent_WhenNoImageProvided()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
-
         var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, null, new Place("Place 1", "PLACE 1"), null); 
-        
         var eventDTO = new EventDTO("Event 2", null, new DateTime(2025, 1, 1), 10, "Place 1", null);
-        
         var command = new UpdateEventCommand(existingEvent.Id, eventDTO, null, null);
 
         _unitOfWorkMock.Setup(u => 
@@ -62,10 +58,8 @@ public class UpdateEventCommandHandlerTests
             u.SaveAllAsync(cancellationToken))
             .Returns(Task.CompletedTask);
 
-        // Act
         await _handler.Handle(command, CancellationToken.None);
 
-        // Assert
         _unitOfWorkMock.Verify(u =>
             u.EventsRepository.Update(It.IsAny<Event>(), cancellationToken), 
             Times.Once);
@@ -78,11 +72,8 @@ public class UpdateEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldUploadNewImage_AndDeleteOldImage()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
-
         var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, Guid.NewGuid().ToString(), new Place("Place 1", "PLACE 1"), null);
-        
         var fakeFile = new Mock<IFormFile>();
         
         fakeFile.Setup(f => f.OpenReadStream())
@@ -115,10 +106,8 @@ public class UpdateEventCommandHandlerTests
             u.EventsRepository.Update(It.IsAny<Event>(), cancellationToken))
             .Returns(Task.CompletedTask);
 
-        // Act
         await _handler.Handle(command, CancellationToken.None);
 
-        // Assert
         _blobServiceMock.Verify(b => 
             b.DeleteAsync(It.IsAny<Guid>(), cancellationToken), 
             Times.Once);
@@ -131,7 +120,6 @@ public class UpdateEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldSendEmailNotification_WhenDateOrPlaceChanged()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
 
         var existingEvent = new Event(
@@ -187,10 +175,8 @@ public class UpdateEventCommandHandlerTests
             _mapperMock.Object,
             _emailSenderServiceMock.Object);
 
-        // Act
         await handler.Handle(command, cancellationToken);
 
-        // Assert
         _unitOfWorkMock.Verify(u => u.EventsRepository.GetByIdAsync(command.Id, cancellationToken), Times.Once);
         _unitOfWorkMock.Verify(u => u.EventsRepository.Update(It.IsAny<Event>(), cancellationToken), Times.Once);
         _unitOfWorkMock.Verify(u => u.SaveAllAsync(cancellationToken), Times.Once);

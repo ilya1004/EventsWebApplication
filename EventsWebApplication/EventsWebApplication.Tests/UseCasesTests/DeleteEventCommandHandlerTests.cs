@@ -26,7 +26,6 @@ public class DeleteEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldDeleteEvent_WhenEventExists()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
         var eventId = 1;
 
@@ -42,10 +41,8 @@ public class DeleteEventCommandHandlerTests
 
         var command = new DeleteEventCommand(eventId);
 
-        // Act
         await _handler.Handle(command, cancellationToken);
 
-        // Assert
         _unitOfWorkMock.Verify(u => 
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken), Times.Once);
 
@@ -56,7 +53,6 @@ public class DeleteEventCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldThrowException_WhenEventDoesNotExist()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
         var eventId = 1;
 
@@ -66,10 +62,8 @@ public class DeleteEventCommandHandlerTests
 
         var command = new DeleteEventCommand(eventId);
 
-        // Act
         var act = async () => await _handler.Handle(command, cancellationToken);
 
-        // Assert
         await act.Should()
             .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} not found.");

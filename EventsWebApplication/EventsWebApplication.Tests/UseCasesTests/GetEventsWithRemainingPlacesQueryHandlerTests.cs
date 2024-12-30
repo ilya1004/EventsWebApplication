@@ -21,7 +21,6 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEventsWithRemainingPlaces_WhenParticipantsAndEventsExist()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
 
         var events = new List<Event>
@@ -46,10 +45,8 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
             u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken))
             .ReturnsAsync(participantCounts);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should()
             .BeEquivalentTo(
             [
@@ -69,7 +66,6 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnEmptyList_WhenNoEventsExist()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
 
         _unitOfWorkMock.Setup(u =>
@@ -82,10 +78,8 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
 
         var query = new GetEventsWithRemainingPlacesQuery();
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEmpty();
 
         _unitOfWorkMock.Verify(u => 
@@ -100,7 +94,6 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldHandleEventsWithNoParticipants()
     {
-        // Arrange
         var cancellationToken = CancellationToken.None;
 
         var events = new List<Event>
@@ -116,10 +109,8 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
         _unitOfWorkMock.Setup(u => u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken))
             .ReturnsAsync([]);
 
-        // Act
         var result = await _handler.Handle(query, cancellationToken);
 
-        // Assert
         result.Should().BeEquivalentTo(
             [
                 new EventWithRemainingPlacesDTO(1, "Event 1", null, events[0].EventDateTime, 100, 0, "Place 1", null)

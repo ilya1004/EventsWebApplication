@@ -3,13 +3,12 @@ using EventsWebApplication.Infrastructure.Data;
 using EventsWebApplication.Infrastructure.Repository;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace EventsWebApplication.Tests.RepositoryTests;
 
 public class PaginatedListAsyncGenericTests
 {
-    private async Task<ApplicationDbContext> GetInMemoryDbContextAsync()
+    private ApplicationDbContext GetInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase("InMemoryDB2")
@@ -24,8 +23,7 @@ public class PaginatedListAsyncGenericTests
     [Fact]
     public async Task PaginatedListAsync_ShouldReturnFilteredAndPaginatedData()
     {
-        // Arrange
-        var context = await GetInMemoryDbContextAsync();
+        var context = GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
@@ -41,10 +39,8 @@ public class PaginatedListAsyncGenericTests
         await context.Events.AddRangeAsync(events);
         await context.SaveChangesAsync();
 
-        // Act
         var result = await repository.PaginatedListAsync(e => e.Place.Name == "Place 1", 0, 2, CancellationToken.None);
 
-        // Assert
         result.Should().NotBeNull();
         result.Should().HaveCount(2);
         result[0].Title.Should().Be("Event 1");
@@ -54,8 +50,7 @@ public class PaginatedListAsyncGenericTests
     [Fact]
     public async Task PaginatedListAsync_ShouldReturnEmptyList_WhenNoDataMatchesFilter()
     {
-        // Arrange
-        var context = await GetInMemoryDbContextAsync();
+        var context = GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
@@ -69,18 +64,15 @@ public class PaginatedListAsyncGenericTests
         await context.Events.AddRangeAsync(events);
         await context.SaveChangesAsync();
 
-        // Act
         var result = await repository.PaginatedListAsync(e => e.Place.Name == "Place 123", 0, 2, CancellationToken.None);
 
-        // Assert
         result.Should().BeEmpty();
     }
 
     [Fact]
     public async Task PaginatedListAsync_ShouldReturnCorrectPageOfData()
     {
-        // Arrange
-        var context = await GetInMemoryDbContextAsync();
+        var context = await GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
@@ -96,10 +88,8 @@ public class PaginatedListAsyncGenericTests
         await context.Events.AddRangeAsync(events);
         await context.SaveChangesAsync();
 
-        // Act
         var result = await repository.PaginatedListAsync(null, 2, 2, CancellationToken.None);
 
-        // Assert
         result.Should().NotBeNull();
         result.Should().HaveCount(2);
         result[0].Title.Should().Be("Event 3");
