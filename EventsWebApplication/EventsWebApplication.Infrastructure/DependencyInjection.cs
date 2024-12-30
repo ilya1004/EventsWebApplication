@@ -2,14 +2,15 @@
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 using EventsWebApplication.Domain.Abstractions.EmailSenderService;
+using EventsWebApplication.Domain.Abstractions.StartupServices;
 using EventsWebApplication.Domain.Abstractions.UserInfoProvider;
 using EventsWebApplication.Infrastructure.Data;
 using EventsWebApplication.Infrastructure.Repository;
 using EventsWebApplication.Infrastructure.Services.BlobStorage;
 using EventsWebApplication.Infrastructure.Services.EmailService;
 using EventsWebApplication.Infrastructure.Services.IdentityServerApiAccessor;
+using EventsWebApplication.Infrastructure.StartupServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +34,9 @@ public static class DependencyInjection
 
         services.AddScoped<IUserInfoProvider, UserInfoProvider>();
         services.AddScoped<IEmailSenderService, EmailSenderService>();
+
+        services.AddScoped<IAzuriteStartupService, AzuriteStartupService>();
+        services.AddScoped<IMigrationsStartupService, MigrationsStartupService>();
 
         return services;
     }

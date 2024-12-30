@@ -10,6 +10,7 @@ public class UserInfoProvider : IUserInfoProvider
     {
         _httpClient = httpClientFactory.CreateClient("IdentityClient");
     }
+
     public async Task<UserInfoResponse> GetUserInfoAsync(string userId, string token, CancellationToken cancellationToken)
     {
         //var request = new HttpRequestMessage(HttpMethod.Get, $"api/Users/{userId}");

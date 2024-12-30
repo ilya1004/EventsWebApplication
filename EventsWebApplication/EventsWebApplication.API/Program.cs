@@ -1,7 +1,7 @@
 using EventsWebApplication.API;
-using EventsWebApplication.API.Extensions;
 using EventsWebApplication.API.Middlewares;
 using EventsWebApplication.Application;
+using EventsWebApplication.Domain.Abstractions.StartupServices;
 using EventsWebApplication.Infrastructure;
 using Serilog;
 
@@ -30,7 +30,6 @@ builder.Host.UseSerilog();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(7012);
-    // options.ListenAnyIP(7002, listenOptions => listenOptions.UseHttps()); 
 });
 
 var app = builder.Build();
@@ -39,8 +38,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MakeMigrations();
-    app.CreateContainerIfNotExist(builder.Configuration);
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var migrationsStartupService = scope.ServiceProvider.GetRequiredService<IMigrationsStartupService>();
+    await migrationsStartupService.MakeMigrationsAsync();
+
+    var azuriteStartupService = scope.ServiceProvider.GetRequiredService<IAzuriteStartupService>();
+    await azuriteStartupService.CreateContainerIfNotExistAsync();
 }
 
 app.UseRouting();
