@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using EventsAppIdentityServer.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -22,10 +23,22 @@ public class MyProfileService : IProfileService
         if (user != null)
         {
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-            var claims = new List<Claim>
+
+            List<Claim> claims = context.Caller switch
             {
-                new Claim("email", user.Email!),
-                new Claim("role", role!)
+                IdentityServerConstants.ProfileDataCallers.ClaimsProviderAccessToken => [
+                    new Claim("email", user.Email!),
+                    new Claim("role", role!)
+                    ],
+                IdentityServerConstants.ProfileDataCallers.UserInfoEndpoint => [
+                    new Claim("email", user.Email!),
+                    new Claim("role", role!),
+                    new Claim("name", user.Name),
+                    new Claim("surname", user.Surname),
+                    new Claim("birthday", user.Birthday.ToString("yyyy-MM-ddTHH:mm:ss.fffffffK")),
+                    ],
+                _ => []
+                
             };
 
             context.IssuedClaims.AddRange(claims);

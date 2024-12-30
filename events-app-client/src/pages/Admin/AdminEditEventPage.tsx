@@ -6,7 +6,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs, { Dayjs } from "dayjs";
 import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
-import { getRequestData } from "../../services/RequestRervice.ts";
+import { getRequestData } from "../../services/RequestService.ts";
 
 const { Title } = Typography;
 
@@ -88,8 +88,6 @@ export const AdminEditEventPage: React.FC = () => {
   
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // e.preventDefault();
-
     if (title == "") {
       showMessageStc("Please enter title of the event.", "warning");
       return;

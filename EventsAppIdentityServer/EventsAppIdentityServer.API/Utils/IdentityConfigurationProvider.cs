@@ -31,8 +31,6 @@ public static class IdentityConfigurationProvider
                 AccessTokenLifetime = 3600,
                 RefreshTokenUsage = TokenUsage.ReUse,
                 AllowedScopes = { "openid", "profile", "offline_access", "events_scope" },
-
             }
-
         };
 }

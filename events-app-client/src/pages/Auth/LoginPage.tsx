@@ -2,18 +2,14 @@ import { Form, Button, Input, Card, Flex, Typography } from "antd";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { useSelector } from "react-redux";
 import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
 import { BASE_IDENTITY_URL } from "../../store/constants.ts";
 import { GithubOutlined } from "@ant-design/icons";
 import { getUserRole } from "../../services/TokenService.ts";
-// import { RootState } from "../../store/store";
 
 const { Title, Text } = Typography;
 
 export const LoginPage: React.FC = () => {
-
-  // const authState = useSelector((state: RootState) => state.auth);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -70,7 +66,6 @@ export const LoginPage: React.FC = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    // e.preventDefault();
     if (!email || !password) {
       showMessageStc("Email and password are required", "error");
       return;
@@ -116,7 +111,6 @@ export const LoginPage: React.FC = () => {
               ]}
             >
               <Input
-                // type="email"
                 name="email"
                 onChange={handleChangeEmail}
                 value={email}
@@ -187,5 +181,3 @@ export const LoginPage: React.FC = () => {
     </>
   );
 }
-
-// export default LoginPage;

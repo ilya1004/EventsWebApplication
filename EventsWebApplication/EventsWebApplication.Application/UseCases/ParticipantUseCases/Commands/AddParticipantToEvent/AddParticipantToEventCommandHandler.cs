@@ -27,17 +27,13 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
             throw new NotFoundException($"Event with given ID {command.EventId} not found.");
         }
 
-        if (eventObj.Participants.Count == eventObj.ParticipantsMaxCount)
+        if (eventObj.Participants.Count >= eventObj.ParticipantsMaxCount)
         {
             throw new BadRequestException($"Event has reached the maximum number of participants.");
         }
 
-        var userInfoResponse = await _userInfoProvider.GetUserInfoAsync(command.UserId, command.Token, cancellationToken);
-
-        var userInfo = _mapper.Map<UserInfoDTO>(userInfoResponse);
-
         var isAlreadyParticipate = await _unitOfWork.ParticipantsRepository.AnyAsync(
-            p => p.Email == userInfo.Email && p.EventId == command.EventId, 
+            p => p.Email == command.Email && p.EventId == command.EventId, 
             cancellationToken);
 
         if (isAlreadyParticipate)
@@ -45,8 +41,8 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
             throw new AlreadyExistsException("You are alredy participating in this event");
         }
 
-        var participant = _mapper.Map<Participant>(userInfo);
-
+        var participant = _mapper.Map<Participant>(command.UserInfoDTO);
+        participant.Email = command.Email;
         participant.EventId = eventObj.Id;
 
         await _unitOfWork.ParticipantsRepository.AddAsync(participant, cancellationToken);

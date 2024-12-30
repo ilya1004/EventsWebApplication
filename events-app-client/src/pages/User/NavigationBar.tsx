@@ -8,9 +8,6 @@ import MenuItem from "antd/es/menu/MenuItem";
 type MenuItem = Required<MenuProps>['items'][number];
 
 const { Text } = Typography;
-const { SubMenu, Item } = Menu;
-
-
 
 type NavProps = {
   appLoginState: boolean;
@@ -22,7 +19,6 @@ const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
   const [loginState, setLoginState] = useState<boolean>(appLoginState);
 
   const handleClickNavItem = ({ key }) => {
-    // return navigate(`/${key}`)
     switch (key) {
       case "home":
         return navigate("/");
@@ -70,7 +66,6 @@ const NavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
       <Flex justify="center">
         <Image
           preview={false}
-          // src={siteIcon}
           style={{
             height: "70px",
           }}

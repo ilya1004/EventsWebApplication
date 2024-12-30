@@ -1,10 +1,10 @@
-import { Button, Flex, Typography, TableProps, Table, Input, DatePicker, Pagination } from "antd";
+import { Button, Flex, Typography, TableProps, Table, Input, DatePicker } from "antd";
 import React, { useState } from "react";
 import { PAGE_MIN_HEIGHT, TABLE_PAGE_SIZE } from "../../store/constants.ts";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs, { Dayjs } from "dayjs";
-import { getRequestData } from "../../services/RequestRervice.ts";
+import { getRequestData } from "../../services/RequestService.ts";
 import utc from "dayjs-plugin-utc";
 
 dayjs.extend(utc);
@@ -13,20 +13,8 @@ const { Title, Text } = Typography;
 
 const { RangePicker } = DatePicker;
 
-// interface EventWithRemainingPlacesDTO {
-//   id: number,
-//   title: string,
-//   description: string | null,
-//   eventDateTime: string,
-//   participantsMaxCount: number,
-//   placesRemain: number,
-//   placeName: string,
-//   categoryName: string | null,
-// }
-
 export const userHomeLoader = async () => {
   let res = await getRequestData(`/Events?PageNo=${1}&PageSize=${50}`);
-  // console.log(res);
   return res;
 }
 
@@ -34,14 +22,10 @@ export const UserHomePage: React.FC = () => {
 
   const eventsLoader = useLoaderData() as EventEntity[];
 
-  // console.log(Math.floor(eventsLoader.length / TABLE_PAGE_SIZE) + 1);
-
   const [dateStart, setDateStart] = useState<Dayjs | null>(null);
   const [dateEnd, setDateEnd] = useState<Dayjs | null>(null);
   const [placeName, setPlaceName] = useState<string>("");
   const [categoryName, setCategoryName] = useState<string>("");
-
-  // const [totalPages, setTotalPages] = useState<number>(Math.floor(eventsLoader.length / TABLE_PAGE_SIZE) + 1);
 
   const [pageNo, setPageNo] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(TABLE_PAGE_SIZE)
@@ -150,21 +134,6 @@ export const UserHomePage: React.FC = () => {
     setEvents(result);
   }
 
-  // const handleChangePage = async (page: number, pageSize: number) => {
-  //   if (page === pageNo) {
-  //     return;
-  //   }
-  //   setPageNo(page);
-
-  //   if (!categoryName && !placeName && !dateStart && !dateEnd) {
-  //     let res = await getRequestData(`/Events?PageNo=${page}&PageSize=${pageSize}`);
-  //     setEvents(res);
-  //   }
-  //   else {
-  //     await handleGetFilteredData(page);
-  //   }
-  // }
-
   const handleClickFilter = async () => {
     await handleGetFilteredData();
   }
@@ -199,12 +168,6 @@ export const UserHomePage: React.FC = () => {
               <Button type="default" onClick={handleClearFilter}>Clear filter</Button>
             </Flex>
             <Table columns={columns} dataSource={events} pagination={{ pageSize: 10}} />
-            {/* <Pagination
-              defaultCurrent={1}
-              total={Math.floor(eventsLoader.length / TABLE_PAGE_SIZE) + 1}
-              // showTotal={(total) => `Total ${total} items`}
-              pageSize={TABLE_PAGE_SIZE}
-              onChange={(page, pageSize) => handleChangePage(page, pageSize)} /> */}
           </Flex>
         </Flex>
       </Flex>

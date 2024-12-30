@@ -71,7 +71,6 @@ export const RegisterPage: React.FC = () => {
 
 
   const handleSubmit = (e: React.FormEvent) => {
-    // e.preventDefault();
     registerUser();
   };
 

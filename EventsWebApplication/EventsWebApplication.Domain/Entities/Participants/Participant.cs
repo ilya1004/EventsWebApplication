@@ -17,8 +17,8 @@ public class Participant : Entity
         EventRegistrationDate = DateTime.UtcNow;
     }
 
-    public string Email { get; private set; }
-    public Person Person { get; private set; }
+    public string Email { get; set; }
+    public Person Person { get; set; }
     public int EventId { get; set; }    
     public Event? Event { get; set; }
     public DateTime EventRegistrationDate { get; set; }

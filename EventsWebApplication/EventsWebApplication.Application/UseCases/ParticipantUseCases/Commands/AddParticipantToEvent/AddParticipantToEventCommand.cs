@@ -1,3 +1,5 @@
-﻿namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
+﻿using EventsWebApplication.Application.DTOs;
 
-public sealed record AddParticipantToEventCommand(string UserId, int EventId, string Token) : IRequest;
+namespace EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
+
+public sealed record AddParticipantToEventCommand(int EventId, string Email, UserInfoDTO UserInfoDTO) : IRequest;

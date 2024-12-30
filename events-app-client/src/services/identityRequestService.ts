@@ -1,15 +1,15 @@
 import axios from "axios";
+import { BASE_IDENTITY_URL } from "../store/constants.ts";
 import { refreshAccessToken } from "./TokenService.ts";
-import { BASE_SERVER_API_URL } from "../store/constants.ts";
 import { redirect } from "react-router-dom";
 
 
-export const apiClient = axios.create({
-  baseURL: BASE_SERVER_API_URL,
+export const identityClient = axios.create({
+  baseURL: BASE_IDENTITY_URL,
 });
 
 
-apiClient.interceptors.request.use(
+identityClient.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("access_token");
     if (accessToken) {
@@ -23,7 +23,7 @@ apiClient.interceptors.request.use(
 );
 
 
-apiClient.interceptors.response.use(
+identityClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -32,7 +32,7 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
       try {
         await refreshAccessToken();
-        return apiClient(originalRequest);
+        return identityClient(originalRequest);
       } catch (refreshError) {
         console.error("Failed to refresh access token:", refreshError);
         return redirect("/login");
@@ -44,33 +44,12 @@ apiClient.interceptors.response.use(
 );
 
 
-export const getRequestData = async (url: string) => {
+export const getIdentityRequestData = async (url: string) => {
   try {
-    const response = await apiClient.get(url);
+    const response = await identityClient.get(url);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
   }
 };
-
-
-export const deleteRequestData = async (url: string) => {
-  try {
-    const response = await apiClient.delete(url);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-};
-
-export const postRequestData = async (url: string, data: any) => {
-  try {
-    const response = await apiClient.post(url, data)
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-}

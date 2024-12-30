@@ -1,6 +1,5 @@
 import { Outlet, redirect } from "react-router-dom";
 import { Layout, Flex, Typography } from "antd";
-import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import React from "react";
 import { GithubOutlined } from "@ant-design/icons";
@@ -26,7 +25,6 @@ export const adminAppLoader = () => {
     return true;
   }
   return redirect("/login");
-  // return false;
 }
 
 export const AdminApp: React.FC = () => {
@@ -67,7 +65,7 @@ export const AdminApp: React.FC = () => {
               </div>
               <div>
                 <Text>
-                  <a href="https://github.com/ilya1004/EventsWebApplication" target="_blank">Link to project code on github</a>
+                  <a href="https://github.com/ilya1004/EventsWebApplication" rel="noreferrer" target="_blank">Link to project code on github</a>
                   <GithubOutlined style={{ margin: "0px 0px 0px 5px", fontSize: "16px" }} />
                 </Text>
               </div>

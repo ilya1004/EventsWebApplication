@@ -1,8 +1,8 @@
 import { Button, Card, Descriptions, Flex, Image, List, Typography } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import {  PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { useLoaderData, useRevalidator } from "react-router-dom";
-import { deleteRequestData, getRequestData } from "../../services/RequestRervice.ts";
+import { deleteRequestData, getRequestData } from "../../services/RequestService.ts";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";
 import EventPlaceholder from "../../assets/event_placeholder.png";
@@ -15,8 +15,6 @@ export const userEventsLoader = async () => {
 }
 
 export const UserEventsPage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const revalidator = useRevalidator();
 
   const events = useLoaderData() as EventEntity[];

@@ -1,8 +1,8 @@
 
-export interface UserInfoDTO {
-  id: number,
-  userName: string,
+export interface UserInfo {
+  sub: string,
   email: string,
+  role: string,
   name: string,
   surname: string,
   birthday: string,

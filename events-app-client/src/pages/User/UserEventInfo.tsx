@@ -1,25 +1,28 @@
 import { Button, Card, Descriptions, Flex, Image, Tag, Typography } from "antd";
-import axios from "axios";
-import React, { useState } from "react";
+import React, { use } from "react";
 import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
-import { deleteRequestData, getRequestData, postRequestData } from "../../services/RequestRervice.ts";
-import { Event as EventEntity, EventWithRemainingPlacesDTO } from "../../utils/types";
+import { deleteRequestData, getRequestData, postRequestData } from "../../services/RequestService.ts";
+import { Event as EventEntity, EventWithRemainingPlacesDTO, UserInfo } from "../../utils/types";
 import dayjs from "dayjs";
 import EventPlaceholder from "../../assets/event_placeholder.png";
+import { getIdentityRequestData } from "../../services/identityRequestService.ts";
 
 const { Title, Text } = Typography;
 
 export const userEventInfoLoader = async ({ params }) => {
-  var { eventId } = params;
-  var res1 = await getRequestData(`/Events/${eventId}`);
-  var res2 = await getRequestData(`/Participants/check-participation-by-event/${eventId}`)
-  var res3 = await getRequestData(`/Events/${eventId}/with-remaining-places`);
-  return { res1, res2, res3 };
+  const { eventId } = params;
+  const res1 = await getRequestData(`/Events/${eventId}`);
+  const res2 = await getRequestData(`/Participants/check-participation-by-event/${eventId}`)
+  const res3 = await getRequestData(`/Events/${eventId}/with-remaining-places`);
+  const res4 = await getIdentityRequestData("/connect/userinfo");
+  return { res1, res2, res3, res4 };
 }
 
 export const UserEventInfoPage: React.FC = () => {
-  const { res1: item, res2: isUserPart, res3: itemWithPlaces } = useLoaderData() as { res1: EventEntity, res2: boolean, res3: EventWithRemainingPlacesDTO };
+  const { res1: item, res2: isUserPart, res3: itemWithPlaces, res4: userInfo } = useLoaderData() as {
+    res1: EventEntity, res2: boolean, res3: EventWithRemainingPlacesDTO, res4: UserInfo
+  };
 
   const navigate = useNavigate();
 
@@ -31,7 +34,15 @@ export const UserEventInfoPage: React.FC = () => {
   }
 
   const handleAddParticipation = async (item: EventEntity) => {
-    await postRequestData(`/Participants/${item.id}`, null);
+    const data = {
+      eventId: item.id,
+      userInfoDTO: {
+        name: userInfo.name,
+        surname: userInfo.surname,
+        birthday: userInfo.birthday,
+      }
+    }
+    await postRequestData(`/Participants`, data);
     revalidator.revalidate();
   }
 
@@ -89,20 +100,13 @@ export const UserEventInfoPage: React.FC = () => {
                   </Descriptions.Item>
                 </Descriptions>
                 <Flex>
-                  {isUserPart == true ?
+                  {isUserPart === true ?
                     <Button onClick={() => handleRefuseParticipation(item)} danger>Refuse participation</Button> :
 
                     itemWithPlaces.placesRemain > 0 ?
                       <Button onClick={() => handleAddParticipation(item)} type="primary">Add participation</Button> :
                       <Tag color="orange">No empty places</Tag>
                   }
-                  {/* {itemWithPlaces.placesRemain > 0 ?
-                     ?
-                      <Button onClick={() => handleRefuseParticipation(item)} danger>Refuse participation</Button> :
-                      <Button onClick={() => handleAddParticipation(item)} type="primary">Add participation</Button>
-                    : isUserPart == true ?
-                      <Button onClick={() => handleRefuseParticipation(item)} danger>Refuse participation</Button> :
-                      <Tag color="orange">No empty places</Tag>} */}
                 </Flex>
               </Flex>
             </Flex>

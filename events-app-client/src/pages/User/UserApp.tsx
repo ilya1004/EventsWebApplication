@@ -19,15 +19,12 @@ export const userAppLoader = () => {
     console.log(role);
 
     if (!role || role !== "User") {
-      // window.location.href = "/login";
-      // return false;
       return redirect("/login");
     }
 
     return true;
   }
   return redirect("/login");
-  // return false;
 }
 
 export const UserApp: React.FC = () => {
@@ -68,7 +65,7 @@ export const UserApp: React.FC = () => {
               </div>
               <div>
                 <Text>
-                  <a href="https://github.com/ilya1004/EventsWebApplication" target="_blank">Link to project code on github</a>
+                  <a href="https://github.com/ilya1004/EventsWebApplication" rel="noreferrer" target="_blank">Link to project code on github</a>
                   <GithubOutlined style={{ margin: "0px 0px 0px 5px", fontSize: "16px" }} />
                 </Text>
               </div>

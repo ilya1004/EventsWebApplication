@@ -10,8 +10,6 @@ public class ParticipantMappingProfile : Profile
         CreateMap<UserInfoDTO, Participant>()
             .ForMember(dest => dest.Id, opt =>
                 opt.MapFrom(src => 0))
-            .ForMember(dest => dest.Email, opt =>
-                opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.Person, opt =>
                 opt.MapFrom(src => new Person(src.Name, src.Surname, src.Birthday)))
             .ForMember(dest => dest.EventRegistrationDate, opt =>

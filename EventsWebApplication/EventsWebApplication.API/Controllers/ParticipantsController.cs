@@ -1,4 +1,6 @@
-﻿using EventsWebApplication.API.Utils;
+﻿using EventsWebApplication.API.Contracts.Events;
+using EventsWebApplication.API.Utils;
+using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.RemoveParticipantFromEvent;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Queries.CheckParticipationInEvent;
@@ -55,14 +57,13 @@ public class ParticipantsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("{eventId}")]
     [Authorize(Policy = AuthPolicies.UserPolicy)]
-    public async Task<IActionResult> AddMyParticipationInEvent(int eventId, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddMyParticipationInEvent([FromBody] AddParticipantToEventRequest request, CancellationToken cancellationToken)
     {
         await _mediator.Send(new AddParticipantToEventCommand(
-            User.FindFirst(ClaimTypes.NameIdentifier)!.Value,
-            eventId,
-            Request.Headers.Authorization.FirstOrDefault()!.Split(' ')[1]), 
+            request.EventId,
+            User.FindFirst(ClaimTypes.Email)!.Value,
+            request.UserInfoDTO),
             cancellationToken);
 
         return Ok();
@@ -75,8 +76,7 @@ public class ParticipantsController : ControllerBase
     {
         await _mediator.Send(new RemoveParticipantFromEventCommand(
             User.FindFirst(ClaimTypes.Email)!.Value,
-            eventId,
-            Request.Headers.Authorization.FirstOrDefault()!.Split(' ')[1]),
+            eventId),
             cancellationToken);
 
         return Ok();

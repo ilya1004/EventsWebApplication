@@ -48,7 +48,7 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
         eventEntity.Image = imageFileId?.ToString();
         eventEntity.Id = command.Id;
 
-        await _unitOfWork.EventsRepository.UpdateAsync(eventEntity, cancellationToken);
+        await _unitOfWork.EventsRepository.Update(eventEntity, cancellationToken);
         await _unitOfWork.SaveAllAsync(cancellationToken);
 
         await _emailSenderService.SendEmailNotifications(eventObj, eventEntity, cancellationToken);

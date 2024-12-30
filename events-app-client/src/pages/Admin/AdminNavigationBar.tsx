@@ -8,20 +8,17 @@ import MenuItem from "antd/es/menu/MenuItem";
 type MenuItem = Required<MenuProps>['items'][number];
 
 const { Text } = Typography;
-const { SubMenu, Item } = Menu;
 
 type NavProps = {
   appLoginState: boolean;
 }
 
 export const AdminNavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
-  // const authState = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   const [loginState, setLoginState] = useState<boolean>(appLoginState);
 
   const handleClickNavItem = ({ key }) => {
-    // return navigate(`/${key}`)
     switch (key) {
       case "home":
         return navigate("/admin");
@@ -51,7 +48,6 @@ export const AdminNavigationBar: React.FC<NavProps> = ({ appLoginState }) => {
       <Flex justify="center">
         <Image
           preview={false}
-          // src={siteIcon}
           style={{
             height: "70px",
           }}

@@ -4,7 +4,7 @@ import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { Event as EventEntity } from "../../utils/types";
 import dayjs from "dayjs";
-import { deleteRequestData, getRequestData } from "../../services/RequestRervice.ts";
+import { deleteRequestData, getRequestData } from "../../services/RequestService.ts";
 
 const { Title, Text } = Typography;
 

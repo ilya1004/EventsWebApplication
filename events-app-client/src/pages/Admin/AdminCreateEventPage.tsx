@@ -1,4 +1,4 @@
-import { Button, Card, DatePicker, Flex, Form, Image, Input, InputNumber, TimePicker, Typography } from "antd";
+import { Button, Card, DatePicker, Flex, Form, Input, InputNumber, TimePicker, Typography } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { BASE_SERVER_API_URL, PAGE_MIN_HEIGHT } from "../../store/constants.ts";
@@ -7,16 +7,6 @@ import dayjs, { Dayjs } from "dayjs";
 import { showMessageStc } from "../../services/ResponseErrorHandler.ts";
 
 const { Title, Text } = Typography;
-
-// interface EventDTO {
-//   Title: string;
-//   Description: string;
-//   EventDateTime: string;
-//   ParticipantsMaxCount: number;
-//   ImageFile: File;
-//   PlaceName: string;
-//   CategoryName: string;
-// }
 
 export const AdminCreateEventPage: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -29,8 +19,6 @@ export const AdminCreateEventPage: React.FC = () => {
   const [categoryName, setCategoryName] = useState("");
 
   const navigate = useNavigate();
-
-  const dateFormat = 'YYYY.MM.DD';
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -76,8 +64,6 @@ export const AdminCreateEventPage: React.FC = () => {
 
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // e.preventDefault();
-
     if (title == "") {
       showMessageStc("Please enter title of the event.", "warning");
       return;

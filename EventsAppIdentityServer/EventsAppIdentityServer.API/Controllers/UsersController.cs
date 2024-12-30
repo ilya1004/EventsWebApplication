@@ -26,16 +26,4 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(string id)
-    {
-
-        var result = await _mediator.Send(new GetUserInfoByIdQuery(
-            id, 
-            Request.Headers.Authorization.FirstOrDefault()));
-
-        return Ok(result);
-    }
-
 }

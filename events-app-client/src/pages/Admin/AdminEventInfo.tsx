@@ -2,7 +2,7 @@ import { Button, Card, Descriptions, Flex, Image, Table, TableProps, Typography 
 import React from "react";
 import { PAGE_MIN_HEIGHT } from "../../store/constants.ts";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { getRequestData } from "../../services/RequestRervice.ts";
+import { getRequestData } from "../../services/RequestService.ts";
 import dayjs from "dayjs";
 import EventPlaceholder from "../../assets/event_placeholder.png";
 
