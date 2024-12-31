@@ -38,10 +38,8 @@ public class DbInitializer : IDbInitializer
             Surname = "Admin",
         };
 
-        var res = await _userManager.CreateAsync(admin, "Admin_123");
-
+        await _userManager.CreateAsync(admin, "Admin_123");
         await _userManager.AddToRoleAsync(admin, AppRoles.AdminRole);
-
         await _userManager.AddClaimsAsync(admin,
             [
                 new Claim(JwtClaimTypes.Id, admin.Id),
@@ -50,7 +48,7 @@ public class DbInitializer : IDbInitializer
             ]);
 
 
-        AppUser user = new()
+        AppUser user1 = new()
         {
             UserName = "ilya@gmail.com",
             Email = "ilya@gmail.com",
@@ -60,13 +58,52 @@ public class DbInitializer : IDbInitializer
             Birthday = new DateTime(2004, 9, 16, 0, 0, 0, DateTimeKind.Utc),
         };
 
-        await _userManager.CreateAsync(user, "Ilya_123");
-        await _userManager.AddToRoleAsync(user, AppRoles.UserRole);
-
-        await _userManager.AddClaimsAsync(user,
+        await _userManager.CreateAsync(user1, "Ilya_123");
+        await _userManager.AddToRoleAsync(user1, AppRoles.UserRole);
+        await _userManager.AddClaimsAsync(user1,
             [
-                new Claim(JwtClaimTypes.Id, user.Id),
-                new Claim(JwtClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.Id, user1.Id),
+                new Claim(JwtClaimTypes.Email, user1.Email),
+                new Claim(JwtClaimTypes.Role, AppRoles.UserRole)
+            ]);
+
+        
+        AppUser user2 = new()
+        {
+            UserName = "anna@gmail.com",
+            Email = "anna@gmail.com",
+            EmailConfirmed = true,
+            Name = "Anna",
+            Surname = "Petrova",
+            Birthday = new DateTime(1995, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+        };
+
+        await _userManager.CreateAsync(user2, "Anna_123");
+        await _userManager.AddToRoleAsync(user2, AppRoles.UserRole);
+        await _userManager.AddClaimsAsync(user2,
+            [
+                new Claim(JwtClaimTypes.Id, user2.Id),
+                new Claim(JwtClaimTypes.Email, user2.Email),
+                new Claim(JwtClaimTypes.Role, AppRoles.UserRole)
+            ]);
+
+
+        AppUser user3 = new()
+        {
+            UserName = "dmitry@gmail.com",
+            Email = "dmitry@gmail.com",
+            EmailConfirmed = true,
+            Name = "Dmitry",
+            Surname = "Ivanov",
+            Birthday = new DateTime(1988, 12, 5, 0, 0, 0, DateTimeKind.Utc),
+        };
+
+        await _userManager.CreateAsync(user3, "Dmitry_123");
+        await _userManager.AddToRoleAsync(user3, AppRoles.UserRole);
+        await _userManager.AddClaimsAsync(user3,
+            [
+                new Claim(JwtClaimTypes.Id, user3.Id),
+                new Claim(JwtClaimTypes.Email, user3.Email),
                 new Claim(JwtClaimTypes.Role, AppRoles.UserRole)
             ]);
     }

@@ -5,7 +5,7 @@
 namespace EventsWebApplication.Infrastructure.Migrations
 {
     
-    / <inheritdoc />
+    /// <inheritdoc />
     public partial class removeduniqueindexonemail : Migration
     {
         /// <inheritdoc />

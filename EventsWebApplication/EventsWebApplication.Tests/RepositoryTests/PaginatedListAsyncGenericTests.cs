@@ -72,7 +72,7 @@ public class PaginatedListAsyncGenericTests
     [Fact]
     public async Task PaginatedListAsync_ShouldReturnCorrectPageOfData()
     {
-        var context = await GetInMemoryDbContext();
+        var context = GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
