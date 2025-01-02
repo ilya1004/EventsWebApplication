@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace EventsWebApplication.Application.DTOs;
+﻿namespace EventsWebApplication.Application.DTOs;
 
 public record EventDTO(
     string Title,

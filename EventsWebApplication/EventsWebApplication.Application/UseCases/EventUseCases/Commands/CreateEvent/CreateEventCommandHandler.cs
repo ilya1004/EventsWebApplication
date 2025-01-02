@@ -1,6 +1,4 @@
-﻿
-using AutoMapper;
-using EventsWebApplication.Application.Exceptions;
+﻿using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
 
@@ -31,7 +29,7 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand>
 
         Guid? imageFileId = null;
 
-        if (command.FileStream != null)
+        if (command.FileStream is not null)
         {
             imageFileId = await _blobService.UploadAsync(
                 command.FileStream,

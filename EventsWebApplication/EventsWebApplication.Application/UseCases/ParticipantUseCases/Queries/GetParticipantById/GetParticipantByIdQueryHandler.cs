@@ -15,7 +15,7 @@ public class GetParticipantByIdQueryHandler : IRequestHandler<GetParticipantById
     {
         var participant = await _unitOfWork.ParticipantsRepository.GetByIdAsync(query.Id, cancellationToken);
 
-        if (participant == null) 
+        if (participant is null) 
         {
             throw new NotFoundException($"Participant with ID {query.Id} not found.");
         }

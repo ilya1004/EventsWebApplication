@@ -53,13 +53,11 @@ public static class DependencyInjection
     {
         var reactClientUrl = configuration["ReactClientUrl"] ?? "http://localhost:3000";
 
-        var mainServerUrl = configuration["MainServerUrl"] ?? "http://localhost:7012";
-
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", policy =>
             {
-                policy.WithOrigins(reactClientUrl, mainServerUrl)
+                policy.WithOrigins(reactClientUrl)
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();

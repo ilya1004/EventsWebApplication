@@ -13,7 +13,7 @@ public class UserMappingProfile : Profile
             .ForMember(u => u.UserName, opt =>
                 opt.MapFrom(u => u.Email))
             .ForMember(u => u.EmailConfirmed, opt => 
-                opt.MapFrom(u => !string.IsNullOrEmpty(u.Email)))
+                opt.MapFrom(_ => true))
             .ForMember(u => u.Birthday, opt =>
                 opt.MapFrom(u => new DateTime(u.Birthday, TimeOnly.MinValue, DateTimeKind.Utc)));
     }

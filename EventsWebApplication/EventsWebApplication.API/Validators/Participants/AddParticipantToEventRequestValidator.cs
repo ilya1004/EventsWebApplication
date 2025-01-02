@@ -1,7 +1,7 @@
-﻿using EventsWebApplication.API.Contracts.Events;
+﻿using EventsWebApplication.API.Contracts.Participants;
 using FluentValidation;
 
-namespace EventsWebApplication.API.Validators.Events;
+namespace EventsWebApplication.API.Validators.Participants;
 
 public class AddParticipantToEventRequestValidator : AbstractValidator<AddParticipantToEventRequest>
 {

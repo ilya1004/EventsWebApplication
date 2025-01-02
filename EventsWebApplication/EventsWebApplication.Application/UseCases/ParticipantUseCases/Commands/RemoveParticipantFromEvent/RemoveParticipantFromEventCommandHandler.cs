@@ -15,14 +15,14 @@ public class RemoveParticipantFromEventCommandHandler : IRequestHandler<RemovePa
     {
         var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(command.EventId);
 
-        if (eventObj == null)
+        if (eventObj is null)
         {
             throw new NotFoundException($"Event with given ID {command.EventId} not found.");
         }
 
         var participant = await _unitOfWork.ParticipantsRepository.FirstOrDefaultAsync(p => p.Email == command.Email && p.EventId == command.EventId, cancellationToken);
 
-        if (participant == null)
+        if (participant is null)
         {
             throw new NotFoundException($"Participant with given Email {command.Email} not found.");
         }

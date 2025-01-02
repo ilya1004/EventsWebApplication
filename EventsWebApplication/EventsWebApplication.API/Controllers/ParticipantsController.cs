@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.API.Contracts.Events;
+﻿using EventsWebApplication.API.Contracts.Participants;
 using EventsWebApplication.API.Utils;
 using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Application.UseCases.ParticipantUseCases.Commands.AddParticipantToEvent;

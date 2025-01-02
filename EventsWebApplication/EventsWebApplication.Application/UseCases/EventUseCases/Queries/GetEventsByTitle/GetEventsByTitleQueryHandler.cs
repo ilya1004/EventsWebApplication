@@ -15,7 +15,7 @@ public class GetEventsByTitleQueryHandler : IRequestHandler<GetEventsByTitleQuer
         int offset = (request.PageNo - 1) * request.PageSize;
 
         return await _unitOfWork.EventsRepository.PaginatedListAsync(
-            e => e.Title.ToLower().Contains(request.TitleQuery.ToLower()), 
+            e => e.Title.ToLower().Contains(request.Title.ToLower()), 
             offset,
             request.PageSize,
             cancellationToken);

@@ -1,6 +1,4 @@
-﻿using EventsWebApplication.Domain.Entities.Events;
-using EventsWebApplication.Domain.Entities.Participants;
-using EventsWebApplication.Infrastructure.Configurations;
+﻿using EventsWebApplication.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Infrastructure.Data;

@@ -24,7 +24,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 
         var userByEmail = await _userManager.FindByEmailAsync(request.UserDTO.Email);
 
-        if (userByEmail != null)
+        if (userByEmail is not null)
         {
             throw new AlreadyExistsException($"A user with the email '{request.UserDTO.Email}' already exists.");
         }

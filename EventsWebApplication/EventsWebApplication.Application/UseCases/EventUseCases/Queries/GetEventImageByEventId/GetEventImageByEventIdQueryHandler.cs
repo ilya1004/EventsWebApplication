@@ -22,12 +22,12 @@ public class GetEventImageByEventIdQueryHandler : IRequestHandler<GetEventImageB
     {
         var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(request.EventId);
 
-        if (eventObj == null)
+        if (eventObj is null)
         {
             throw new NotFoundException($"Event with ID {request.EventId} not found.");
         }
 
-        if (eventObj.Image == null)
+        if (eventObj.Image is null)
         {
             throw new NotFoundException($"Event with ID {request.EventId} don't have an image");
         }

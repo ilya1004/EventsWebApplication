@@ -25,21 +25,6 @@ public class Event : Entity
         Category = category;
     }
 
-    public Event(
-        int id,
-        string title,
-        string? description,
-        DateTime eventDateTime,
-        int participantsMaxCount,
-        string? image) : base(id)
-    {
-        Title = title;
-        Description = description;
-        EventDateTime = eventDateTime;
-        ParticipantsMaxCount = participantsMaxCount;
-        Image = image;
-    }
-
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; } = string.Empty;
     public DateTime EventDateTime { get; set; }

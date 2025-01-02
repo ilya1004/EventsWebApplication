@@ -18,7 +18,7 @@ public class GetEventByIdWithRemainingPlacesQueryHandler : IRequestHandler<GetEv
     {
         var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(query.EventId, cancellationToken, e => e.Participants);
 
-        if (eventObj == null)
+        if (eventObj is null)
         {
             throw new NotFoundException($"Event with ID {query.EventId} not found.");
         }

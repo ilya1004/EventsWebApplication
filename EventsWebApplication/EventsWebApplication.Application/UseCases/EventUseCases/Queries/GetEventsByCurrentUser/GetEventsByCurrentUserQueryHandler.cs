@@ -12,11 +12,11 @@ public class GetEventsByCurrentUserQueryHandler : IRequestHandler<GetEventsByCur
     }
     public async Task<IEnumerable<Event>> Handle(GetEventsByCurrentUserQuery request, CancellationToken cancellationToken)
     {
-        var myParticipation = await _unitOfWork.ParticipantsRepository.ListAsync(p => p.Email == request.Email, cancellationToken);
+        var myParticipations = await _unitOfWork.ParticipantsRepository.ListAsync(p => p.Email == request.Email, cancellationToken);
 
         int offset = (request.PageNo - 1) * request.PageSize;
         var result = await _unitOfWork.EventsRepository.PaginatedListAsync(
-            e => myParticipation
+            e => myParticipations
                 .Select(p => p.EventId)
                 .Any(ids => ids == e.Id), 
             offset, 

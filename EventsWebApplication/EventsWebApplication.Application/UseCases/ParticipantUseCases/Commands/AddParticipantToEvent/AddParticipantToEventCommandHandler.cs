@@ -18,7 +18,7 @@ public class AddParticipantToEventCommandHandler : IRequestHandler<AddParticipan
     {
         var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(command.EventId, cancellationToken, e => e.Participants);
 
-        if (eventObj == null)
+        if (eventObj is null)
         {
             throw new NotFoundException($"Event with given ID {command.EventId} not found.");
         }

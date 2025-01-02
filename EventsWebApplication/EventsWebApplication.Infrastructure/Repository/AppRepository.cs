@@ -22,9 +22,11 @@ public class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entit
         await _entities.AddAsync(entity, cancellationToken);
     }
 
-    public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _entities.Remove(entity);
+
+        return Task.CompletedTask;
     }
     public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
@@ -105,9 +107,11 @@ public class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entit
             .ToListAsync(cancellationToken);
     }
 
-    public async Task Update(TEntity entity, CancellationToken cancellationToken = default)
+    public Task Update(TEntity entity, CancellationToken cancellationToken = default)
     {
         _entities.Update(entity);
+
+        return Task.CompletedTask;
     }
 
     public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)

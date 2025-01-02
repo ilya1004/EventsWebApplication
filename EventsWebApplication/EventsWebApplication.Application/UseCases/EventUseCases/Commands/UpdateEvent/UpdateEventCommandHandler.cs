@@ -25,13 +25,13 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
 
         var eventObj = await _unitOfWork.EventsRepository.GetByIdAsync(command.Id);
 
-        if (eventObj == null)
+        if (eventObj is null)
         {
             throw new NotFoundException($"Event with ID {command.Id} not found.");
         }
 
         Guid? imageFileId = null;
-        if (command.FileStream != null)
+        if (command.FileStream is not null)
         {
             if (!string.IsNullOrEmpty(eventObj.Image) && Guid.TryParse(eventObj.Image, out Guid imageId))
             {
