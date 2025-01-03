@@ -51,7 +51,7 @@ public class UpdateEventCommandHandlerTests
             .Returns(existingEvent);
 
         _unitOfWorkMock.Setup(u => 
-            u.EventsRepository.Update(It.IsAny<Event>(), cancellationToken))
+            u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken))
             .Returns(Task.CompletedTask);
 
         _unitOfWorkMock.Setup(u => 
@@ -61,7 +61,7 @@ public class UpdateEventCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         _unitOfWorkMock.Verify(u =>
-            u.EventsRepository.Update(It.IsAny<Event>(), cancellationToken), 
+            u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken), 
             Times.Once);
 
         _unitOfWorkMock.Verify(u => 
@@ -103,7 +103,7 @@ public class UpdateEventCommandHandlerTests
             .Returns(existingEvent);
         
         _unitOfWorkMock.Setup(u => 
-            u.EventsRepository.Update(It.IsAny<Event>(), cancellationToken))
+            u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken))
             .Returns(Task.CompletedTask);
 
         await _handler.Handle(command, CancellationToken.None);
@@ -178,7 +178,7 @@ public class UpdateEventCommandHandlerTests
         await handler.Handle(command, cancellationToken);
 
         _unitOfWorkMock.Verify(u => u.EventsRepository.GetByIdAsync(command.Id, cancellationToken), Times.Once);
-        _unitOfWorkMock.Verify(u => u.EventsRepository.Update(It.IsAny<Event>(), cancellationToken), Times.Once);
+        _unitOfWorkMock.Verify(u => u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken), Times.Once);
         _unitOfWorkMock.Verify(u => u.SaveAllAsync(cancellationToken), Times.Once);
 
         _emailSenderServiceMock.Verify(es => es.SendEmailNotifications(

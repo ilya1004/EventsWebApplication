@@ -47,6 +47,7 @@ using (var scope = app.Services.CreateScope())
 
     var azuriteStartupService = scope.ServiceProvider.GetRequiredService<IAzuriteStartupService>();
     await azuriteStartupService.CreateContainerIfNotExistAsync();
+    await azuriteStartupService.SeedImagesAsync();
 }
 
 app.UseRouting();

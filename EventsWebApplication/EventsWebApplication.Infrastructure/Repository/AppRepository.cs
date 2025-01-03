@@ -107,7 +107,7 @@ public class AppRepository<TEntity> : IRepository<TEntity> where TEntity : Entit
             .ToListAsync(cancellationToken);
     }
 
-    public Task Update(TEntity entity, CancellationToken cancellationToken = default)
+    public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _entities.Update(entity);
 

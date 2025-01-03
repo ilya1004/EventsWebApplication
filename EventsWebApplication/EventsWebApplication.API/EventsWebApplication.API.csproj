@@ -4,9 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>6c865a8c-0cc3-43c6-ae1a-08e4e3f6141b</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,5 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\EventsWebApplication.Infrastructure\EventsWebApplication.Infrastructure.csproj" />
   </ItemGroup>
+
 
 </Project>

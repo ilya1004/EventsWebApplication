@@ -35,4 +35,8 @@ RUN dotnet publish EventsWebApplication.API.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+
+# Копируем папку SeedImages в рабочую директорию контейнера
+COPY SeedImages /app/images
+
 ENTRYPOINT ["dotnet", "EventsWebApplication.API.dll"]

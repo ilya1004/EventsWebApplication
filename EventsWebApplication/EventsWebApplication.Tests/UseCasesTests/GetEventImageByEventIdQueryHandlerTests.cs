@@ -115,7 +115,7 @@ public class GetEventImageByEventIdQueryHandlerTests
         var act = async () => await _handler.Handle(query, cancellationToken);
 
         await act.Should()
-            .ThrowAsync<Exception>()
+            .ThrowAsync<BadRequestException>()
             .WithMessage($"Event with ID {eventId} have an incorrect format of the image name");
 
         _unitOfWorkMock.Verify(u => 

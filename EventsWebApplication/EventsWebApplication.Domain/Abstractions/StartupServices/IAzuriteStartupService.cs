@@ -3,4 +3,6 @@
 public interface IAzuriteStartupService
 {
     Task CreateContainerIfNotExistAsync();
+
+    Task SeedImagesAsync(CancellationToken cancellationToken = default);
 }

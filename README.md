@@ -49,7 +49,22 @@
 - Email: admin@gmail.com
 - Password: Admin_123
 
-2. Test user
+2. Test users:
 
-- Email: ilya@gmail.com
-- Password: Ilya_123
+- User 1
+```bash
+Email: ilya@gmail.com
+Password: Ilya_123
+```
+
+- User 2
+```bash
+Email: anna@gmail.com
+Password: Anna_123
+```
+
+- User 3
+```bash
+Email: dmitry@gmail.com
+Password: Dmitry_123
+```
