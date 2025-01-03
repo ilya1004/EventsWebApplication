@@ -46,8 +46,10 @@
 
 1. Admin
 
-- Email: admin@gmail.com
-- Password: Admin_123
+```bash
+Email: admin@gmail.com
+Password: Admin_123
+```
 
 2. Test users:
 
