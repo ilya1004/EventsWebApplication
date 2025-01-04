@@ -6,7 +6,7 @@ namespace EventsWebApplication.Domain.Entities.Events;
 public class Event : Entity
 {
     private readonly List<Participant> _participants = [];
-    public Event() : base(0) { }
+
     public Event(
        string title,
        string? description,
@@ -14,7 +14,7 @@ public class Event : Entity
        int participantsMaxCount,
        string? image,
        Place place,
-       Category? category) : base(0)
+       Category? category) : base()
     {
         Title = title;
         Description = description;

@@ -25,7 +25,7 @@ public class GetEventByIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var expectedEvent = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null);
+        var expectedEvent = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = eventId };
 
         var query = new GetEventByIdQuery(eventId, null);
 
@@ -48,7 +48,7 @@ public class GetEventByIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var expectedEvent = new Event("Test Event", "Description", DateTime.Now, 10, null, new Place("Place 1", "PLACE_1"), null);
+        var expectedEvent = new Event("Test Event", "Description", DateTime.Now, 10, null, new Place("Place 1", "PLACE_1"), null) { Id = eventId };
 
         Expression<Func<Event, object>>[] includeProperties = [e => e.Participants];
 

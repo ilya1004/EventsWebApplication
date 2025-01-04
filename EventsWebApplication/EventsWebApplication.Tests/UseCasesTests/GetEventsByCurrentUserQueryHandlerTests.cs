@@ -27,7 +27,7 @@ public class GetEventsByCurrentUserQueryHandlerTests
         var events = new List<Event>
         {
             new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
-            new Event("Event 2", null, DateTime.Now, 10, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 }
+            new Event("Event 2", null, DateTime.Now, 10, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 },
         };
 
         var email = "test@gmail.com";
@@ -35,8 +35,24 @@ public class GetEventsByCurrentUserQueryHandlerTests
 
         var participations = new List<Participant>
         {
-            new Participant(email, person, events[0]),
-            new Participant(email, person, events[1]),
+            new Participant
+            {
+                Id = 1,
+                Email = email,
+                Person = person,
+                Event = events[0],
+                EventId = events[0].Id,
+                EventRegistrationDate = DateTime.UtcNow,
+            },
+            new Participant
+            {
+                Id = 2,
+                Email = email,
+                Person = person,
+                Event = events[1],
+                EventId = events[1].Id,
+                EventRegistrationDate = DateTime.UtcNow,
+            },
         };
 
         var query = new GetEventsByCurrentUserQuery(email, 1, 10);

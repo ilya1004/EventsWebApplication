@@ -5,19 +5,7 @@ namespace EventsWebApplication.Domain.Entities.Participants;
 
 public class Participant : Entity
 {
-    public Participant() : base(0) { }
-    public Participant(
-        string email,
-        Person person,
-        Event eventEntity) : base(0)
-    {
-        Email = email;
-        Person = person;
-        EventId = eventEntity.Id;
-        EventRegistrationDate = DateTime.UtcNow;
-    }
-
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
     public Person Person { get; set; }
     public int EventId { get; set; }    
     public Event? Event { get; set; }

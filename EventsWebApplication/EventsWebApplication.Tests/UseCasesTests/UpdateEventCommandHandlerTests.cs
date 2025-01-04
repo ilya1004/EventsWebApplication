@@ -38,7 +38,7 @@ public class UpdateEventCommandHandlerTests
     public async Task Handle_ShouldUpdateEvent_WhenNoImageProvided()
     {
         var cancellationToken = CancellationToken.None;
-        var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, null, new Place("Place 1", "PLACE 1"), null); 
+        var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 };
         var eventDTO = new EventDTO("Event 2", null, new DateTime(2025, 1, 1), 10, "Place 1", null);
         var command = new UpdateEventCommand(existingEvent.Id, eventDTO, null, null);
 
@@ -73,7 +73,7 @@ public class UpdateEventCommandHandlerTests
     public async Task Handle_ShouldUploadNewImage_AndDeleteOldImage()
     {
         var cancellationToken = CancellationToken.None;
-        var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, Guid.NewGuid().ToString(), new Place("Place 1", "PLACE 1"), null);
+        var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, Guid.NewGuid().ToString(), new Place("Place 1", "PLACE 1"), null) { Id = 1 };
         var fakeFile = new Mock<IFormFile>();
         
         fakeFile.Setup(f => f.OpenReadStream())
@@ -122,29 +122,21 @@ public class UpdateEventCommandHandlerTests
     {
         var cancellationToken = CancellationToken.None;
 
-        var existingEvent = new Event(
-            "Event 1",
-            null,
-            DateTime.Now,
-            10,
-            null,
-            new Place("Place 1", "PLACE 1"),
-            null);
-
-        var newEventDTO = new EventDTO(
-            "Event 2",
-            null,
-            DateTime.Now.AddDays(1),
-            10,
-            "Place 2",
-            null);
+        var existingEvent = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 };
+        var newEventDTO = new EventDTO("Event 2", null, DateTime.Now.AddDays(1), 10, "Place 2", null);
+        var newEvent = new Event("Event 2", null, DateTime.Now.AddDays(1), 10, null, new Place("Place 2", "PLACE 2"), null) { Id = 1 };
 
         var command = new UpdateEventCommand(existingEvent.Id, newEventDTO, null, null);
 
-        var participant = new Participant(
-            "test@gmail.com",
-            new Person("Name 1", "Surname 1", DateTime.Now),
-            existingEvent);
+        var participant = new Participant
+        {
+            Id = 1,
+            Email = "test@gmail.com",
+            Person = new Person("Name 1", "Surname 1", DateTime.Now),
+            Event = existingEvent,
+            EventId = existingEvent.Id,
+            EventRegistrationDate = DateTime.UtcNow,
+        };
 
         _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(command.Id, cancellationToken))
@@ -155,14 +147,7 @@ public class UpdateEventCommandHandlerTests
             .ReturnsAsync(new List<Participant> { participant });
 
         _mapperMock.Setup(m => m.Map<Event>(command))
-            .Returns(new Event(
-                "Event 2",
-                null,
-                DateTime.Now.AddDays(1),
-                10,
-                null,
-                new Place("Place 2", "PLACE 2"),
-                null));
+            .Returns(newEvent);
 
 
         _emailSenderServiceMock.Setup(es => es.SendEmailNotifications(It.IsAny<Event>(), It.IsAny<Event>(), cancellationToken))

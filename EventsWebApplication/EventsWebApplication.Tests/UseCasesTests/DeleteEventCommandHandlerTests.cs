@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EventsWebApplication.Application.Exceptions;
-using EventsWebApplication.Application.UseCases.EventUseCases.Commands.CreateEvent;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
@@ -29,7 +28,7 @@ public class DeleteEventCommandHandlerTests
         var cancellationToken = CancellationToken.None;
         var eventId = 1;
 
-        var eventObj = new Event("Event 1", null, DateTime.UtcNow, 10, null, new Place("Place 1", "PLACE 1"), null);
+        var eventObj = new Event("Event 1", null, DateTime.UtcNow, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = eventId };
 
         _unitOfWorkMock
             .Setup(u => u.EventsRepository.GetByIdAsync(eventId, cancellationToken))

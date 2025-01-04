@@ -21,13 +21,13 @@ public class GetEventsWithRemainingPlacesQueryHandler : IRequestHandler<GetEvent
         var values = await _unitOfWork.ParticipantsRepository.CountParticipantsByEvents(cancellationToken);
 
         (int EventId, int Count) defaultValue = (0, 0);
-        IEnumerable<EventWithRemainingPlacesDTO> result = [];
+        List<EventWithRemainingPlacesDTO> result = [];
 
         foreach (var item in events)
         {
             var placesRemain = values.FirstOrDefault(val => item.Id == val.EventId, defaultValue).Count;
             
-            result = result.Append(new EventWithRemainingPlacesDTO(
+            result.Add(new EventWithRemainingPlacesDTO(
                 item.Id,
                 item.Title,
                 item.Description,

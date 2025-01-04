@@ -27,8 +27,8 @@ public class GetEventsByDateRangeQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", null, DateTime.UtcNow.AddDays(1), 10, null, new Place("Place 1", "PLACE 1"), null),
-            new Event("Event 2", null, DateTime.UtcNow.AddDays(3), 20, null, new Place("Place 2", "PLACE 2"), null)
+            new Event("Event 1", null, DateTime.UtcNow.AddDays(1), 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
+            new Event("Event 2", null, DateTime.UtcNow.AddDays(3), 20, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 },
         };
 
         var query = new GetEventsByDateRangeQuery(dateStart, dateEnd, 1, 10);

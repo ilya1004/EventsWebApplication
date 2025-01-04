@@ -35,7 +35,7 @@ public class GetEventImageByEventIdQueryHandlerTests
         var fileResponse = new FileResponse(stream.Object, "");
         var fileResponseDTO = new FileResponseDTO(stream.Object, "");
 
-        var eventObj = new Event("Event 1", null, DateTime.Now, 10, imageId.ToString(), new Place("Place 1", "PLACE 1"), null);
+        var eventObj = new Event("Event 1", null, DateTime.Now, 10, imageId.ToString(), new Place("Place 1", "PLACE 1"), null) { Id = eventId };
 
         var query = new GetEventImageByEventIdQuery(eventId);
 
@@ -75,7 +75,7 @@ public class GetEventImageByEventIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var eventObj = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null);
+        var eventObj = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = eventId };
 
         var query = new GetEventImageByEventIdQuery(eventId);
 
@@ -104,7 +104,7 @@ public class GetEventImageByEventIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var eventObj = new Event("Event 1", null, DateTime.Now, 10, "qwe123", new Place("Place 1", "PLACE 1"), null);
+        var eventObj = new Event("Event 1", null, DateTime.Now, 10, "qwe123", new Place("Place 1", "PLACE 1"), null) { Id = eventId };
 
         var query = new GetEventImageByEventIdQuery(eventId);
 

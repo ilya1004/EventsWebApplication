@@ -25,10 +25,10 @@ public class GetEventsByFilterQueryHandlerTests
         var events = new List<Event>
         {
             new Event("Event 1", "Description 1", DateTime.UtcNow.AddDays(1), 10, null, 
-                new Place("Place 1", "PLACE 1"), new Category("Category 1", "CATEGORY 1")),
+                new Place("Place 1", "PLACE 1"), new Category("Category 1", "CATEGORY 1")) { Id = 1 },
 
             new Event("Event 2", "Description 2", DateTime.UtcNow.AddDays(3), 10, null,
-                new Place("Place 1", "PLACE 1"), new Category("Category 1", "CATEGORY 1"))
+                new Place("Place 1", "PLACE 1"), new Category("Category 1", "CATEGORY 1")) { Id = 2 },
         };
 
         var query = new GetEventsByFilterQuery(
@@ -84,8 +84,8 @@ public class GetEventsByFilterQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", "Description 1", DateTime.UtcNow.AddDays(1), 10, null, new Place("Place 1", "PLACE_1"), null),
-            new Event("Event 2", "Description 2", DateTime.UtcNow.AddDays(3), 20, null, new Place("Place 2", "PLACE_2"), null)
+            new Event("Event 1", "Description 1", DateTime.UtcNow.AddDays(1), 10, null, new Place("Place 1", "PLACE_1"), null) { Id = 1 },
+            new Event("Event 2", "Description 2", DateTime.UtcNow.AddDays(3), 20, null, new Place("Place 2", "PLACE_2"), null) { Id = 2 },
         };
 
         _unitOfWorkMock.Setup(u => 
