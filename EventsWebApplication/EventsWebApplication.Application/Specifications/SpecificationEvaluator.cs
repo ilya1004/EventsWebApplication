@@ -15,17 +15,17 @@ public static class SpecificationEvaluator<TEntity> where TEntity : class
             query = query.Where(specification.Criteria);
         }
 
-        if (specification.OrderBy != null)
-        {
-            query = specification.OrderBy(query);
-        }
-        else if (specification.OrderByDescending != null)
-        {
-            query = specification.OrderByDescending(query);
-        }
-
-        query = specification.Includes.Aggregate(query, 
+        query = specification.IncludesExpression.Aggregate(query,
             (current, include) => current.Include(include));
+
+        if (specification.OrderByExpression is not null)
+        {
+            query = query.OrderBy(specification.OrderByExpression);
+        }
+        else if (specification.OrderByDescExpression is not null)
+        {
+            query = query.OrderByDescending(specification.OrderByDescExpression);
+        }
 
         if (specification.IsPaginationEnabled)
         {

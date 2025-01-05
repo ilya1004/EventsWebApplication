@@ -16,15 +16,9 @@ public class GetEventsByFilterQueryHandler : IRequestHandler<GetEventsByFilterQu
     {
         int offset = (query.PageNo - 1) * query.PageSize;
 
-        //Console.WriteLine(query.DateStart.Value.Kind.ToString());
-        //Console.WriteLine(query.DateEnd.Value.Kind.ToString());
-
-        DateTime? dateStart = query.DateStart is not null ? new DateTime(query.DateStart.Value.Ticks, DateTimeKind.Utc) : null;
-        DateTime? dateEnd = query.DateEnd is not null ? new DateTime(query.DateEnd.Value.Ticks, DateTimeKind.Utc) : null;
-
         var specification = new EventsListByFilterSpecification(
-            dateStart,
-            dateEnd,
+            query.DateStart,
+            query.DateEnd,
             query.PlaceName,
             query.CategoryName,
             offset,

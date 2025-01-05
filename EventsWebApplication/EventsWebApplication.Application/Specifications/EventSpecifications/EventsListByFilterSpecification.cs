@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace EventsWebApplication.Application.Specifications.EventSpecifications;
+﻿namespace EventsWebApplication.Application.Specifications.EventSpecifications;
 
 public class EventsListByFilterSpecification : Specification<Event>
 {
@@ -13,14 +11,14 @@ public class EventsListByFilterSpecification : Specification<Event>
         int limit)
         : base(e =>
             (!dateStart.HasValue || !dateEnd.HasValue ||
-                (e.EventDateTime.Date >= dateStart.Value && e.EventDateTime.Date <= dateEnd.Value)) &&
+                (dateStart.Value <= e.EventDateTime.Date && e.EventDateTime.Date <= dateEnd.Value.AddDays(1))) &&
             (string.IsNullOrEmpty(placeName) || 
                 e.Place.Name.ToLower().Contains(placeName.ToLower())) &&
             (string.IsNullOrEmpty(categoryName) || 
                 (e.Category != null && e.Category.Name.ToLower().Contains(categoryName.ToLower()))))
     {
-        ApplyPaging(offset, limit);
+        AddOrderBy(events => events.Id);
 
-        ApplyOrderBy(events => events.OrderBy(e => e.Id));
+        AddPagination(offset, limit);
     }
 }

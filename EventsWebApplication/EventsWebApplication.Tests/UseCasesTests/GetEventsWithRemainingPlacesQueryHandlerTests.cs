@@ -71,8 +71,8 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
             .BeEquivalentTo(
                 new List<EventWithRemainingPlacesDTO>
                 {
-                    new EventWithRemainingPlacesDTO(1, "Event 1", null, events[0].EventDateTime, 100, 30, "Place 1", null),
-                    new EventWithRemainingPlacesDTO(2, "Event 2", null, events[1].EventDateTime, 100, 20, "Place 2", null)
+                    new EventWithRemainingPlacesDTO(1, "Event 1", null, events[0].EventDateTime, 100, 30, "Place 1", "Category 1"),
+                    new EventWithRemainingPlacesDTO(2, "Event 2", null, events[1].EventDateTime, 100, 20, "Place 2", "Category 2")
                 });
 
         _unitOfWorkMock.Verify(u =>
@@ -145,7 +145,7 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
         result.Should().BeEquivalentTo(
             new List<EventWithRemainingPlacesDTO>
             {
-                new EventWithRemainingPlacesDTO(1, "Event 1", null, events[0].EventDateTime, 100, 0, "Place 1", null)
+                new EventWithRemainingPlacesDTO(1, "Event 1", "Description 1", events[0].EventDateTime, 100, 0, "Place 1", "Category 1")
             });
 
         _unitOfWorkMock.Verify(u =>
