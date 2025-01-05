@@ -5,26 +5,6 @@ namespace EventsWebApplication.Domain.Entities.Events;
 
 public class Event : Entity
 {
-    private readonly List<Participant> _participants = [];
-
-    public Event(
-       string title,
-       string? description,
-       DateTime eventDateTime,
-       int participantsMaxCount,
-       string? image,
-       Place place,
-       Category? category) : base()
-    {
-        Title = title;
-        Description = description;
-        EventDateTime = eventDateTime;
-        ParticipantsMaxCount = participantsMaxCount;
-        Image = image;
-        Place = place;
-        Category = category;
-    }
-
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; } = string.Empty;
     public DateTime EventDateTime { get; set; }
@@ -32,6 +12,5 @@ public class Event : Entity
     public string? Image { get; set; }
     public Place Place { get; set; }
     public Category? Category { get; set; }
-    public IReadOnlyList<Participant> Participants { get => _participants.AsReadOnly(); }
-
+    public ICollection<Participant> Participants { get; set; } = [];
 }

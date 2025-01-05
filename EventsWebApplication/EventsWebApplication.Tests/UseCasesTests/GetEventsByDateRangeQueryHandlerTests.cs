@@ -27,13 +27,33 @@ public class GetEventsByDateRangeQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", null, DateTime.UtcNow.AddDays(1), 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
-            new Event("Event 2", null, DateTime.UtcNow.AddDays(3), 20, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 },
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 10,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = null
+            },
+            new Event
+            {
+                Id = 2,
+                Title = "Event 2",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(3),
+                ParticipantsMaxCount = 20,
+                Image = null,
+                Place = new Place("Place 2", "PLACE 2"),
+                Category = null
+            }
         };
 
         var query = new GetEventsByDateRangeQuery(dateStart, dateEnd, 1, 10);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(events);
 
@@ -41,8 +61,8 @@ public class GetEventsByDateRangeQueryHandlerTests
 
         result.Should().BeEquivalentTo(events);
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken),
             Times.Once);
     }
 
@@ -53,19 +73,18 @@ public class GetEventsByDateRangeQueryHandlerTests
         var dateStart = DateTime.UtcNow.Date;
         var dateEnd = DateTime.UtcNow.Date.AddDays(7);
 
-        var query = new GetEventsByDateRangeQuery(dateStart, dateEnd, 1, 10); 
+        var query = new GetEventsByDateRangeQuery(dateStart, dateEnd, 1, 10);
 
-        _unitOfWorkMock.Setup(u => 
-            u.EventsRepository.PaginatedListAsync( It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
+        _unitOfWorkMock.Setup(u =>
+            u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(new List<Event>());
 
         var result = await _handler.Handle(query, cancellationToken);
 
         result.Should().BeEmpty();
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken),
             Times.Once);
     }
-
 }

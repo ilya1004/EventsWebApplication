@@ -35,19 +35,29 @@ public class GetEventImageByEventIdQueryHandlerTests
         var fileResponse = new FileResponse(stream.Object, "");
         var fileResponseDTO = new FileResponseDTO(stream.Object, "");
 
-        var eventObj = new Event("Event 1", null, DateTime.Now, 10, imageId.ToString(), new Place("Place 1", "PLACE 1"), null) { Id = eventId };
+        var eventObj = new Event
+        {
+            Id = eventId,
+            Title = "Event 1",
+            Description = null,
+            EventDateTime = DateTime.Now,
+            ParticipantsMaxCount = 10,
+            Image = imageId.ToString(),
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         var query = new GetEventImageByEventIdQuery(eventId);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken))
             .ReturnsAsync(eventObj);
 
-        _blobServiceMock.Setup(b => 
+        _blobServiceMock.Setup(b =>
             b.DownloadAsync(imageId, cancellationToken))
             .ReturnsAsync(fileResponse);
 
-        _mapperMock.Setup(m => 
+        _mapperMock.Setup(m =>
             m.Map<FileResponseDTO>(fileResponse))
             .Returns(fileResponseDTO);
 
@@ -56,16 +66,16 @@ public class GetEventImageByEventIdQueryHandlerTests
         result.Should()
             .BeEquivalentTo(fileResponseDTO);
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByIdAsync(eventId, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.GetByIdAsync(eventId, cancellationToken),
             Times.Once);
 
-        _blobServiceMock.Verify(b => 
-            b.DownloadAsync(imageId, cancellationToken), 
+        _blobServiceMock.Verify(b =>
+            b.DownloadAsync(imageId, cancellationToken),
             Times.Once);
-        
-        _mapperMock.Verify(m => 
-            m.Map<FileResponseDTO>(fileResponse), 
+
+        _mapperMock.Verify(m =>
+            m.Map<FileResponseDTO>(fileResponse),
             Times.Once);
     }
 
@@ -75,11 +85,21 @@ public class GetEventImageByEventIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var eventObj = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = eventId };
+        var eventObj = new Event
+        {
+            Id = eventId,
+            Title = "Event 1",
+            Description = null,
+            EventDateTime = DateTime.Now,
+            ParticipantsMaxCount = 10,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         var query = new GetEventImageByEventIdQuery(eventId);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken))
             .ReturnsAsync(eventObj);
 
@@ -89,12 +109,12 @@ public class GetEventImageByEventIdQueryHandlerTests
             .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} don't have an image");
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByIdAsync(eventId, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.GetByIdAsync(eventId, cancellationToken),
             Times.Once);
 
-        _blobServiceMock.Verify(b => 
-            b.DownloadAsync(It.IsAny<Guid>(), cancellationToken), 
+        _blobServiceMock.Verify(b =>
+            b.DownloadAsync(It.IsAny<Guid>(), cancellationToken),
             Times.Never);
     }
 
@@ -104,11 +124,21 @@ public class GetEventImageByEventIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var eventObj = new Event("Event 1", null, DateTime.Now, 10, "qwe123", new Place("Place 1", "PLACE 1"), null) { Id = eventId };
+        var eventObj = new Event
+        {
+            Id = eventId,
+            Title = "Event 1",
+            Description = null,
+            EventDateTime = DateTime.Now,
+            ParticipantsMaxCount = 10,
+            Image = "qwe123",
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         var query = new GetEventImageByEventIdQuery(eventId);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken))
             .ReturnsAsync(eventObj);
 
@@ -118,12 +148,12 @@ public class GetEventImageByEventIdQueryHandlerTests
             .ThrowAsync<BadRequestException>()
             .WithMessage($"Event with ID {eventId} have an incorrect format of the image name");
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByIdAsync(eventId, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.GetByIdAsync(eventId, cancellationToken),
             Times.Once);
 
-        _blobServiceMock.Verify(b => 
-            b.DownloadAsync(It.IsAny<Guid>(), cancellationToken), 
+        _blobServiceMock.Verify(b =>
+            b.DownloadAsync(It.IsAny<Guid>(), cancellationToken),
             Times.Never);
     }
 }

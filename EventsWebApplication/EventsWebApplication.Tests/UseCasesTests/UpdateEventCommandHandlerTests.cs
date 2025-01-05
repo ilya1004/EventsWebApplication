@@ -27,7 +27,7 @@ public class UpdateEventCommandHandlerTests
         _mapperMock = new Mock<IMapper>();
         _emailSenderServiceMock = new Mock<IEmailSenderService>();
 
-       _handler = new UpdateEventCommandHandler(
+        _handler = new UpdateEventCommandHandler(
             _unitOfWorkMock.Object,
             _blobServiceMock.Object,
             _mapperMock.Object,
@@ -38,34 +38,46 @@ public class UpdateEventCommandHandlerTests
     public async Task Handle_ShouldUpdateEvent_WhenNoImageProvided()
     {
         var cancellationToken = CancellationToken.None;
-        var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 };
+
+        var existingEvent = new Event
+        {
+            Id = 1,
+            Title = "Event 1",
+            Description = null,
+            EventDateTime = new DateTime(2025, 1, 1),
+            ParticipantsMaxCount = 10,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1" ),
+            Category = null,
+        };
+
         var eventDTO = new EventDTO("Event 2", null, new DateTime(2025, 1, 1), 10, "Place 1", null);
         var command = new UpdateEventCommand(existingEvent.Id, eventDTO, null, null);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(command.Id, cancellationToken))
             .ReturnsAsync(existingEvent);
 
-        _mapperMock.Setup(m => 
+        _mapperMock.Setup(m =>
             m.Map<Event>(command))
             .Returns(existingEvent);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken))
             .Returns(Task.CompletedTask);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.SaveAllAsync(cancellationToken))
             .Returns(Task.CompletedTask);
 
         await _handler.Handle(command, CancellationToken.None);
 
         _unitOfWorkMock.Verify(u =>
-            u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken), 
+            u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken),
             Times.Once);
 
-        _unitOfWorkMock.Verify(u => 
-            u.SaveAllAsync(cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.SaveAllAsync(cancellationToken),
             Times.Once);
     }
 
@@ -73,47 +85,59 @@ public class UpdateEventCommandHandlerTests
     public async Task Handle_ShouldUploadNewImage_AndDeleteOldImage()
     {
         var cancellationToken = CancellationToken.None;
-        var existingEvent = new Event("Event 1", null, new DateTime(2025, 1, 1), 10, Guid.NewGuid().ToString(), new Place("Place 1", "PLACE 1"), null) { Id = 1 };
+
+        var existingEvent = new Event
+        {
+            Id = 1,
+            Title = "Event 1",
+            Description = null,
+            EventDateTime = new DateTime(2025, 1, 1),
+            ParticipantsMaxCount = 10,
+            Image = Guid.NewGuid().ToString(),
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null,
+        };
+
         var fakeFile = new Mock<IFormFile>();
-        
+
         fakeFile.Setup(f => f.OpenReadStream())
             .Returns(new MemoryStream());
-        
+
         fakeFile.Setup(f => f.ContentType)
             .Returns("image/png");
 
         var eventDTO = new EventDTO("Event 2", null, new DateTime(2025, 1, 1), 10, "Place 2", null);
-        
+
         var command = new UpdateEventCommand(existingEvent.Id, eventDTO, fakeFile.Object.OpenReadStream(), fakeFile.Object.ContentType);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(command.Id, cancellationToken))
             .ReturnsAsync(existingEvent);
-        
-        _blobServiceMock.Setup(b => 
+
+        _blobServiceMock.Setup(b =>
             b.DeleteAsync(It.IsAny<Guid>(), cancellationToken))
             .Returns(Task.CompletedTask);
-        
-        _blobServiceMock.Setup(b => 
+
+        _blobServiceMock.Setup(b =>
             b.UploadAsync(It.IsAny<Stream>(), It.IsAny<string>(), cancellationToken))
             .ReturnsAsync(Guid.NewGuid());
-        
-        _mapperMock.Setup(m => 
+
+        _mapperMock.Setup(m =>
             m.Map<Event>(command))
             .Returns(existingEvent);
-        
-        _unitOfWorkMock.Setup(u => 
+
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.UpdateAsync(It.IsAny<Event>(), cancellationToken))
             .Returns(Task.CompletedTask);
 
         await _handler.Handle(command, CancellationToken.None);
 
-        _blobServiceMock.Verify(b => 
-            b.DeleteAsync(It.IsAny<Guid>(), cancellationToken), 
+        _blobServiceMock.Verify(b =>
+            b.DeleteAsync(It.IsAny<Guid>(), cancellationToken),
             Times.Once);
 
-        _blobServiceMock.Verify(b => 
-            b.UploadAsync(It.IsAny<Stream>(), "image/png", cancellationToken), 
+        _blobServiceMock.Verify(b =>
+            b.UploadAsync(It.IsAny<Stream>(), "image/png", cancellationToken),
             Times.Once);
     }
 
@@ -122,9 +146,30 @@ public class UpdateEventCommandHandlerTests
     {
         var cancellationToken = CancellationToken.None;
 
-        var existingEvent = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 };
+        var existingEvent = new Event
+        {
+            Id = 1,
+            Title = "Event 1",
+            Description = null,
+            EventDateTime = DateTime.Now,
+            ParticipantsMaxCount = 10,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null,
+        };
+
         var newEventDTO = new EventDTO("Event 2", null, DateTime.Now.AddDays(1), 10, "Place 2", null);
-        var newEvent = new Event("Event 2", null, DateTime.Now.AddDays(1), 10, null, new Place("Place 2", "PLACE 2"), null) { Id = 1 };
+        var newEvent = new Event
+        {
+            Id = 1,
+            Title = "Event 2",
+            Description = null,
+            EventDateTime = DateTime.Now.AddDays(1),
+            ParticipantsMaxCount = 10,
+            Image = null,
+            Place = new Place("Place 2", "PLACE 2"),
+            Category = null,
+        };
 
         var command = new UpdateEventCommand(existingEvent.Id, newEventDTO, null, null);
 

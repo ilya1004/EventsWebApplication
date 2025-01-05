@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using EventsWebApplication.Application.Exceptions;
+﻿using EventsWebApplication.Application.Exceptions;
 using EventsWebApplication.Application.UseCases.EventUseCases.Commands.DeleteEvent;
 using EventsWebApplication.Domain.Abstractions.BlobStorage;
 using EventsWebApplication.Domain.Abstractions.Data;
@@ -28,7 +27,16 @@ public class DeleteEventCommandHandlerTests
         var cancellationToken = CancellationToken.None;
         var eventId = 1;
 
-        var eventObj = new Event("Event 1", null, DateTime.UtcNow, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = eventId };
+        var eventObj = new Event
+        {
+            Id = eventId,
+            Title = "Event 1",
+            EventDateTime = DateTime.UtcNow,
+            ParticipantsMaxCount = 10,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         _unitOfWorkMock
             .Setup(u => u.EventsRepository.GetByIdAsync(eventId, cancellationToken))
@@ -42,10 +50,10 @@ public class DeleteEventCommandHandlerTests
 
         await _handler.Handle(command, cancellationToken);
 
-        _unitOfWorkMock.Verify(u => 
+        _unitOfWorkMock.Verify(u =>
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken), Times.Once);
 
-        _unitOfWorkMock.Verify(u => 
+        _unitOfWorkMock.Verify(u =>
             u.EventsRepository.DeleteAsync(eventObj, cancellationToken), Times.Once);
     }
 
@@ -67,10 +75,10 @@ public class DeleteEventCommandHandlerTests
             .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} not found.");
 
-        _unitOfWorkMock.Verify(u => 
+        _unitOfWorkMock.Verify(u =>
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken), Times.Once);
 
-        _unitOfWorkMock.Verify(u => 
+        _unitOfWorkMock.Verify(u =>
             u.EventsRepository.DeleteAsync(It.IsAny<Event>(), cancellationToken), Times.Never);
     }
 }

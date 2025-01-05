@@ -36,9 +36,7 @@ public class EventsRepository : AppRepository<Event>, IEventsRepository
 
     public async Task<IEnumerable<Event>> GetByFilterAsync(ISpecification<Event> specification, CancellationToken cancellationToken = default)
     {
-        var query = SpecificationEvaluator<Event>.GetQuery(_entities, specification);
-
-        return await query.ToListAsync(cancellationToken);
+        return await SpecificationEvaluator<Event>.GetQuery(_entities, specification).ToListAsync(cancellationToken);
     }
 
     public async Task<bool> IsSameEventExists(string title, DateTime dateTime, string placeName, CancellationToken cancellationToken = default)

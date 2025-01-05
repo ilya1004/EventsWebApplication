@@ -1,4 +1,5 @@
-﻿using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByFilter;
+﻿using EventsWebApplication.Application.Specifications.EventSpecifications;
+using EventsWebApplication.Application.UseCases.EventUseCases.Queries.GetEventsByFilter;
 using EventsWebApplication.Domain.Abstractions.Data;
 using EventsWebApplication.Domain.Entities.Events;
 using FluentAssertions;
@@ -24,11 +25,28 @@ public class GetEventsByFilterQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", "Description 1", DateTime.UtcNow.AddDays(1), 10, null, 
-                new Place("Place 1", "PLACE 1"), new Category("Category 1", "CATEGORY 1")) { Id = 1 },
-
-            new Event("Event 2", "Description 2", DateTime.UtcNow.AddDays(3), 10, null,
-                new Place("Place 1", "PLACE 1"), new Category("Category 1", "CATEGORY 1")) { Id = 2 },
+            new Event 
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = "Description 1",
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 10,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = new Category("Category 1", "CATEGORY 1") 
+            },
+            new Event 
+            { 
+                Id = 2,
+                Title = "Event 2", 
+                Description = "Description 2", 
+                EventDateTime = DateTime.UtcNow.AddDays(3), 
+                ParticipantsMaxCount = 10,
+                Image = null, 
+                Place = new Place("Place 1", "PLACE 1"), 
+                Category = new Category ("Category 1", "CATEGORY 1") 
+            },
         };
 
         var query = new GetEventsByFilterQuery(
@@ -37,18 +55,24 @@ public class GetEventsByFilterQueryHandlerTests
             "Place 1",
             "Category 1");
 
-        _unitOfWorkMock.Setup(u => 
-            u.EventsRepository.GetByFilterAsync(
-                query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken))
+        var specification = new EventsListByFilterSpecification(
+            query.DateStart,
+            query.DateEnd,
+            query.PlaceName,
+            query.CategoryName,
+            0,
+            10);
+
+        _unitOfWorkMock.Setup(u =>
+            u.EventsRepository.GetByFilterAsync(specification, cancellationToken))
             .ReturnsAsync(events);
 
         var result = await _handler.Handle(query, cancellationToken);
 
         result.Should().BeEquivalentTo(events);
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByFilterAsync(
-                query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.GetByFilterAsync(specification, cancellationToken),
             Times.Once);
     }
 
@@ -62,18 +86,25 @@ public class GetEventsByFilterQueryHandlerTests
             "Place 1",
             "Category 1");
 
-        _unitOfWorkMock.Setup(u => 
-            u.EventsRepository.GetByFilterAsync(
-                query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken))
+        var specification = new EventsListByFilterSpecification(
+            query.DateStart,
+            query.DateEnd,
+            query.PlaceName,
+            query.CategoryName,
+            0,
+            10);
+
+        _unitOfWorkMock.Setup(u =>
+            u.EventsRepository.GetByFilterAsync(specification, cancellationToken))
             .ReturnsAsync(new List<Event>());
 
         var result = await _handler.Handle(query, cancellationToken);
 
         result.Should().BeEmpty();
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByFilterAsync(
-                query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken), Times.Once);
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.GetByFilterAsync(specification, cancellationToken),
+            Times.Once);
     }
 
     [Fact]
@@ -84,13 +115,40 @@ public class GetEventsByFilterQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", "Description 1", DateTime.UtcNow.AddDays(1), 10, null, new Place("Place 1", "PLACE_1"), null) { Id = 1 },
-            new Event("Event 2", "Description 2", DateTime.UtcNow.AddDays(3), 20, null, new Place("Place 2", "PLACE_2"), null) { Id = 2 },
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = "Description 1",
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 10,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = new Category("Category 1", "CATEGORY 1"),
+            },
+            new Event
+            {
+                Id = 2,
+                Title = "Event 2",
+                Description = "Description 2",
+                EventDateTime = DateTime.UtcNow.AddDays(3),
+                ParticipantsMaxCount = 20,
+                Image = null,
+                Place = new Place("Place 2", "PLACE 2"),
+                Category = new Category("Category 2", "CATEGORY 2"),
+            }
         };
 
+        var specification = new EventsListByFilterSpecification(
+            query.DateStart,
+            query.DateEnd,
+            query.PlaceName,
+            query.CategoryName,
+            0,
+            10);
+
         _unitOfWorkMock.Setup(u => 
-            u.EventsRepository.GetByFilterAsync(
-                query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken))
+            u.EventsRepository.GetByFilterAsync(specification, cancellationToken))
             .ReturnsAsync(events);
 
         var result = await _handler.Handle(query, cancellationToken);
@@ -98,8 +156,7 @@ public class GetEventsByFilterQueryHandlerTests
         result.Should().BeEquivalentTo(events);
 
         _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByFilterAsync(
-                query.DateStart, query.DateEnd, query.PlaceName, query.CategoryName, 0, 10, cancellationToken), 
+            u.EventsRepository.GetByFilterAsync(specification, cancellationToken), 
             Times.Once);
     }
 }

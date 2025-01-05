@@ -25,11 +25,21 @@ public class GetEventByIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var expectedEvent = new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = eventId };
+        var expectedEvent = new Event
+        {
+            Id = eventId,
+            Title = "Event 1",
+            Description = null,
+            EventDateTime = DateTime.Now,
+            ParticipantsMaxCount = 10,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         var query = new GetEventByIdQuery(eventId, null);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null))
             .ReturnsAsync(expectedEvent);
 
@@ -37,8 +47,8 @@ public class GetEventByIdQueryHandlerTests
 
         result.Should().BeEquivalentTo(expectedEvent);
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null),
             Times.Once);
     }
 
@@ -48,7 +58,17 @@ public class GetEventByIdQueryHandlerTests
         var eventId = 1;
         var cancellationToken = CancellationToken.None;
 
-        var expectedEvent = new Event("Test Event", "Description", DateTime.Now, 10, null, new Place("Place 1", "PLACE_1"), null) { Id = eventId };
+        var expectedEvent = new Event
+        {
+            Id = eventId,
+            Title = "Test Event",
+            Description = "Description",
+            EventDateTime = DateTime.Now,
+            ParticipantsMaxCount = 10,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         Expression<Func<Event, object>>[] includeProperties = [e => e.Participants];
 
@@ -75,7 +95,7 @@ public class GetEventByIdQueryHandlerTests
 
         var query = new GetEventByIdQuery(eventId, null);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null))
             .ReturnsAsync((Event?)null);
 
@@ -85,8 +105,8 @@ public class GetEventByIdQueryHandlerTests
             .ThrowAsync<NotFoundException>()
             .WithMessage($"Event with ID {eventId} not found.");
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.GetByIdAsync(eventId, cancellationToken, null),
             Times.Once);
     }
 }

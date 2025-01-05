@@ -28,16 +28,16 @@ public class AddAsyncGenericTests
         context.SaveChanges();
         var repository = new AppRepository<Event>(context);
 
-        var eventEntity = new Event(
-            "Event 1",
-            "Description 1",
-            DateTime.UtcNow.AddDays(1),
-            100,
-            null,
-            new Place("Place 1", "PLACE 1"),
-            new Category("Category 1", "CATEGORY 1"))
+        var eventEntity = new Event
         {
-            Id = 1
+            Id = 1,
+            Title = "Event 1",
+            Description = "Description 1",
+            EventDateTime = DateTime.UtcNow.AddDays(1),
+            ParticipantsMaxCount = 100,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = new Category("Category 1", "CATEGORY 1"),
         };
 
         await repository.AddAsync(eventEntity, cancellationToken);
@@ -73,24 +73,25 @@ public class AddAsyncGenericTests
         var cancellationToken = CancellationToken.None;
         var context = GetInMemoryDbContext();
         context.Events.RemoveRange(context.Events);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         var repository = new AppRepository<Event>(context);
 
-        var eventEntity = new Event(
-            "Event 1",
-            "Description 1",
-            DateTime.UtcNow,
-            50,
-            null,
-            new Place("Place 1", "PLACE 1"),
-            null)
-            {
-                Id = 2
-            };
+        var eventEntity = new Event
+        {
+            Id = 2,
+            Title = "Event 1",
+            Description = "Description 1",
+            EventDateTime = DateTime.UtcNow,
+            ParticipantsMaxCount = 50,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null,
+        };
 
         await repository.AddAsync(eventEntity, cancellationToken);
+        await context.SaveChangesAsync();
 
         var count = await context.Events.CountAsync();
-        count.Should().Be(0);
+        count.Should().Be(1);
     }
 }

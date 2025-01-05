@@ -25,8 +25,28 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", null, DateTime.UtcNow.AddDays(1), 100, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
-            new Event("Event 2", null, DateTime.UtcNow.AddDays(2), 100, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 }
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = new Category("Category 1", "CATEGORY 1"),
+            },
+            new Event
+            { 
+                Id = 2,
+                Title = "Event 2",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(2),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 2", "PLACE 2"),
+                Category = new Category("Category 2", "CATEGORY 2"),
+            }
         };
 
         var participantCounts = new List<(int EventId, int Count)>
@@ -37,11 +57,11 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
 
         var query = new GetEventsWithRemainingPlacesQuery();
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken))
             .ReturnsAsync(events);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken))
             .ReturnsAsync(participantCounts);
 
@@ -49,17 +69,18 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
 
         result.Should()
             .BeEquivalentTo(
-            [
-                new EventWithRemainingPlacesDTO(1, "Event 1", null, events[0].EventDateTime, 100, 30, "Place 1", null),
-                new EventWithRemainingPlacesDTO(2, "Event 2", null, events[1].EventDateTime, 100, 20, "Place 2", null)
-            ]);
+                new List<EventWithRemainingPlacesDTO>
+                {
+                    new EventWithRemainingPlacesDTO(1, "Event 1", null, events[0].EventDateTime, 100, 30, "Place 1", null),
+                    new EventWithRemainingPlacesDTO(2, "Event 2", null, events[1].EventDateTime, 100, 20, "Place 2", null)
+                });
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken),
             Times.Once);
 
-        _unitOfWorkMock.Verify(u => 
-            u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken),
             Times.Once);
     }
 
@@ -70,11 +91,11 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
 
         _unitOfWorkMock.Setup(u =>
             u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken))
-            .ReturnsAsync([]);
+            .ReturnsAsync(new List<Event>());
 
         _unitOfWorkMock.Setup(u =>
             u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken))
-            .ReturnsAsync([]);
+            .ReturnsAsync(new List<(int EventId, int Count)>());
 
         var query = new GetEventsWithRemainingPlacesQuery();
 
@@ -82,12 +103,12 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
 
         result.Should().BeEmpty();
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken),
             Times.Once);
 
-        _unitOfWorkMock.Verify(u => 
-            u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken),
             Times.Once);
     }
 
@@ -98,30 +119,42 @@ public class GetEventsWithRemainingPlacesQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", null, DateTime.UtcNow.AddDays(1), 100, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 }
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = "Description 1",
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = new Category("Category 1", "CATEGORY 1"),
+            }
         };
 
-        var query = new GetEventsWithRemainingPlacesQuery { PageNo = 1, PageSize = 10 };
+        var query = new GetEventsWithRemainingPlacesQuery();
 
         _unitOfWorkMock.Setup(u => u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken))
             .ReturnsAsync(events);
 
         _unitOfWorkMock.Setup(u => u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken))
-            .ReturnsAsync([]);
+            .ReturnsAsync(new List<(int EventId, int Count)>());
 
         var result = await _handler.Handle(query, cancellationToken);
 
         result.Should().BeEquivalentTo(
-            [
+            new List<EventWithRemainingPlacesDTO>
+            {
                 new EventWithRemainingPlacesDTO(1, "Event 1", null, events[0].EventDateTime, 100, 0, "Place 1", null)
-            ]);
+            });
 
-        _unitOfWorkMock.Verify(u => 
-            u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.EventsRepository.PaginatedListAllAsync(0, 10, cancellationToken),
             Times.Once);
 
-        _unitOfWorkMock.Verify(u => 
-            u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.ParticipantsRepository.CountParticipantsByEvents(cancellationToken),
             Times.Once);
     }
 }
+

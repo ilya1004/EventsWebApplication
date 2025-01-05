@@ -26,8 +26,28 @@ public class GetEventsByCurrentUserQueryHandlerTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", null, DateTime.Now, 10, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
-            new Event("Event 2", null, DateTime.Now, 10, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 },
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = null,
+                EventDateTime = DateTime.Now,
+                ParticipantsMaxCount = 10,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = null
+            },
+            new Event
+            {
+                Id = 2,
+                Title = "Event 2",
+                Description = null,
+                EventDateTime = DateTime.Now,
+                ParticipantsMaxCount = 10,
+                Image = null,
+                Place = new Place("Place 2", "PLACE 2"),
+                Category = null
+            }
         };
 
         var email = "test@gmail.com";
@@ -57,22 +77,22 @@ public class GetEventsByCurrentUserQueryHandlerTests
 
         var query = new GetEventsByCurrentUserQuery(email, 1, 10);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken))
             .ReturnsAsync(participations);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(events);
 
         var result = await _handler.Handle(query, cancellationToken);
 
         result.Should().BeEquivalentTo(events);
-        _unitOfWorkMock.Verify(u => 
-            u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken), 
+        _unitOfWorkMock.Verify(u =>
+            u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken),
             Times.Once);
 
-        _unitOfWorkMock.Verify(u => 
+        _unitOfWorkMock.Verify(u =>
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken),
             Times.Once);
     }
@@ -84,25 +104,24 @@ public class GetEventsByCurrentUserQueryHandlerTests
         var cancellationToken = CancellationToken.None;
         var query = new GetEventsByCurrentUserQuery(email, 1, 10);
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken))
             .ReturnsAsync(new List<Participant>());
 
-        _unitOfWorkMock.Setup(u => 
+        _unitOfWorkMock.Setup(u =>
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken))
             .ReturnsAsync(new List<Event>());
 
         var result = await _handler.Handle(query, cancellationToken);
 
         result.Should().BeEmpty();
-        
-        _unitOfWorkMock.Verify(u => 
-            u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken), 
+
+        _unitOfWorkMock.Verify(u =>
+            u.ParticipantsRepository.ListAsync(It.IsAny<Expression<Func<Participant, bool>>>(), cancellationToken),
             Times.Once);
-        
+
         _unitOfWorkMock.Verify(u =>
             u.EventsRepository.PaginatedListAsync(It.IsAny<Expression<Func<Event, bool>>>(), 0, 10, cancellationToken),
             Times.Once);
     }
-
 }

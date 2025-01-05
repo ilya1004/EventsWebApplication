@@ -19,7 +19,6 @@ public class PaginatedListAsyncGenericTests
         return context;
     }
 
-
     [Fact]
     public async Task PaginatedListAsync_ShouldReturnFilteredAndPaginatedData()
     {
@@ -30,10 +29,50 @@ public class PaginatedListAsyncGenericTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", null, DateTime.UtcNow.AddDays(1), 100, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
-            new Event("Event 2", null, DateTime.UtcNow.AddDays(2), 100, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 },
-            new Event("Event 3", null, DateTime.UtcNow.AddDays(3), 100, null, new Place("Place 1", "PLACE 1"), null) { Id = 3 },
-            new Event("Event 4", null, DateTime.UtcNow.AddDays(4), 100, null, new Place("Place 4", "PLACE 4"), null) { Id = 4 }
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = null,
+            },
+            new Event
+            {
+                Id = 2,
+                Title = "Event 2",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(2),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 2", "PLACE 2"),
+                Category = null,
+            },
+            new Event
+            {
+                Id = 3,
+                Title = "Event 3",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(3),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = null,
+            },
+            new Event
+            {
+                Id = 4,
+                Title = "Event 4",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(4),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 4", "PLACE 4"),
+                Category = null,
+            }
         };
 
         await context.Events.AddRangeAsync(events);
@@ -57,8 +96,28 @@ public class PaginatedListAsyncGenericTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", "Description 1", DateTime.UtcNow.AddDays(1), 100, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
-            new Event("Event 2", "Description 2", DateTime.UtcNow.AddDays(2), 100, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 }
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = "Description 1",
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = null,
+            },
+            new Event
+            {
+                Id = 2,
+                Title = "Event 2",
+                Description = "Description 2",
+                EventDateTime = DateTime.UtcNow.AddDays(2),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 2", "PLACE 2"),
+                Category = null,
+            }
         };
 
         await context.Events.AddRangeAsync(events);
@@ -79,10 +138,50 @@ public class PaginatedListAsyncGenericTests
 
         var events = new List<Event>
         {
-            new Event("Event 1", null, DateTime.UtcNow.AddDays(1), 100, null, new Place("Place 1", "PLACE 1"), null) { Id = 1 },
-            new Event("Event 2", null, DateTime.UtcNow.AddDays(2), 100, null, new Place("Place 2", "PLACE 2"), null) { Id = 2 },
-            new Event("Event 3", null, DateTime.UtcNow.AddDays(3), 100, null, new Place("Place 3", "PLACE 3"), null) { Id = 3 },
-            new Event("Event 4", null, DateTime.UtcNow.AddDays(4), 100, null, new Place("Place 4", "PLACE 4"), null) { Id = 4 }
+            new Event
+            {
+                Id = 1,
+                Title = "Event 1",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(1),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 1", "PLACE 1"),
+                Category = null,
+            },
+            new Event
+            {
+                Id = 2,
+                Title = "Event 2",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(2),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 2", "PLACE 2"),
+                Category = null,
+            },
+            new Event
+            {
+                Id = 3,
+                Title = "Event 3",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(3),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 3", "PLACE 3"),
+                Category = null,
+            },
+            new Event
+            {
+                Id = 4,
+                Title = "Event 4",
+                Description = null,
+                EventDateTime = DateTime.UtcNow.AddDays(4),
+                ParticipantsMaxCount = 100,
+                Image = null,
+                Place = new Place("Place 4", "PLACE 4"),
+                Category = null,
+            }
         };
 
         await context.Events.AddRangeAsync(events);

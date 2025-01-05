@@ -88,7 +88,16 @@ public class CreateEventCommandHandlerTests
                 It.IsAny<Stream>(), It.IsAny<string>(), cancellationToken))
             .ReturnsAsync(Guid.NewGuid());
 
-        var newEventObj = new Event("Event 1", null, eventDTO.EventDateTime, 10, null, new Place("Place 1", "PLACE 1"), null);
+        var newEventObj = new Event
+        {
+            Title = eventDTO.Title,
+            Description = eventDTO.Description,
+            EventDateTime = eventDTO.EventDateTime,
+            ParticipantsMaxCount = eventDTO.ParticipantsMaxCount,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         _mapperMock
             .Setup(m => m.Map<Event>(command))
@@ -131,7 +140,16 @@ public class CreateEventCommandHandlerTests
                 It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<string>(), cancellationToken))
             .ReturnsAsync(false);
 
-        var newEventObj = new Event("Event 1", null, eventDTO.EventDateTime, 10, null, new Place("Place 1", "PLACE 1"), null);
+        var newEventObj = new Event
+        {
+            Title = eventDTO.Title,
+            Description = eventDTO.Description,
+            EventDateTime = eventDTO.EventDateTime,
+            ParticipantsMaxCount = eventDTO.ParticipantsMaxCount,
+            Image = null,
+            Place = new Place("Place 1", "PLACE 1"),
+            Category = null
+        };
 
         _mapperMock
             .Setup(m => m.Map<Event>(command))
