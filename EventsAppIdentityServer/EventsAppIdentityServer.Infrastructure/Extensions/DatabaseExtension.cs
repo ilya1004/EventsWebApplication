@@ -8,13 +8,13 @@ namespace EventsAppIdentityServer.Infrastructure.Extensions;
 
 public static class DatabaseExtension
 {
-    public static void MakeMigrations(this IApplicationBuilder app)
+    public static async Task MakeMigrations(this IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();
 
         using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        dbContext.Database.Migrate();
+        await dbContext.Database.MigrateAsync();
     }
 
     public static async Task SeedDatabase(this IApplicationBuilder app)

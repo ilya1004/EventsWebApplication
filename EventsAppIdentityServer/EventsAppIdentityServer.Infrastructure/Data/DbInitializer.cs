@@ -78,7 +78,7 @@ public class DbInitializer : IDbInitializer
             Birthday = new DateTime(1995, 4, 23, 0, 0, 0, DateTimeKind.Utc),
         };
 
-        await _userManager.CreateAsync(user2, " ");
+        await _userManager.CreateAsync(user2, "Anna_123");
         await _userManager.AddToRoleAsync(user2, AppRoles.UserRole);
         await _userManager.AddClaimsAsync(user2,
             [

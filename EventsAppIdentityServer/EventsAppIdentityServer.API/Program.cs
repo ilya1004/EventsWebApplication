@@ -31,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MakeMigrations();
+await app.MakeMigrations();
 await app.SeedDatabase();
 
 app.UseCors("CorsPolicy");
