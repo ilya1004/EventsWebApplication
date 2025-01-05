@@ -30,6 +30,8 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
             throw new NotFoundException($"Event with ID {command.Id} not found.");
         }
 
+        var eventEntity = _mapper.Map<Event>(command);
+
         Guid? imageFileId = null;
         if (command.FileStream is not null)
         {
@@ -42,11 +44,9 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
                 command.FileStream,
                 command.ContentType!,
                 cancellationToken);
+            
+            eventEntity.Image = imageFileId?.ToString();
         }
-        var eventEntity = _mapper.Map<Event>(command);
-
-        eventEntity.Image = imageFileId?.ToString();
-        eventEntity.Id = command.Id;
 
         await _unitOfWork.EventsRepository.UpdateAsync(eventEntity, cancellationToken);
         await _unitOfWork.SaveAllAsync(cancellationToken);
