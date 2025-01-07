@@ -52,15 +52,14 @@ using (var scope = app.Services.CreateScope())
 
 app.UseRouting();
 
-app.UseCors("ReactClientCors");
-
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
-app.MapControllers();
+app.UseCors("ReactClientCors");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllers();
 
 app.Run();
 
